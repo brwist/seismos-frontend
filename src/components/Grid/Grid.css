@@ -1,0 +1,76 @@
+.data-grid-container .data-grid .cell {
+    vertical-align: middle;
+    text-align: left;
+    padding: 10px 20px;
+}
+
+.data-grid-container .data-grid .cell > input {
+    border: none;
+    height: unset;
+    text-align: left;
+}
+
+.data-grid-container .data-grid .cell.noborder {
+    border: none; 
+    background: transparent !important;
+}
+
+.data-grid {
+    width: 100%;
+}
+
+.data-grid-container .data-grid .cell .value-viewer {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.data-grid.seismos-spreadsheet-grid .cell.read-only {
+    font-weight: bold;
+    color: #000;
+    background: rgb(249, 249, 249);
+    text-align: left;
+} 
+
+/** FOR JOB INFO form GRID */
+.no-header-grid th {
+    display: none;
+}
+
+.data-grid-container .data-grid .cell .value-viewer {
+    min-height: 22px;
+}
+
+td.cell input.data-editor.transparent-input {
+    padding: 0;
+    --tw-ring-color: transparent;
+    font-size: inherit;
+    line-height: inherit;
+}
+.data-grid-container .data-grid .cell.cell-error {
+    border: 1px double rgb(255 0 0);
+}
+
+.password-cell .value-viewer {
+    -webkit-text-security: disc;
+}
+
+.data-grid-container .data-grid .cell.select-cell {
+    padding: 0;
+}
+
+.data-grid-container .data-grid .cell.select-cell .grid-react-select__control {
+    border: unset;
+    background-color: transparent;
+    box-shadow: unset;
+}
+
+.data-grid-container .data-grid .cell.select-cell input {
+    --tw-ring-shadow: none;
+    background-color: transparent;
+}
+
+.cell-text-view {
+    vertical-align: middle;
+    text-align: left;
+    padding: 10px 20px;
+}
