@@ -1,0 +1,169 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat'), url(../fonts/Montserrat-Regular.ttf) format('truetype');
+} 
+
+*, body {
+    font-family: 'Montserrat';
+}
+
+.bg-primary {
+    /* background-color: #1890ff; */
+    background-color: #b91c1b;
+}
+
+.text-seismos-primary {
+    color: #b91c1b;
+}
+
+.login-container .login-header-card {
+    background: #000;
+}
+
+.ant-menu-item-selected {
+    color: #2f2d2d !important;
+    font-weight: 700;
+    background: rgb(255 0 0 / 7%) !important;
+}
+.ant-menu-submenu-selected .ant-menu-submenu-title .ant-menu-title-content {
+    color: #2f2d2d !important;
+    font-weight: bold;
+}
+.ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after {
+    border-right: 3px solid #b91c1b !important;
+}
+
+.ant-layout-header {
+    background: #000 !important;
+}
+
+.ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+    color: rgba(255, 255, 255, 0.65);
+    background: #000 !important;
+}
+
+.ant-btn-primary {
+    background: #b91c1b !important;
+    border-color: #b91c1b !important;
+}
+
+.ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+    color: rgb(255 255 255 / 70%) !important;
+    background: rgb(255 24 24 / 70%) !important;
+    border-color: rgb(255 24 24 / 0%) !important;
+
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
+    background-color: #b91c1b !important;
+}
+
+.logo {
+    background-color: #000 !important;
+}
+
+.bg-grey {
+    background: #d2d2d2 !important;
+}
+
+/*COLOR ENDS HERE*/
+.logo {
+    float: left;
+    width: 250px;
+    padding: 19px 10px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    background-color: #001628;
+    position: fixed;
+}
+.logo img {
+    width: 47%;
+}
+
+.logo-width {
+    width: 47%;
+}
+
+.with-sedebar .seismos-app-header {
+    position: fixed;
+    z-index: 99;
+    width: calc(100vw - 250px);
+}
+
+.ant-row-rtl {
+    float: right;
+}
+
+ul.ant-menu.sidebar-margin-top {
+    margin-top: 64px;
+}
+
+.site-layout-background {
+    background: #fff !important;
+}
+
+
+.logo-wo-sidebar {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.well-volume-grid {
+    flex: 2;
+}
+
+.well-volume-estimation-grid {
+    flex: 1;
+    flex-basis: 1%;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.module-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.spin-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ant-spin-dot .ant-spin-dot-item {
+    background-color: #b91c1b;
+}
+
+button.no-style:focus {
+    outline: none;
+}
+
+.icon-form-info {
+    margin-left: 5px;
+
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+    color: #fff !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
