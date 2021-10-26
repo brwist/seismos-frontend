@@ -19,7 +19,7 @@ export default function DefaultValues() {
     let location = useLocation();
     const { addToast } = useToasts();
     const history = useHistory();
-
+    const [defaultFormValues, setDefaultFormValues] = useState({...FormInitialValues.defaultValueForm});
     const [modalData, setModalData] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
@@ -27,13 +27,15 @@ export default function DefaultValues() {
     const [projectId, setProjectId] = useState();
     const [wellId, setWellId] = useState();
 
+    const [ form ] = Form.useForm();
+
     const handleCancel = () => {
         setShowConfirmationModal(false);
         setModalData(null);
     }
 
     const handleChangeConfirmed = (data) => {
-        axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
+        axios.post(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
             {
                 ...FormDataSerializer.defultValueFormSubmitSerializer(data)
             }, {...HttpUtil.adminHttpHeaders()})
@@ -75,7 +77,15 @@ export default function DefaultValues() {
             })
             .then(res => {
                 if (res.status === 200 && res.data) {
-                    console.log(res.data)
+                    const defaultValuesResponse = res.data;
+                    const defaults = {
+                        ...FormInitialValues.defaultValueForm,
+                        ...defaultValuesResponse.default_advance_val, 
+                        ...defaultValuesResponse.default_value, 
+                        ...defaultValuesResponse.default_param_val
+                    };
+                    const fields = form.getFieldsValue();
+                    form.setFieldsValue(defaults);
                 }
             })
             .catch(e => {
@@ -124,9 +134,10 @@ export default function DefaultValues() {
             </Card>
             <Card bordered={false} style={{ width: '100%', marginBottom: '1.5rem' }}>
                 <Form
+                    form={form}
                     labelAlign="left"
                     name="basic"
-                    initialValues={FormInitialValues.defaultValueForm}
+                    initialValues={defaultFormValues}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     className="default-values-form"
@@ -370,7 +381,7 @@ export default function DefaultValues() {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -385,7 +396,7 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
-                                </Col>
+                                </Col> */}
                             </Row>
                         
                             <Form.Item className="text-right">
@@ -642,7 +653,7 @@ export default function DefaultValues() {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -657,7 +668,7 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
-                                </Col>
+                                </Col> */}
                                 <Col span={10}>
                                     <Form.Item
                                         label={
@@ -1074,7 +1085,7 @@ export default function DefaultValues() {
                         
                             <Divider orientation="left" plain><strong>Do not change the following</strong></Divider>
                             <Row>
-                                <Col span={10}>
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1089,7 +1100,7 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
-                                </Col>
+                                </Col> */}
                                 <Col span={10}>
                                     <Form.Item
                                         label={
@@ -1106,7 +1117,7 @@ export default function DefaultValues() {
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1121,7 +1132,7 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber />
                                     </Form.Item>
-                                </Col>
+                                </Col> */}
                                 <Col span={10}>
                                     <Form.Item
                                         label={
@@ -1138,7 +1149,7 @@ export default function DefaultValues() {
                                         <Input />
                                     </Form.Item>
                                 </Col>
-                                <Col span={10}>
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1156,8 +1167,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1175,8 +1186,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1191,8 +1202,8 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1210,8 +1221,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1229,8 +1240,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1248,8 +1259,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1267,8 +1278,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                         label={
                                             <span>
@@ -1286,8 +1297,8 @@ export default function DefaultValues() {
                                             <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
-                                </Col>
-                                <Col span={10}>
+                                </Col> */}
+                                {/* <Col span={10}>
                                     <Form.Item
                                             label={
                                             <span>
@@ -1302,7 +1313,7 @@ export default function DefaultValues() {
                                     >
                                         <InputNumber className="w-100"/>
                                     </Form.Item>
-                                </Col>                    
+                                </Col>                     */}
                             </Row>
                         
                             <Form.Item className="text-right">

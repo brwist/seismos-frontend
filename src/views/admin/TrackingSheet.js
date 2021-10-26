@@ -51,8 +51,8 @@ export default function TrackingSheet(props) {
         customer: null,
         date: null,
         event_occur: null,
-        field_engineer_days: null,
-        field_engineer_nights: null,
+        // field_engineer_days: null,
+        // field_engineer_nights: null,
         frac_design: null,
         plug_seat_technique: null,
         plug_type: null,
@@ -82,6 +82,7 @@ export default function TrackingSheet(props) {
         stage_end_time: null,
         opening_well: null,
         isip: null,
+        stage_uuid: null,
         base_fluid_type: null,
         base_fluid_density: null,
         max_conc_density: null,
@@ -127,7 +128,7 @@ export default function TrackingSheet(props) {
         frequency: null,
         number_of_pulses: null,
         offset: null,
-        periods: null,
+        period: null,
         post_end_time: null,
         post_start_time: null,
         pre_end_time: null,
@@ -297,9 +298,9 @@ export default function TrackingSheet(props) {
                 setStageSheetList(res.data.stages);
                 setSelectedStage(selectedStage + "");
                 if (res.data.stages.length > 0) {
-                    const stageTrackingPresent = res.data.stages.find(s => s.stage === stages[0].value)
+                    const stageTrackingPresent = res.data.stages.find(s => (s.stage_n + 1) === stages[0].value)
                     if (stageTrackingPresent) {
-                        fetchTrackingSheet(stageTrackingPresent.sheet_id);
+                        fetchTrackingSheet(stageTrackingPresent.id);
                     }
                 } else {
                 }
@@ -413,6 +414,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="dynamic_form_nest_item"
+                                class="tracking-sheet-form"
                                 onValuesChange={dynamicFormNestItemChange}
                                 autoComplete="off"
                                 initialValues={dynamicFormNestItemValues}
@@ -444,21 +446,22 @@ export default function TrackingSheet(props) {
                                     </Col>
                                     <Col span={10}>
                                         <Form.Item
-                                            name={'field_engineer_days'}
-                                            label="Field engineer (Days)"
+                                            name={'well'}
+                                            label="Well"
                                             labelCol={{span: 10, offset: 0}}
                                             labelAlign="left"
                                         >
                                             <Input className="w-full"/>
                                         </Form.Item>
                                     </Col>
+                                    
                                 </Row>
-                                <Row gutter={24}>
-                                    <Col span={8}>
+                                {/* <Row gutter={24}>
+                                <Col span={10}>
                                         <Form.Item
-                                            name={'well'}
-                                            label="Well"
-                                            labelCol={{span: 7, offset: 0}}
+                                            name={'field_engineer_days'}
+                                            label="Field engineer (Days)"
+                                            labelCol={{span: 10, offset: 0}}
                                             labelAlign="left"
                                         >
                                             <Input className="w-full"/>
@@ -474,7 +477,7 @@ export default function TrackingSheet(props) {
                                             <Input className="w-full"/>
                                         </Form.Item>
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row gutter={24}>
                                     <Col span={8}>
                                         <Form.Item
@@ -505,7 +508,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 7, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -527,7 +530,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 7, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -570,6 +573,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="perforation_interval_information"
+                                class="tracking-sheet-form"
                                 onValuesChange={perforationIntervalInformationChange}
                                 autoComplete="off"
                                 initialValues={perforationIntervalInformationValues}
@@ -583,7 +587,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -593,7 +597,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -605,7 +609,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -627,7 +631,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -649,7 +653,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -681,7 +685,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -728,6 +732,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="stage_data"
+                                class="tracking-sheet-form"
                                 onValuesChange={stageDataChange}
                                 autoComplete="off"
                                 initialValues={stageDataValues}
@@ -770,6 +775,18 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={'isip'}
                                             label="ISIP [psi]"
+                                            labelCol={{span: 9, offset: 0}}
+                                            labelAlign="left"
+                                        >
+                                            <InputNumber className="w-full w-100"/>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={24}>
+                                    <Col span={10}>
+                                        <Form.Item
+                                            name={'stage_uuid'}
+                                            label="Stage uuid"
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
@@ -816,6 +833,7 @@ export default function TrackingSheet(props) {
                                 <Divider orientation="left" plain><strong>Fluids injected into formation</strong></Divider>
                                 <Form
                                     name="fluid_form"
+                                    class="tracking-sheet-form"
                                     onValuesChange={fluidFormChange}
                                     autoComplete="off"
                                     initialValues={fluidFormValues}
@@ -898,6 +916,7 @@ export default function TrackingSheet(props) {
                                 <Divider orientation="left" plain><strong>Proppant data</strong></Divider>
                                 <Form
                                     name="propant_form"
+                                    class="tracking-sheet-form"
                                     onValuesChange={propantFormChange}
                                     autoComplete="off"
                                     initialValues={propantFormValues}
@@ -957,7 +976,7 @@ export default function TrackingSheet(props) {
                                                                 labelCol={{span: 16, offset: 0}}
                                                                 labelAlign="left"
                                                             >
-                                                                <Input className="w-full"/>
+                                                                <InputNumber className="w-full"/>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={2}>
@@ -1004,14 +1023,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"max_prop_conc_ppa_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"max_prop_conc_ppa_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1023,14 +1042,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"total_pad_volume_bbls_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"total_pad_volume_bbls_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1042,14 +1061,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"total_clean_fluid_volume_bbls_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"total_clean_fluid_volume_bbls_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1061,14 +1080,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"total_lbs_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"total_lbs_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row> */}
@@ -1080,14 +1099,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"total_proppant_lbs_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"total_proppant_lbs_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1099,14 +1118,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"acid_volume_gals_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"acid_volume_gals_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1118,14 +1137,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"flush_volume_bbls_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"flush_volume_bbls_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1137,14 +1156,14 @@ export default function TrackingSheet(props) {
                                         <Form.Item
                                             name={"slurry_volume_bbls_design"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
                                             name={"slurry_volume_bbls_actual"}
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1155,6 +1174,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="active_data_form"
+                                class="tracking-sheet-form"
                                 onValuesChange={activeDataFormChange}
                                 autoComplete="off"
                                 initialValues={activeDataFormValues}
@@ -1174,7 +1194,7 @@ export default function TrackingSheet(props) {
                                     </Col>
                                     <Col span={10}>
                                         <Form.Item
-                                            name={'periods'}
+                                            name={'period'}
                                             label="Periods"
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
@@ -1247,7 +1267,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1280,7 +1300,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"/>
+                                            <InputNumber className="w-full w-100"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1291,6 +1311,7 @@ export default function TrackingSheet(props) {
                     <Card>
                             <Form
                                 name="notes_data_form"
+                                class="tracking-sheet-form"
                                 onValuesChange={notesDataFormChange}
                                 autoComplete="off"
                                 initialValues={notesDataFormValues}

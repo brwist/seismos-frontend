@@ -38,7 +38,7 @@ const jobInfoFormTableData = {
           rows: [
             { label: 'Job name', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_NAME, required: true },
             { label: 'Job type', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_TYPE, required: true },
-            { label: 'Job id', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID, required: true },
+            { label: 'Job id', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID, required: true, datatype: 'integer' },
             { label: 'AFE #', field: ENUMS.FORM_FIELDS.JOB_INFO.AFE_ID, required: true, datatype: 'integer' },
             { label: 'Country', field: ENUMS.FORM_FIELDS.JOB_INFO.COUNTRY_NAME, required: true },
             { label: 'Basin', field: ENUMS.FORM_FIELDS.JOB_INFO.BASIN_NAME, required: true },

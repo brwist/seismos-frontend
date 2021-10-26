@@ -9,6 +9,7 @@ import ENUMS from "constants/appEnums";
 import HttpUtil from "util/HttpUtil";
 import { useHistory, useLocation } from "react-router";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 export default function DailyLog() {
     let location = useLocation();
@@ -17,7 +18,7 @@ export default function DailyLog() {
     const [form] = Form.useForm();
 
     const initialFormValues = { dailyLogData: [{ date: null, time: null, description: null }] }
-
+    const user = useSelector(state => state.authReducer.user);
     const [dailyLogs, setDailyLogs] = useState([]);
     const [projectId, setProjectId] = useState();
     const [wellId, setWellId] = useState();
@@ -53,15 +54,14 @@ export default function DailyLog() {
             return;
         const val = values.dailyLogData.map(log => {
             return {
-                description: log.description,
-                date: Number(moment(log.date).set("hour", moment(log.time).hours()).set("minute", moment(log.time).minutes()).set("seconds", moment(log.time).seconds()).format('x'))
+                comment_content: log.description,
+                comment_by: user.username,
+                comment_timestamp: Number(moment(log.date).set("hour", moment(log.time).hours()).set("minute", moment(log.time).minutes()).set("seconds", moment(log.time).seconds()).format('x'))
             }
         });
         
-        axios.post(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG,
+        axios.post(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG + "/" + wellId,
             {
-                project_id: Number(projectId),
-                well_id: Number(wellId),
                 logs: val
             }, {...HttpUtil.adminHttpHeaders()})
             .then(res => {
@@ -91,9 +91,9 @@ export default function DailyLog() {
                         logs = res.data.logs.map((log, index) => {
                             return {
                                 key: index,
-                                date: moment(log.date).format("YYYY-MM-DD"),
-                                time: moment(log.date).format("HH : mm"),
-                                description: log.description,
+                                date: moment(log.comment_timestamp).format("YYYY-MM-DD"),
+                                time: moment(log.comment_timestamp).format("HH : mm"),
+                                description: log.comment_content,
                             }
                         })
                     }
