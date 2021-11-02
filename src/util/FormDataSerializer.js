@@ -164,81 +164,86 @@ const trackingSheetSubmitSerializer = (
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
     const dynamicFormNestItemValuesData = {
-        bht_f: trackingSheetData.stage_tracking.bht_f,
-        bht_psi: trackingSheetData.stage_tracking.bht_psi,
-        customer: trackingSheetData.stage_tracking.customer,
-        date: moment(trackingSheetData.stage_tracking.date),
-        event_occur: trackingSheetData.stage_tracking.did_an_event_occur,
-        field_engineer_days: trackingSheetData.stage_tracking.field_engineer.days,
-        field_engineer_nights: trackingSheetData.stage_tracking.field_engineer.nights,
-        frac_design: trackingSheetData.stage_tracking.frac_design,
-        plug_seat_technique: trackingSheetData.stage_tracking.plug_seat_technique,
-        plug_type: trackingSheetData.stage_tracking.plug_type,
-        seismos_data_collection: trackingSheetData.stage_tracking.seismos_data_collection,
-        stage: trackingSheetData.stage_tracking.stage,
-        well: trackingSheetData.stage_tracking.well,
+        bht_f: trackingSheetData.bottomhole_bht, // 
+        bht_psi: trackingSheetData.bottomhole_bhp, //
+        customer: trackingSheetData.customer, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        date: moment(trackingSheetData.date), // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        event_occur: trackingSheetData.stage_event, //
+        frac_design: trackingSheetData.frac_design,
+        plug_seat_technique: trackingSheetData.plug_seat_technique, //
+        plug_type: trackingSheetData.plug_type, //
+        seismos_data_collection: trackingSheetData.seismos_data_collection, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        stage: trackingSheetData.stage, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        well: trackingSheetData.well, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
     };
     const perforationIntervalInformationValuesData = {
-        acid: trackingSheetData.perforation_interval_information.acid,
-        bottom_perf: trackingSheetData.perforation_interval_information.bottom_perf,
-        clusters_number: trackingSheetData.perforation_interval_information.n_clusters,
-        displacement_vol_bottom: trackingSheetData.perforation_interval_information.displacement_volume.bottom_perf,
-        displacement_vol_plug: trackingSheetData.perforation_interval_information.displacement_volume.plug,
-        displacement_vol_top: trackingSheetData.perforation_interval_information.displacement_volume.top_perf,
-        diverter_type: trackingSheetData.perforation_interval_information.diverter_type,
-        perf_daiameter: trackingSheetData.perforation_interval_information.perf_daiameter,
-        perf_gun_desc: trackingSheetData.perforation_interval_information.perf_gun_description,
-        plug_depth: trackingSheetData.perforation_interval_information.plug_depth,
-        pumped_diverter: trackingSheetData.perforation_interval_information.pumped_diverter,
-        spf: trackingSheetData.perforation_interval_information.spf,
-        top_perf: trackingSheetData.perforation_interval_information.top_perf
+        acid: trackingSheetData.chem_fluids.acid, //
+        bottom_perf: trackingSheetData.perforation.bottom_measured_depth, //
+        clusters_number: trackingSheetData.number_of_cluster, //
+        displacement_vol_bottom: trackingSheetData.bottom_perf, // x mismatch datatype: {request: String, response: Float(0.0)}
+        displacement_vol_plug: trackingSheetData.plug_name, //
+        displacement_vol_top: trackingSheetData.top_perf, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        diverter_type: trackingSheetData.diverter_type, //
+        perf_daiameter: trackingSheetData.perforation.estimated_hole_diameter, //
+        perf_gun_desc: trackingSheetData.perforation.perf_gun_description, //
+        plug_depth: trackingSheetData.plug_depth, //
+        pumped_diverter: trackingSheetData.pumped_diverter, //
+        spf: trackingSheetData.spf, // 
+        top_perf: trackingSheetData.perforation.top_measured_depth //
     };
     const stageDataValuesData = {
-        stage_start_time: moment(trackingSheetData.stage_data.stage_start_time),
-        stage_end_time: moment(trackingSheetData.stage_data.stage_end_time),
-        opening_well: trackingSheetData.stage_data.opening_well,
-        isip: trackingSheetData.stage_data.isip,
-        base_fluid_type: trackingSheetData.stage_data.fluid_parameters.base_fluid_type,
-        base_fluid_density: trackingSheetData.stage_data.fluid_parameters.base_fluid_density,
-        max_conc_density: trackingSheetData.stage_data.fluid_parameters.max_conc_density,
-        max_prop_conc_ppa_design: trackingSheetData.stage_data.pumping_summary.max_prop_conc.design,
-        max_prop_conc_ppa_actual: trackingSheetData.stage_data.pumping_summary.max_prop_conc.actual,
-        total_pad_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.total_pad_volume.design,
-        total_pad_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_pad_volume.actual,
-        total_clean_fluid_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.design,
-        total_clean_fluid_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.actual,
-        total_proppant_lbs_design: trackingSheetData.stage_data.pumping_summary.total_proppant.design,
-        total_proppant_lbs_actual: trackingSheetData.stage_data.pumping_summary.total_proppant.actual,
-        acid_volume_gals_design: trackingSheetData.stage_data.pumping_summary.acid_volume.design,
-        acid_volume_gals_actual: trackingSheetData.stage_data.pumping_summary.acid_volume.actual,
-        flush_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.flush_volume.design,
-        flush_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.flush_volume.actual,
-        slurry_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.slurry_volume.design,
-        slurry_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.slurry_volume.actual,
+        stage_start_time: moment(trackingSheetData.stage_start_time), // incorrect data received {request: 1634166213042, response: 1634166213}
+        stage_end_time: moment(trackingSheetData.stage_end_time),  // incorrect data received {request: 1634166213042, response: 1634166213}
+        opening_well: trackingSheetData.opening_well, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        isip: trackingSheetData.stage_avg.isip, //
+        base_fluid_type: trackingSheetData.chem_fluids.base_fluid_type, //
+        base_fluid_density: trackingSheetData.base_fluid_density, // x mismatch datatype: {request: String, response: Float (0.0)}
+        max_conc_density: trackingSheetData.max_conc_density, // x mismatch datatype: {request: String , response: Float (0.0)}
+        max_prop_conc_ppa_design: trackingSheetData.designed_max_prop, //
+        max_prop_conc_ppa_actual: trackingSheetData.stage_avg.max_prop_conc, //
+        total_pad_volume_bbls_design: trackingSheetData.designed_pad_vol, //
+        total_pad_volume_bbls_actual: trackingSheetData.stage_avg.pad_vol, //
+        total_clean_fluid_volume_bbls_design: trackingSheetData.designed_total_clean_fluid_volume, //
+        total_clean_fluid_volume_bbls_actual: trackingSheetData.stage_avg.total_clean, //
+        total_proppant_lbs_design: trackingSheetData.proppant[0].designed_lbs, // request is not in array but response came in array (request: pumping_summary.total_proppant.design, response -> proppant: [{design_lbs}])
+        total_proppant_lbs_actual: trackingSheetData.proppant[0].actual_lbs, // request is not in array but response came in array (request -> pumping_summary.total_proppant.actual, response -> proppant: [{actual_lbs}])
+        acid_volume_gals_design: trackingSheetData.designed_acid_vol, //
+        acid_volume_gals_actual: trackingSheetData.stage_avg.acid, //
+        flush_volume_bbls_design: trackingSheetData.designed_flush_vol, //
+        flush_volume_bbls_actual: trackingSheetData.stage_avg.flush_volume, //
+        slurry_volume_bbls_design: trackingSheetData.designed_slurry_vol, //
+        slurry_volume_bbls_actual: trackingSheetData.stage_avg.total_slurry, //
     };
     const fluidFormValuesData = {
-        fluidData: trackingSheetData.stage_data.fluids_injected_into_formation
+        fluidData: trackingSheetData.chem_fluids.fluids_items // 
     };
     const propantFormValuesData = {
-        proppantData: trackingSheetData.stage_data.proppant_data
+        proppantData: trackingSheetData.proppant.map(p => {
+            return  {
+                bulk_density: p.bulk_density,
+                description: p.proppant_name,
+                specific_gravity: p.specific_gravity,
+                amount_pumped: p.total_proppant_volume
+            }
+        })
     };
     const activeDataFormValuesData = {
-        wave_type: trackingSheetData.active_data.pulsing_parameters.wave_type,
-        period: trackingSheetData.active_data.pulsing_parameters.period,
-        frequency: trackingSheetData.active_data.pulsing_parameters.freq,
-        offset: trackingSheetData.active_data.pulsing_parameters.offset,
-        amplitude: trackingSheetData.active_data.pulsing_parameters.amplitude,
-        pre_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.start_time),
-        pre_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.end_time),
-        pre_number_of_pulses: trackingSheetData.active_data.pre_number_of_pulses,
-        post_start_time: moment(trackingSheetData.active_data.post_frac_pulses.start_time),
-        post_end_time: moment(trackingSheetData.active_data.post_frac_pulses.end_time),
-        post_number_of_pulses: trackingSheetData.active_data.post_number_of_pulses, 
+        wave_type: trackingSheetData.active_data.wave_type, //
+        period: trackingSheetData.period, // x mismatch datatype: {request: String, response: Int (0)}
+        frequency: trackingSheetData.freq, // x mismatch datatype: {request: String, response: Float (0.0)}
+        offset: trackingSheetData.offset, // x mismatch datatype: {request: String, response: Int (0)}
+        amplitude: trackingSheetData.amplitude, // x mismatch datatype: {request: String, response: Int (0)}
+        pre_start_time: moment(trackingSheetData.active_data.pre_frac_start_time), // incorrect data received {request: 1633993501224, response: 2147483647}
+        pre_end_time: moment(trackingSheetData.active_data.pre_frac_end_time), // incorrect data received {request: 1634166302558, response: 2147483647}
+        pre_number_of_pulses: trackingSheetData.active_data.pre_frac_num_pulse,
+        post_start_time: moment(trackingSheetData.active_data.post_frac_start_time), // incorrect data received {request: 1635289510424, response: 2147483647}
+        post_end_time: moment(trackingSheetData.active_data.post_frac_end_time), // incorrect data received {request: 1635462311758, response: 2147483647}
+        post_number_of_pulses: trackingSheetData.active_data.post_frac_num_pulse,
     }
     const notesDataFormValuesData = {
-        pre_notes: trackingSheetData.notes.pre_frac_pulses,
-        post_notes: trackingSheetData.notes.post_frac_pulses,
-        other_notes: trackingSheetData.notes.other,
+        pre_notes: trackingSheetData.active_data.pre_frac_pulse_note, //
+        post_notes: trackingSheetData.active_data.post_frac_pulse_note, //
+        other_notes: trackingSheetData.active_data.additional_note, //
     }
 
     return {

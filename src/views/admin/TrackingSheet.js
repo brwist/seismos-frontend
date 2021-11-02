@@ -38,6 +38,7 @@ export default function TrackingSheet(props) {
     const [showConfirmationModal, setShowConfirmationModal] = useState();
     const [modalData, setModalData] = useState();
 
+    const [isUpdating, setIsUpdating] = useState(false);
     const [resetDynamicFormNestItemValues, setResetDynamicFormNestItemValues] = useState(false);
     const [resetPerforationIntervalInformationValues, setResetPerforationIntervalInformationValues] = useState(false);
     const [resetStageDataValues, setResetStageDataValues] = useState(false);
@@ -124,9 +125,11 @@ export default function TrackingSheet(props) {
     })
     
     const [activeDataFormValues, setActiveDataFormValues] = useState({
+        wave_type: null,
         amplitude: null,
         frequency: null,
-        number_of_pulses: null,
+        pre_number_of_pulses: null,
+        post_number_of_pulses: null,
         offset: null,
         period: null,
         post_end_time: null,
@@ -142,13 +145,14 @@ export default function TrackingSheet(props) {
     })
 
 
-    const handeSelectStage = (e) => {
+    const handleSelectStage = (e) => {
         setSelectedStage(e);
         if (e) {
-            const sheetData = stageSheetList.find(l => l.stage === Number(e))
+            const sheetData = stageSheetList.find(l => l.id === Number(e))
             if (sheetData) {
-                fetchTrackingSheet(sheetData.sheet_id);
+                fetchTrackingSheet(sheetData.id);
             } else {
+                setIsUpdating(false);
                 resetForm();
             }
         }
@@ -221,22 +225,41 @@ export default function TrackingSheet(props) {
             activeDataFormValues,
             notesDataFormValues
         );
-        axios.post(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_CREATE + '/' + wellId,
-            {
-                ...trackingSheet
-            }, {...HttpUtil.adminHttpHeaders()})
-            .then(res => {
-                if (res.status === 201) {
-                    addToast("Tracking sheet data added successfully.", { 
-                        appearance: 'success',
-                        autoDismiss: true
-                    });
-                    fetchStagesSubmitted(wellId);
-                }
-            })
-            .catch(e => {
-                console.log(e)
-            });
+        if(isUpdating) {
+            axios.put(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_UPDATE + '/' + wellId,
+                {
+                    ...trackingSheet
+                }, {...HttpUtil.adminHttpHeaders()})
+                .then(res => {
+                    if (res.status === 200) {
+                        addToast("Tracking sheet data updated successfully.", { 
+                            appearance: 'success',
+                            autoDismiss: true
+                        });
+                        fetchStagesSubmitted(wellId);
+                    }
+                })
+                .catch(e => {
+                    console.log(e)
+                });
+        } else {
+            axios.post(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_CREATE + '/' + wellId,
+                {
+                    ...trackingSheet
+                }, {...HttpUtil.adminHttpHeaders()})
+                .then(res => {
+                    if (res.status === 201) {
+                        addToast("Tracking sheet data added successfully.", { 
+                            appearance: 'success',
+                            autoDismiss: true
+                        });
+                        fetchStagesSubmitted(wellId);
+                    }
+                })
+                .catch(e => {
+                    console.log(e)
+                });
+        }
     }
 
     const populateFormData = (trackingSheetData) => {
@@ -249,27 +272,28 @@ export default function TrackingSheet(props) {
             activeDataFormValuesData,
             notesDataFormValuesData
         } = FormDataSerializer.trackingSheetPopulateDataSerializer(trackingSheetData)
-
-        setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
-        setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
-        setStageDataValues(stageDataValuesData);
-        setPropantFormValues(propantFormValuesData);
-        setFluidFormValues(fluidFormValuesData);
-        setActiveDataFormValues(activeDataFormValuesData);
-        setNotesFataFormValues(notesDataFormValuesData);
+        
+        dynamicFormNestItemForm.setFieldsValue(dynamicFormNestItemValuesData);
+        perforationIntervalInformationForm.setFieldsValue(perforationIntervalInformationValuesData);
+        stageDataForm.setFieldsValue(stageDataValuesData);
+        fluidFormForm.setFieldsValue(fluidFormValuesData);
+        propantFormForm.setFieldsValue(propantFormValuesData);
+        activeDataFormForm.setFieldsValue(activeDataFormValuesData);
+        notesDataFormForm.setFieldsValue(notesDataFormValuesData);
     }
     
     const fetchTrackingSheet = (sheet_id) => {
         setIsLoadingFormData(true);
+        setIsUpdating(false);
         axios.get(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET + '/' + sheet_id,
         {
             ...HttpUtil.adminHttpHeaders(),
         })
         .then(res => {
-            console.log(res.data);
             if (res.status === 200 && res.data) {
                 // populate tracking sheeet
-                populateFormData(res.data);
+                populateFormData(res.data.stage);
+                setIsUpdating(true);
                 setIsLoadingFormData(false);
             }
         })
@@ -298,11 +322,14 @@ export default function TrackingSheet(props) {
                 setStageSheetList(res.data.stages);
                 setSelectedStage(selectedStage + "");
                 if (res.data.stages.length > 0) {
-                    const stageTrackingPresent = res.data.stages.find(s => (s.stage_n + 1) === stages[0].value)
+                    const stageTrackingPresent = res.data.stages.find(s => (s.stage_n) === stages[0].value)
                     if (stageTrackingPresent) {
                         fetchTrackingSheet(stageTrackingPresent.id);
+                    } else {
+                        setIsUpdating(false);
                     }
                 } else {
+                    setIsUpdating(false);
                 }
             }
         })
@@ -312,20 +339,18 @@ export default function TrackingSheet(props) {
     }
 
     const resetForm = () => {
-        setDynamicFormNestItemValues(FormInitialValues.dynamicFormNestItemValues);
-        setPerforationIntervalInformationValues(FormInitialValues.perforationIntervalInformationValues);
-        setStageDataValues(FormInitialValues.stageDataValues);
-        setPropantFormValues(FormInitialValues.propantFormValues);
-        setFluidFormValues(FormInitialValues.fluidFormValues);
-        setActiveDataFormValues(FormInitialValues.activeDataFormValues);
-        setNotesFataFormValues(FormInitialValues.notesFataFormValues);
+        dynamicFormNestItemForm.setFieldsValue(FormInitialValues.dynamicFormNestItemValues);
+        perforationIntervalInformationForm.setFieldsValue(FormInitialValues.perforationIntervalInformationValues);
+        stageDataForm.setFieldsValue(FormInitialValues.stageDataValues);
+        fluidFormForm.setFieldsValue(FormInitialValues.propantFormValues);
+        propantFormForm.setFieldsValue(FormInitialValues.fluidFormValues);
+        activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
+        notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
     }
     
     useState(() => {
         if(project && locationData.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-            console.log(`first time: ${locationData.pathname}`) 
             if (locationData.state && locationData.state.wellId) {
-                console.log(locationData.state.wellId);
                 setWellId(locationData.state.wellId);
                 resetForm();
                 fetchStagesSubmitted(locationData.state.wellId);
@@ -333,7 +358,6 @@ export default function TrackingSheet(props) {
             else if (locationData.search) {
                 const params = new URLSearchParams(locationData.search);
                 const wellIdSearch = params.get('wellId');
-                console.log(wellIdSearch);
                 setWellId(wellIdSearch);
                 resetForm();
                 fetchStagesSubmitted(wellIdSearch);
@@ -344,7 +368,6 @@ export default function TrackingSheet(props) {
     useEffect(() => {
         return history.listen((location) => { 
             if(location.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-                console.log(`You changed the page to: ${location.pathname}`) 
                 if (location.state && location.state.wellId) {
                     console.log(location.state.wellId);
                     setWellId(location.state.wellId);
@@ -354,7 +377,6 @@ export default function TrackingSheet(props) {
                 else if (location.search) {
                     const params = new URLSearchParams(location.search);
                     const wellIdSearch = params.get('wellId');
-                    console.log(wellIdSearch);
                     setWellId(wellIdSearch);
                     resetForm();
                     fetchStagesSubmitted(wellIdSearch);
@@ -383,7 +405,7 @@ export default function TrackingSheet(props) {
                                 style={{ width: "100%" }}
                                 placeholder="Stage"
                                 value={selectedStage}
-                                onChange={(e) => handeSelectStage(e)}
+                                onChange={(e) => handleSelectStage(e)}
                                 dropdownRender={menu => (
                                     <div>
                                         {menu}
@@ -414,7 +436,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="dynamic_form_nest_item"
-                                class="tracking-sheet-form"
+                                className="tracking-sheet-form"
                                 onValuesChange={dynamicFormNestItemChange}
                                 autoComplete="off"
                                 initialValues={dynamicFormNestItemValues}
@@ -573,7 +595,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="perforation_interval_information"
-                                class="tracking-sheet-form"
+                                className="tracking-sheet-form"
                                 onValuesChange={perforationIntervalInformationChange}
                                 autoComplete="off"
                                 initialValues={perforationIntervalInformationValues}
@@ -619,7 +641,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -732,7 +754,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="stage_data"
-                                class="tracking-sheet-form"
+                                className="tracking-sheet-form"
                                 onValuesChange={stageDataChange}
                                 autoComplete="off"
                                 initialValues={stageDataValues}
@@ -833,7 +855,7 @@ export default function TrackingSheet(props) {
                                 <Divider orientation="left" plain><strong>Fluids injected into formation</strong></Divider>
                                 <Form
                                     name="fluid_form"
-                                    class="tracking-sheet-form"
+                                    className="tracking-sheet-form"
                                     onValuesChange={fluidFormChange}
                                     autoComplete="off"
                                     initialValues={fluidFormValues}
@@ -870,7 +892,7 @@ export default function TrackingSheet(props) {
                                                                 labelCol={{span: 9, offset: 0}}
                                                                 labelAlign="left"
                                                             >
-                                                                <Input className="w-full"/>
+                                                                <InputNumber className="w-full"/>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={5}>
@@ -883,7 +905,7 @@ export default function TrackingSheet(props) {
                                                                 labelCol={{span: 9, offset: 0}}
                                                                 labelAlign="left"
                                                             >
-                                                                <Input className="w-full"/>
+                                                                <InputNumber className="w-full"/>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={2}>
@@ -916,7 +938,7 @@ export default function TrackingSheet(props) {
                                 <Divider orientation="left" plain><strong>Proppant data</strong></Divider>
                                 <Form
                                     name="propant_form"
-                                    class="tracking-sheet-form"
+                                    className="tracking-sheet-form"
                                     onValuesChange={propantFormChange}
                                     autoComplete="off"
                                     initialValues={propantFormValues}
@@ -1174,7 +1196,7 @@ export default function TrackingSheet(props) {
                         <Card>
                             <Form
                                 name="active_data_form"
-                                class="tracking-sheet-form"
+                                className="tracking-sheet-form"
                                 onValuesChange={activeDataFormChange}
                                 autoComplete="off"
                                 initialValues={activeDataFormValues}
@@ -1311,7 +1333,7 @@ export default function TrackingSheet(props) {
                     <Card>
                             <Form
                                 name="notes_data_form"
-                                class="tracking-sheet-form"
+                                className="tracking-sheet-form"
                                 onValuesChange={notesDataFormChange}
                                 autoComplete="off"
                                 initialValues={notesDataFormValues}
@@ -1360,7 +1382,9 @@ export default function TrackingSheet(props) {
                 </Collapse>
                 <div className="mt-4 w-full text-right">
                     {/* <span className="mr-4">Last submitted date: 08/07/2021</span> */}
-                    <Button type="primary" onClick={(e) => handleTrackingSheetSubmit()}>Submit tracking sheet</Button>
+                    <Button type="primary" onClick={(e) => handleTrackingSheetSubmit()}>
+                    {isUpdating ? "Update tracking sheet" : "Submit tracking sheet" }
+                    </Button>
                 </div>
             </Card>
             {
