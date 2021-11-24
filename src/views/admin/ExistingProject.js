@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import config from "config";
-import axios from "axiosConfig";
 import { Card, Table, PageHeader, Button} from 'antd';
 import TableHeadersUtil from "util/TableHeaderUtil";
 import { useHistory } from "react-router";
-import ENUMS from "constants/appEnums";
-import HttpUtil from "util/HttpUtil";
+import {projectApi} from "./../../api/projectApi"
+
 // components
 export default function ExistingProject() {
     const history = useHistory();
@@ -48,30 +46,25 @@ export default function ExistingProject() {
         });
     }
 
-    const fetchProjects = () => {
-        axios.get(config.API_URL + ENUMS.API_ROUTES.PROJECT_LIST,
-            {
-                ...HttpUtil.adminHttpHeaders()
-            })
-            .then(res => {
-                if (res.status === 200 && res.data) {
-                    setData(res.data.projects.map((project, index) => {
-                        return {
-                            key: index,
-                            job_number: project.job_id,
-                            id: project.id,
-                            job_name: project.job_name,
-                            project_name: project.project_name,
-                            created_by: project.created_by,
-                            created_at_date: project.created_date,
-                            created_time: project.created_time,
-                        }
-                    }))
+    const fetchProjects = async () => {
+        try{
+            const data = await projectApi.getProjectList()
+            setData(data.projects.map((project, index) => {
+                return {
+                    key: index,
+                    job_number: project.job_id,
+                    id: project.id,
+                    job_name: project.job_name,
+                    project_name: project.project_name,
+                    created_by: project.created_by,
+                    created_at_date: project.created_date,
+                    created_time: project.created_time,
                 }
-            })
-            .catch(e => {
-                console.log(e)
-            })
+            }))
+
+        }catch(error){
+            console.log(error)
+        }
     }
 
     useEffect(() => {

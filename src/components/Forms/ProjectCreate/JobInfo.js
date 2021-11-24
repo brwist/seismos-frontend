@@ -26,15 +26,7 @@ export default function JobInfo(props) {
         return t.rows.map((row, index) => {
             return [
                 { value: row.label, readOnly: true, disableEvents: true },
-                {   value: "",
-                    field: row.field,
-                    required: row.required,
-                    datatype: row.datatype,
-                    dataEditor: (
-                        row.field === ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER
-                        || row.field === ENUMS.FORM_FIELDS.JOB_INFO.AFE_ID
-                        || row.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID
-                    ) ? NumberInput : null },
+                { value: "", field: row.field, required: row.required, datatype: row.datatype, dataEditor: row.field === ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER ? NumberInput : null },
             ]
         })
     }
