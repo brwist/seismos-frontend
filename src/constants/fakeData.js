@@ -270,7 +270,7 @@ const projectData = {
         "job_type": "j",
         "job_id": "l",
         "afe_num": "l",
-        "country": "l",
+        "county": "l",
         "basin": "l",
         "state": "l",
         "start_date": "l"

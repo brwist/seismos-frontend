@@ -127,7 +127,7 @@ export default function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Country
+                    County
                   </label>
                   <input
                     type="text"

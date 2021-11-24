@@ -54,7 +54,7 @@ const FORM_FIELDS = {
         JOB_TYPE: 'job_type',
         JOB_ID: 'job_id',
         AFE_ID: 'afe_id',
-        COUNTRY_NAME: 'country_name',
+        COUNTY_NAME: 'county_name',
         BASIN_NAME: 'basin_name',
         STATE: 'state',
         JOB_START_DATE: 'job_start_date',
