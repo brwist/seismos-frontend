@@ -1,15 +1,14 @@
 import { Form, Input, Card, Divider, Button, Row, Col, Spin } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React, { useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import axios from "axiosConfig";
-import config from "config";
+import { useHistory, useLocation } from "react-router-dom";
 import allActions from 'redux/actions/index';
 import ENUMS from "constants/appEnums";
-import HttpUtil from "util/HttpUtil";
 import { useToasts } from "react-toast-notifications";
 import { useDispatch } from 'react-redux';
 import { useAppContext } from 'util/ContextUtil';
+import { authApi } from "./../../api/authApi"
+
 
 export default function Register() {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,26 +21,19 @@ export default function Register() {
     /**
      * Method to make API call for user login
      */
-    const handleRegister = (data) => {
-        if(data.confirm_password != data.password) {
+    const handleRegister = async (registerData) => {
+        if (registerData.confirm_password !== registerData.password) {
             addToast("Password does not match with confirm password!", { appearance: 'error', autoDismiss: true });
         } else {
             setIsLoading(true);
-            axios.post(config.API_URL + ENUMS.API_ROUTES.NEW_USER,
-                {
-                    username: data.username,
-                    email: data.email,
-                    password: data.password
-                }, {...HttpUtil.authHttpHeaders})
-                .then(res => {
-                    setIsLoading(false);
-                    if(res.status = 200 && res.data) {
-                        saveUserState(res.data.data);
-                    }
-                })
-                .catch(e => {
-                    setIsLoading(false);
-                });
+            try {
+                const { data } = await authApi.register(registerData)
+                setIsLoading(false);
+                saveUserState(data);
+            } catch (error) {
+                setIsLoading(false);
+                console.log(error);
+            }
         }
     }
 
@@ -49,7 +41,7 @@ export default function Register() {
      * Method to save user data in redux store and set local storage with JWT
      * @param {Object} data 
      */
-     const saveUserState = (data) => {
+    const saveUserState = (data) => {
         console.log(data)
         localStorage.setItem('JWT', data.access_token);
         userHasAuthenticated(true);
@@ -87,14 +79,14 @@ export default function Register() {
                                     remember: true,
                                 }}
                                 onFinish={handleRegister}
-                                >
+                            >
                                 <Form.Item
                                     name="username"
                                     rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your Username!',
-                                    },
+                                        {
+                                            required: true,
+                                            message: 'Please input your Username!',
+                                        },
                                     ]}
                                 >
                                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
@@ -102,10 +94,10 @@ export default function Register() {
                                 <Form.Item
                                     name="email"
                                     rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your email!',
-                                    },
+                                        {
+                                            required: true,
+                                            message: 'Please input your email!',
+                                        },
                                     ]}
                                 >
                                     <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
@@ -113,31 +105,31 @@ export default function Register() {
                                 <Form.Item
                                     name="password"
                                     rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your Password!',
-                                    },
+                                        {
+                                            required: true,
+                                            message: 'Please input your Password!',
+                                        },
                                     ]}
                                 >
                                     <Input
-                                    prefix={<LockOutlined className="site-form-item-icon" />}
-                                    type="password"
-                                    placeholder="Password"
+                                        prefix={<LockOutlined className="site-form-item-icon" />}
+                                        type="password"
+                                        placeholder="Password"
                                     />
                                 </Form.Item>
                                 <Form.Item
                                     name="confirm_password"
                                     rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please confirm your Password!',
-                                    },
+                                        {
+                                            required: true,
+                                            message: 'Please confirm your Password!',
+                                        },
                                     ]}
                                 >
                                     <Input
-                                    prefix={<LockOutlined className="site-form-item-icon" />}
-                                    type="password"
-                                    placeholder="Confirm password"
+                                        prefix={<LockOutlined className="site-form-item-icon" />}
+                                        type="password"
+                                        placeholder="Confirm password"
                                     />
                                 </Form.Item>
                                 <Row gutter={24} className="mb-6">
@@ -146,16 +138,16 @@ export default function Register() {
                                             <Checkbox>Remember me</Checkbox>
                                         </Form.Item> */}
                                     </Col>
-                                    
+
                                 </Row>
 
                                 <Form.Item className="text-center">
                                     {
-                                        isLoading ? 
-                                        <Spin />
-                                        : <Button type="primary" htmlType="submit" className="w-full login-form-button">
+                                        isLoading ?
+                                            <Spin />
+                                            : <Button type="primary" htmlType="submit" className="w-full login-form-button">
                                                 Create an account
-                                        </Button>
+                                            </Button>
                                     }
                                 </Form.Item>
                             </Form>

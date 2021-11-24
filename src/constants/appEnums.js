@@ -27,7 +27,7 @@ const API_ROUTES = {
     DATA_VIEW_DATA: '/api/data-input/view',
     DAILY_LOG: '/api/daily-log',
     DAILY_LOG_GET: '/api/daily-log/get',
-    DEFAULT_VALUE: '/api/default-volumes',
+    DEFAULT_VALUE: '/api/default-value',
     DEFAULT_VALUE_GET: '/api/default-value/get',
     DEFAULT_VALUE_UPDATE: '/api/default-value/update',
     TRACKING_SHEET: '/api/tracking-sheet',

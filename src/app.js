@@ -1,5 +1,3 @@
-import config from "config";
-import axios from "axiosConfig";
 import Auth from "layouts/Auth.js";
 import Admin from "layouts/Admin.js";
 import ENUMS from "constants/appEnums";
@@ -10,10 +8,10 @@ import React, { useState, useEffect } from "react";
 import NotFound from "components/NotFound/NotFound";
 import { useToasts } from 'react-toast-notifications';
 import { BrowserRouter, Route, Switch, Redirect, useHistory } from "react-router-dom";
-import FAKE_DATA from "constants/fakeData";
-import HttpUtil from "util/HttpUtil";
+import { authApi } from "api/authApi"
 
-export default function Application () {
+
+export default function Application() {
     const dispatch = useDispatch();
     const { addToast } = useToasts();
     const history = useHistory();
@@ -32,7 +30,7 @@ export default function Application () {
      * Method to save user data in redux store and set local storage with JWT
      * @param {Object} data 
      */
-     const saveUserState = (data) => {
+    const saveUserState = (data) => {
         console.log(data, 'here');
         userHasAuthenticated(true);
         dispatch(allActions.authActions.setUserState(data.user));
@@ -43,46 +41,42 @@ export default function Application () {
     useEffect(() => {
         const onLoad = async () => {
             if (localStorage.getItem('JWT')) {
-                axios.get(config.API_URL + ENUMS.API_ROUTES.AUTH_STATUS,
-                {
-                    ...HttpUtil.adminHttpHeaders()
-                })
-                .then(res => {
-                    saveUserState(res.data.data);
+                try {
+                    const data = await authApi.authStatus()
+                    saveUserState(data.data);
                     userHasAuthenticated(true);
                     setIsAuthenticating(false);
-                })
-                .catch(error => {
+                } catch (error) {
                     setIsAuthenticating(false);
                     if (error.response) {
                         // logOutUser();
                     }
-                })
+                }
             }
             else {
                 setIsAuthenticating(false);
             }
-        }      
+        }
         onLoad();
     }, [addToast, dispatch]);
-  
+
     return (
         <>
-            { !isAuthenticating &&
-            <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path={ENUMS.ROUTES.ADMIN} render={props => <Admin {...props} isAuthenticated={isAuthenticated} />} />
-                        <Route path={ENUMS.ROUTES.AUTH} render={props => <Auth {...props} isAuthenticated={isAuthenticated} />} />
-                        {/* 
+            {!isAuthenticating &&
+                <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+                    <BrowserRouter>
+                        <Switch>
+                            <Route path={ENUMS.ROUTES.ADMIN} render={props => <Admin {...props} isAuthenticated={isAuthenticated} />} />
+                            <Route path={ENUMS.ROUTES.AUTH} render={props => <Auth {...props} isAuthenticated={isAuthenticated} />} />
+                            {/* 
                         // TODO: remove the comments
                         <Redirect from="/" to="/auth/home" /> 
-                        */} 
-                        <Redirect from="/" to="/auth/login" />
-                        <Route render={props => <NotFound {...props} />} />
-                    </Switch>
-                </BrowserRouter>
-            </AppContext.Provider>
+                        */}
+                            <Redirect from="/" to="/auth/login" />
+                            <Route render={props => <NotFound {...props} />} />
+                        </Switch>
+                    </BrowserRouter>
+                </AppContext.Provider>
             }
         </>
     )
