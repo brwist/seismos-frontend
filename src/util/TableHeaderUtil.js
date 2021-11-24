@@ -79,8 +79,6 @@ const wellInfoFormTableData = {
         { key: "4", label: "Formation", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.FORMATION, defaultValue: "", required: true },
         { key: "5", label: "Lat", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LAT, defaultValue: "", required: true },
         { key: "6", label: "Long", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LONG, defaultValue: "", required: true },
-        { key: "7", label: "Easting", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.EASTING, defaultValue: "", required: true },
-        { key: "8", label: "Northing", width: "13%", field: ENUMS.FORM_FIELDS.WELL_INFO.NORTHING, defaultValue: "", required: true },
         { key: "9", label: "", width: "5%", field: "action", defaultValue: "", actionColumn: true, className: "noborder" },
     ],
     grid: [

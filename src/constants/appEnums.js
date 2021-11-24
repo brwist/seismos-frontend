@@ -77,8 +77,6 @@ const FORM_FIELDS = {
         FORMATION: "formation",
         LAT: "surface_latitude",
         LONG: "surface_longitude",
-        EASTING: "bottom_hole_latitude",
-        NORTHING: "bottom_hole_longitude",
     },
     WELL_VOLUME: {
         TYPE: "type",
