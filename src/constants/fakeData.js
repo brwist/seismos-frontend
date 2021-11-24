@@ -91,10 +91,10 @@ const WELL_INFO_FORM = [
         well_api: <Form.Item
             name="well_api1"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -102,10 +102,10 @@ const WELL_INFO_FORM = [
         formation: <Form.Item
             name="formation1"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -113,32 +113,10 @@ const WELL_INFO_FORM = [
         lat: <Form.Item
             name="lat1"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>,
-        easting: <Form.Item
-            name="easting1"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>,
-        northing: <Form.Item
-            name="northing1"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -150,10 +128,10 @@ const WELL_INFO_FORM = [
         well_api: <Form.Item
             name="well_api2"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -161,10 +139,10 @@ const WELL_INFO_FORM = [
         formation: <Form.Item
             name="formation2"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -172,36 +150,14 @@ const WELL_INFO_FORM = [
         lat: <Form.Item
             name="lat2"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
         </Form.Item>,
-        easting: <Form.Item
-            name="easting2"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>,
-        northing: <Form.Item
-            name="northing2"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>
     },
     {
         key: '3',
@@ -209,10 +165,10 @@ const WELL_INFO_FORM = [
         well_api: <Form.Item
             name="well_api3"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -220,10 +176,10 @@ const WELL_INFO_FORM = [
         formation: <Form.Item
             name="formation3"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
@@ -231,36 +187,14 @@ const WELL_INFO_FORM = [
         lat: <Form.Item
             name="lat3"
             rules={[
-            {
-                required: true,
-                message: '',
-            },
+                {
+                    required: true,
+                    message: '',
+                },
             ]}
         >
             <Input placeholder="Please input your name" />
         </Form.Item>,
-        easting: <Form.Item
-            name="easting3"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>,
-        northing: <Form.Item
-            name="northing3"
-            rules={[
-            {
-                required: true,
-                message: '',
-            },
-            ]}
-        >
-            <Input placeholder="Please input your name" />
-        </Form.Item>
     }
 ]
 
@@ -293,8 +227,7 @@ const projectData = {
             "well_api": "u",
             "formation": "k",
             "lat": "k",
-            "easting": "i",
-            "northing": "k"
+
         },
         {
             id: 2,
@@ -303,8 +236,7 @@ const projectData = {
             "well_api": "h",
             "formation": "l",
             "lat": "l",
-            "easting": "l",
-            "northing": "l"
+
         }
     ],
     "wellVolumeValues": [
