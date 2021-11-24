@@ -59,10 +59,10 @@ export default function DefaultValues() {
     };
 
     const fetchDefaultValues = async (well_id) => {
-        try{
+        try {
             const data = await projectApi.getDefaultValue(well_id)
             console.log(data)
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }
@@ -675,49 +675,6 @@ export default function DefaultValues() {
                                     </Form.Item>
                                 </Col>
 
-                            </Row>
-
-                            <Form.Item className="text-right">
-                                <Button type="primary" htmlType="submit">
-                                    Save
-                                </Button>
-                            </Form.Item>
-                        </TabPane>
-                        <TabPane tab="Well name" key="6">
-                            <Divider orientation="left" plain><strong>Well name</strong></Divider>
-                            <Row>
-                                <Col span={10}>
-                                    <Form.Item
-                                        label={
-                                            <span>
-                                                Company
-                                                <Tooltip title="subdirectory with this name must exist">
-                                                    <QuestionCircleOutlined className="icon-form-info" />
-                                                </Tooltip>
-                                            </span>
-                                        }
-                                        name="company"
-                                        style={{ marginLeft: '5rem' }}
-                                    >
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={10}>
-                                    <Form.Item
-                                        label={
-                                            <span>
-                                                Well
-                                                <Tooltip title="subdirectory with this name must exist">
-                                                    <QuestionCircleOutlined className="icon-form-info" />
-                                                </Tooltip>
-                                            </span>
-                                        }
-                                        name="well"
-                                        style={{ marginLeft: '5rem' }}
-                                    >
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
                             </Row>
 
                             <Form.Item className="text-right">
