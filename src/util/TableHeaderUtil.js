@@ -186,7 +186,7 @@ const projectInfoFormTableData = {
         {
             rows: [
                 { label: 'Project Name', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_NAME, required: true },
-                { label: 'Project UUID', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_UUID, required: true },
+                // { label: 'Project UUID', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_UUID, required: true },
             ]
         }
     ]
