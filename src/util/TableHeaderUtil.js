@@ -59,7 +59,7 @@ const padInfoFormTableData = {
         {
             rows: [
                 { label: 'Pad name', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_NAME, required: true },
-                { label: 'Pad Id', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_ID, required: true },
+                // { label: 'Pad Id', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_ID, required: true },
                 { label: 'Client name', field: ENUMS.FORM_FIELDS.PAD_INFO.CLIENT_NAME, required: true },
                 { label: 'Customer field rep', field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_FIELD_REP, required: true },
                 { label: 'Rep contact #', field: ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER, required: true, datatype: 'integer' },
@@ -77,8 +77,8 @@ const wellInfoFormTableData = {
         { key: "2", label: "# of stages", width: "13%", field: ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES, defaultValue: "", required: true, datatype: 'integer' },
         { key: "3", label: "Well API", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.WELL_API, defaultValue: "", required: true },
         { key: "4", label: "Formation", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.FORMATION, defaultValue: "", required: true },
-        { key: "5", label: "Lat", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LAT, defaultValue: "", required: true },
-        { key: "6", label: "Long", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LONG, defaultValue: "", required: true },
+        { key: "5", label: "Lat", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LAT, defaultValue: "", required: true, datatype: 'float' },
+        { key: "6", label: "Long", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LONG, defaultValue: "", required: true, datatype: 'float' },
         { key: "9", label: "", width: "5%", field: "action", defaultValue: "", actionColumn: true, className: "noborder" },
     ],
     grid: [
