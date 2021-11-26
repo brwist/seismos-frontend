@@ -24,7 +24,7 @@ export const projectApi = {
                     project_id: +projectId, // parse to int
                     well_id: +wellId,
                     logs: val
-                }, {...HttpUtil.adminHttpHeaders()})
+                }, { ...HttpUtil.adminHttpHeaders() })
             if (response.status === 201) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
@@ -34,9 +34,9 @@ export const projectApi = {
     getDailyLog: async (wellId) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG + '/' + wellId,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
+                {
+                    ...HttpUtil.adminHttpHeaders(),
+                })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
@@ -46,26 +46,26 @@ export const projectApi = {
     putDefaultValue: async (wellId, data) => {
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
-            {
-                ...FormDataSerializer.defultValueFormSubmitSerializer(data)
-            }, {...HttpUtil.adminHttpHeaders()})
+                {
+                    ...FormDataSerializer.defultValueFormSubmitSerializer(data)
+                }, { ...HttpUtil.adminHttpHeaders() })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     getDefaultValue: async (wellId) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
+                {
+                    ...HttpUtil.adminHttpHeaders(),
+                })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
@@ -78,72 +78,73 @@ export const projectApi = {
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     postCreateProject: async (projectData) => {
         try {
+            console.log("projectData", JSON.stringify(projectData));
             const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.PROJECT_CREATE,
                 {
                     ...projectData
-                }, {...HttpUtil.adminHttpHeaders()})
+                }, { ...HttpUtil.adminHttpHeaders() })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     getQcReport: async (id) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.QC_REPORT + '/' + id,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
+                {
+                    ...HttpUtil.adminHttpHeaders(),
+                })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     postCreateTrackingSheet: async (wellId, trackingSheet) => {
         try {
             const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_CREATE + '/' + wellId,
-            {
-                ...trackingSheet
-            }, {...HttpUtil.adminHttpHeaders()})
+                {
+                    ...trackingSheet
+                }, { ...HttpUtil.adminHttpHeaders() })
             if (response.status === 201) return;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     getTrackingSheet: async (sheetId) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET + '/' + sheetId,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
+                {
+                    ...HttpUtil.adminHttpHeaders(),
+                })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
     getTrackingSheetList: async (wellId) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_LIST + '/' + wellId,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
+                {
+                    ...HttpUtil.adminHttpHeaders(),
+                })
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
-            if(error.response.status === 403) throw new Error("Incorrect username or password!")
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
     },
