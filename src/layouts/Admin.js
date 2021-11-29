@@ -68,18 +68,19 @@ export default function Admin(props) {
             //FETCH PROJECT DETAILS
             try {
                 const { data } = await projectApi.getProjectById(projectId)
+                console.log(`data`, data)
                 if (data) {
                     setNoSidebarLayout(false);
                     const project = data.project;
                     dispatch(allActions.authActions.setCurrentProject(project));
                     const wellInfo = _.sortBy(project.wells, function (w) { return w.id; });
                     const menu = wellInfo.map((well, index) => {
-                        return <SubMenu key={"menu" + (well.id)} title={well.well_name}>
-                            <Menu.Item key={"data-input/" + well.id} onClick={() => { menuChange(ENUMS.ROUTES.DATA_INPUT, well.id, project.id) }}>Data input</Menu.Item>
-                            <Menu.Item key={"daily-log/" + well.id} onClick={() => { menuChange(ENUMS.ROUTES.DAILY_LOG, well.id, project.id) }}>Daily log</Menu.Item>
-                            <Menu.Item key={"default-values/" + well.id} onClick={() => { menuChange(ENUMS.ROUTES.DEFAULT_VALUES, well.id, project.id) }}>Default values</Menu.Item>
-                            <Menu.Item key={"tracking-sheet/" + well.id} onClick={() => { menuChange(ENUMS.ROUTES.TRACKING_SHEET, well.id, project.id) }}>Tracking sheet</Menu.Item>
-                            <Menu.Item key={"qc-report/" + well.id} onClick={() => { menuChange(ENUMS.ROUTES.OC_REPORT, well.id, project.id) }}>QC report</Menu.Item>
+                        return <SubMenu key={"menu" + (well.uuid)} title={well.well_name}>
+                            <Menu.Item key={"data-input/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.DATA_INPUT, well.uuid, project.uuid) }}>Data input</Menu.Item>
+                            <Menu.Item key={"daily-log/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.DAILY_LOG, well.uuid, project.uuid) }}>Daily log</Menu.Item>
+                            <Menu.Item key={"default-values/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.DEFAULT_VALUES, well.uuid, project.uuid) }}>Default values</Menu.Item>
+                            <Menu.Item key={"tracking-sheet/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.TRACKING_SHEET, well.uuid, project.uuid) }}>Tracking sheet</Menu.Item>
+                            <Menu.Item key={"qc-report/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.OC_REPORT, well.uuid, project.uuid) }}>QC report</Menu.Item>
                         </SubMenu>
                     });
                     setSidebarMenu(menu);

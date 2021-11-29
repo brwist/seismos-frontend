@@ -71,6 +71,7 @@ export default function DailyLog() {
     const fetchDailyLog = async (well_id) => {
         try {
             const data = await projectApi.getDailyLog(well_id)
+            console.log(`fetchDailyLog data`, data)
             let logs = [];
             if (data.logs) {
                 logs = data.logs.map((log, index) => {
