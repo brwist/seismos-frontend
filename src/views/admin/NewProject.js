@@ -64,7 +64,7 @@ export default function NewProject() {
 
         try {
             const { data } = await projectApi.postCreateProject(projectData)
-            const projectId = data.project.id;
+            const projectId = data.project.uuid;
             addToast("Project created successfully!", {
                 appearance: 'success',
                 autoDismiss: true

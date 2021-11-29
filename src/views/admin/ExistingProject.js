@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card, Table, PageHeader, Button} from 'antd';
+import { Card, Table, PageHeader, Button } from 'antd';
 import TableHeadersUtil from "util/TableHeaderUtil";
 import { useHistory } from "react-router";
-import {projectApi} from "./../../api/projectApi"
+import { projectApi } from "./../../api/projectApi"
 
 // components
 export default function ExistingProject() {
@@ -15,12 +15,13 @@ export default function ExistingProject() {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             const project = data.find(x => x.key === selectedRowKeys[0]);
+            console.log(`project`, project)
             setSelectedProject(project);
         },
         getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
-          name: record.name,
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
         }),
     };
 
@@ -33,7 +34,7 @@ export default function ExistingProject() {
         //   ...filters,
         // });
     };
-    
+
     const [pagination, setPagination] = useState({});
 
     const openProject = (e) => {
@@ -47,13 +48,13 @@ export default function ExistingProject() {
     }
 
     const fetchProjects = async () => {
-        try{
-            const data = await projectApi.getProjectList()
-            setData(data.projects.map((project, index) => {
+        try {
+            const { projects } = await projectApi.getProjectList()
+            setData(projects.map((project, index) => {
                 return {
                     key: index,
+                    id: project.uuid,
                     job_number: project.job_id,
-                    id: project.id,
                     job_name: project.job_name,
                     project_name: project.project_name,
                     created_by: project.created_by,
@@ -62,7 +63,7 @@ export default function ExistingProject() {
                 }
             }))
 
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }
@@ -78,24 +79,24 @@ export default function ExistingProject() {
 
     return (
         <>
-            <div style={{minHeight: "80vh"}} className="flex justify-center items-center bg-white">
-                <div style={{width: '1100px'}}>
-                <PageHeader
-                    ghost={false}
-                    onBack={() => window.history.back()}
-                    title="Select a project to continue"
-                    extra={[
-                        <Button
-                            key="1"
-                            type="primary"
-                            disabled={selectedProject ? false : true}
-                            onClick={e => openProject(e)}
-                        >
-                            Next
-                        </Button>,
-                    ]}
+            <div style={{ minHeight: "80vh" }} className="flex justify-center items-center bg-white">
+                <div style={{ width: '1100px' }}>
+                    <PageHeader
+                        ghost={false}
+                        onBack={() => window.history.back()}
+                        title="Select a project to continue"
+                        extra={[
+                            <Button
+                                key="1"
+                                type="primary"
+                                disabled={selectedProject ? false : true}
+                                onClick={e => openProject(e)}
+                            >
+                                Next
+                            </Button>,
+                        ]}
                     >
-                </PageHeader>
+                    </PageHeader>
                     <Card>
                         <Table
                             rowSelection={{

@@ -61,7 +61,7 @@ export default function DefaultValues() {
     const fetchDefaultValues = async (well_id) => {
         try {
             const data = await projectApi.getDefaultValue(well_id)
-            console.log(data)
+            console.log("fetchDefaultValues data", data)
         } catch (error) {
             console.log(error)
         }

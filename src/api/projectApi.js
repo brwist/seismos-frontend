@@ -84,12 +84,14 @@ export const projectApi = {
     },
     postCreateProject: async (projectData) => {
         try {
-            console.log("projectData", JSON.stringify(projectData));
             const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.PROJECT_CREATE,
                 {
                     ...projectData
                 }, { ...HttpUtil.adminHttpHeaders() })
-            if (response.status === 200 && response.data) return response.data;
+            if (response.status === 200 && response.data) {
+                console.log(`postCreateProject response`, response)
+                return response.data;
+            }
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
