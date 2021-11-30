@@ -63,7 +63,11 @@ export default function WellInfo(props) {
                     forceComponent: isForcedComponent(column),
                     className: className,
                     datatype: column.datatype,
-                    dataEditor: column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ? NumberInput : null
+                    dataEditor: (
+                        column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES
+                        || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT
+                        || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
+                    ) ? NumberInput : null
                 });
                 return column;
             })
@@ -93,7 +97,11 @@ export default function WellInfo(props) {
                 forceComponent: isForcedComponent(column),
                 className: className,
                 datatype: column.datatype,
-                dataEditor: column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ? NumberInput : null
+                dataEditor: (
+                    column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES
+                    || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT
+                    || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
+                ) ? NumberInput : null
             });
             return column;
         });
