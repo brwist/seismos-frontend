@@ -124,6 +124,19 @@ export const projectApi = {
             throw new Error(error.message)
         }
     },
+    putUpdateTrackingSheet: async (stage_id, trackingSheet) => {
+        try {
+            const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_UPDATE + '/' + stage_id,
+                {
+                    ...trackingSheet
+                }, { ...HttpUtil.adminHttpHeaders() })
+            if (response.status === 201) return;
+            throw new Error(`Response status code: ${response.status}`)
+        } catch (error) {
+            if (error.response.status === 403) throw new Error("Incorrect username or password!")
+            throw new Error(error.message)
+        }
+    },
     getTrackingSheet: async (sheetId) => {
         try {
             const response = await axios.get(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET + '/' + sheetId,
