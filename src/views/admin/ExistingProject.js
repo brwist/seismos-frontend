@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import config from "config";
-import axios from "axiosConfig";
-import { Card, Table, PageHeader, Button} from 'antd';
+import { Card, Table, PageHeader, Button } from 'antd';
 import TableHeadersUtil from "util/TableHeaderUtil";
 import { useHistory } from "react-router";
-import ENUMS from "constants/appEnums";
-import HttpUtil from "util/HttpUtil";
+import { projectApi } from "./../../api/projectApi"
+
 // components
 export default function ExistingProject() {
     const history = useHistory();
@@ -17,12 +15,13 @@ export default function ExistingProject() {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             const project = data.find(x => x.key === selectedRowKeys[0]);
+            console.log(`project`, project)
             setSelectedProject(project);
         },
         getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
-          name: record.name,
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
         }),
     };
 
@@ -35,7 +34,7 @@ export default function ExistingProject() {
         //   ...filters,
         // });
     };
-    
+
     const [pagination, setPagination] = useState({});
 
     const openProject = (e) => {
@@ -48,30 +47,25 @@ export default function ExistingProject() {
         });
     }
 
-    const fetchProjects = () => {
-        axios.get(config.API_URL + ENUMS.API_ROUTES.PROJECT_LIST,
-            {
-                ...HttpUtil.adminHttpHeaders()
-            })
-            .then(res => {
-                if (res.status === 200 && res.data) {
-                    setData(res.data.projects.map((project, index) => {
-                        return {
-                            key: index,
-                            job_number: project.job_id,
-                            id: project.id,
-                            job_name: project.job_name,
-                            project_name: project.project_name,
-                            created_by: project.created_by,
-                            created_at_date: project.created_date,
-                            created_time: project.created_time,
-                        }
-                    }))
+    const fetchProjects = async () => {
+        try {
+            const { projects } = await projectApi.getProjectList()
+            setData(projects.map((project, index) => {
+                return {
+                    key: index,
+                    id: project.uuid,
+                    job_number: project.job_id,
+                    job_name: project.job_name,
+                    project_name: project.project_name,
+                    created_by: project.created_by,
+                    created_at_date: project.created_date,
+                    created_time: project.created_time,
                 }
-            })
-            .catch(e => {
-                console.log(e)
-            })
+            }))
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -85,24 +79,24 @@ export default function ExistingProject() {
 
     return (
         <>
-            <div style={{minHeight: "80vh"}} className="flex justify-center items-center bg-white">
-                <div style={{width: '1100px'}}>
-                <PageHeader
-                    ghost={false}
-                    onBack={() => window.history.back()}
-                    title="Select a project to continue"
-                    extra={[
-                        <Button
-                            key="1"
-                            type="primary"
-                            disabled={selectedProject ? false : true}
-                            onClick={e => openProject(e)}
-                        >
-                            Next
-                        </Button>,
-                    ]}
+            <div style={{ minHeight: "80vh" }} className="flex justify-center items-center bg-white">
+                <div style={{ width: '1100px' }}>
+                    <PageHeader
+                        ghost={false}
+                        onBack={() => window.history.back()}
+                        title="Select a project to continue"
+                        extra={[
+                            <Button
+                                key="1"
+                                type="primary"
+                                disabled={selectedProject ? false : true}
+                                onClick={e => openProject(e)}
+                            >
+                                Next
+                            </Button>,
+                        ]}
                     >
-                </PageHeader>
+                    </PageHeader>
                     <Card>
                         <Table
                             rowSelection={{

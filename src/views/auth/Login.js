@@ -1,5 +1,3 @@
-import axios from "axiosConfig";
-import config from "config";
 import ENUMS from "constants/appEnums";
 import React, { useState } from "react";
 import allActions from 'redux/actions/index';
@@ -9,7 +7,8 @@ import { useDispatch } from "react-redux";
 import { Form, Input, Card, Divider, Button, Row, Col, Spin } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useToasts } from "react-toast-notifications";
-import HttpUtil from "util/HttpUtil";
+import {authApi} from "./../../api/authApi"
+
 
 export default function Login() {
     let history = useHistory();
@@ -24,25 +23,16 @@ export default function Login() {
     /**
      * Method to make API call for user login
      */
-    const handleLogin = (data) => {
-        setIsLoading(true);
-        axios.post(config.API_URL + ENUMS.API_ROUTES.AUTH_LOGIN,
-            {
-                username: data.username,
-                password: data.password
-            }, {...HttpUtil.authHttpHeaders})
-            .then(res => {
-                setIsLoading(false);
-                if (res.status === 200 && res.data) {
-                    saveUserState(res.data.data);
-                }
-            })
-            .catch(e => {
-                setIsLoading(false);
-                if(e.response.status === 403) {
-                    addToast("Incorrect username or password!", { appearance: 'error', autoDismiss: true });
-                }
-            });
+    const handleLogin = async (authData) => {
+        try{
+            setIsLoading(true);
+            const {data} = await authApi.login(authData)
+            setIsLoading(false);
+            saveUserState(data);
+        }catch(error){
+            setIsLoading(false);
+            if (error.message.includes("Incorrect")) addToast(error.message, { appearance: 'error', autoDismiss: true });
+        }
     }
 
     /**

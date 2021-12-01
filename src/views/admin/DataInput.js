@@ -5,6 +5,7 @@ import { RedoOutlined } from "@ant-design/icons"
 // component
 import FileUploadModal from "components/Modal/FileUploadModal";
 import "./DataInput.css";
+import { ButtonDataInputWrapper } from "components/Buttons/ButtonDataInputWrapper";
 
 export default function DataInput() {
     const cards = APP_CONSTANTS.DATA_INPUT_CARDS;
@@ -22,7 +23,7 @@ export default function DataInput() {
         >
             <span className="mr-2 reupload-text">{'Uploaded'}</span>
             <span className="reupload-text-container mr-2"></span>
-            <RedoOutlined className="reupload-button"/>
+            <RedoOutlined className="reupload-button" />
         </div>;
         cards.find(card => card.section === selectedSection).grid[2].className = 'di-card-success';
         setIsModalVisible(false);
@@ -31,13 +32,26 @@ export default function DataInput() {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    
+
     const handleAction = (action, index, selectedSection) => {
-        if (action === 'upload') {
-            cards.find(card => card.section === selectedSection).grid[index].label = 'Upload File';
-            cards.find(card => card.section === selectedSection).grid[2].className = '';
-            setSection(selectedSection);
-            showModal();
+        switch (action) {
+            case 'upload':
+                cards.find(card => card.section === selectedSection).grid[index].label = 'Upload File';
+                cards.find(card => card.section === selectedSection).grid[2].className = '';
+                setSection(selectedSection);
+                showModal();
+                break
+            case "comport":
+                console.log("Comport");
+                break
+            case "ethernet":
+                console.log("Ethernet");
+                break
+            case "view":
+                console.log("View");
+                break
+            default:
+                return
         }
     }
 
@@ -48,18 +62,8 @@ export default function DataInput() {
                     return <Card key={cardIndex} title={card.title} bordered={false} style={{ width: '100%', marginBottom: '1.5rem' }} className="datainput-cards mb-6">
                         {
                             card.grid.map((cardGrid, cardGridIndex) => {
-                                return <Card.Grid
-                                    key={cardGridIndex} 
-                                    style={{ width: '25%', textAlign: 'center'}}
-                                    className={"di-card-grid " + (cardGrid.className ? cardGrid.className : '')}
-                                    onClick={(e) => handleAction(cardGrid.action, cardGridIndex, card.section)}
-                                >
-                                    {
-                                        (cardGrid.action === "upload")
-                                        ? cardGrid.label
-                                        : cardGrid.label
-                                    }
-                                </Card.Grid>
+                                const options = { cardGrid, cardGridIndex, handleAction, section: card.section }
+                                return <ButtonDataInputWrapper key={cardGridIndex} {...options} />
                             })
                         }
                         {/* <Row gutter={16}>

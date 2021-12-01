@@ -1,7 +1,25 @@
-Seismos frontend
+================
+*   Seismos    *
+================
+
+React JS
+================
+FLASK
+================
+Docker
+================
+
+Pre-requiresites: 
+================
+Docker
+Python
+NodeJS
 
 
-Framework used: ReactJS
-UI library: antd
+Running the project:
+- docker-compose build
+- docker-compose up
 
- 
+
+Stopping the server:
+- docker-compose down
