@@ -35,6 +35,7 @@ export default function TrackingSheet(props) {
     const [showConfirmationModal, setShowConfirmationModal] = useState();
     const [modalData, setModalData] = useState();
 
+    const [isUpdating, setIsUpdating] = useState(false);
     const [resetDynamicFormNestItemValues, setResetDynamicFormNestItemValues] = useState(false);
     const [resetPerforationIntervalInformationValues, setResetPerforationIntervalInformationValues] = useState(false);
     const [resetStageDataValues, setResetStageDataValues] = useState(false);
@@ -146,6 +147,7 @@ export default function TrackingSheet(props) {
                 fetchTrackingSheet(sheetData.sheet_id);
             } else {
                 resetForm();
+                setIsUpdating(false);
             }
         }
     }
@@ -218,11 +220,20 @@ export default function TrackingSheet(props) {
             notesDataFormValues
         );
         try{
-            await projectApi.postCreateTrackingSheet(wellId, trackingSheet)
-            addToast("Tracking sheet data added successfully.", { 
-                appearance: 'success',
-                autoDismiss: true
-            });
+            if(isUpdating) {
+                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n + 1) == selectedStage);
+                await projectApi.putUpdateTrackingSheet(stageTrackingPresent.id, trackingSheet)
+                addToast("Tracking sheet data updated successfully.", { 
+                    appearance: 'success',
+                    autoDismiss: true
+                });
+            } else {
+                await projectApi.postCreateTrackingSheet(wellId, trackingSheet)
+                addToast("Tracking sheet data added successfully.", { 
+                    appearance: 'success',
+                    autoDismiss: true
+                });
+            }
             fetchStagesSubmitted(wellId);
         }catch(error){
             console.log(error);
@@ -251,17 +262,19 @@ export default function TrackingSheet(props) {
     
     const fetchTrackingSheet = async (sheet_id) => {
         setIsLoadingFormData(true);
+        setIsUpdating(false);
         try{
             const {data} = await projectApi.getTrackingSheet(sheet_id)
             console.log(data);
             populateFormData(data);
+            setIsUpdating(true);
             setIsLoadingFormData(false);
         }catch(error){
             console.log(error);
         }
     }
 
-    const populateStageDropdown = (numOfStages) => {
+    const getStages = (numOfStages) => {
         const stages = [];
         for (let step = 1; step <= numOfStages; step++) {
             stages.push({value: step, label: `Stage ${step}`});
@@ -270,18 +283,21 @@ export default function TrackingSheet(props) {
     }
 
     const fetchStagesSubmitted = async (well_id) => {
-        const stages = populateStageDropdown(project.wells.find(well => well.id === well_id).num_stages);
+        const stages = getStages(project.wells.find(well => well.id === well_id).num_stages);
         try{
             const {data} = await projectApi.getTrackingSheetList(well_id)
             setItems(stages);
                 setStageSheetList(data.stages);
                 setSelectedStage(selectedStage + "");
                 if (data.stages.length > 0) {
-                    const stageTrackingPresent = data.stages.find(s => s.stage === stages[0].value)
+                    const stageTrackingPresent = data.stages.find(s => (s.stage_n + 1) == stages[0].value)
                     if (stageTrackingPresent) {
                         fetchTrackingSheet(stageTrackingPresent.sheet_id);
+                    } else {
+                        setIsUpdating(false);
                     }
                 } else {
+                    setIsUpdating(false);
                 }
         }catch(error){
             console.log(error);
@@ -672,7 +688,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -682,7 +698,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -774,7 +790,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -786,7 +802,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
@@ -1147,7 +1163,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -1169,7 +1185,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -1179,7 +1195,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1191,7 +1207,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{span: 9, offset: 0}}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"/>
+                                            <InputNumber className="w-full"/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
@@ -1318,6 +1334,7 @@ export default function TrackingSheet(props) {
                 <div className="mt-4 w-full text-right">
                     {/* <span className="mr-4">Last submitted date: 08/07/2021</span> */}
                     <Button type="primary" onClick={(e) => handleTrackingSheetSubmit()}>Submit tracking sheet</Button>
+                    {isUpdating ? "Update tracking sheet" : "Submit tracking sheet" }
                 </div>
             </Card>
             {
