@@ -35,17 +35,17 @@ const jobInfoFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            { label: 'Job name', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_NAME, required: true },
-            { label: 'Job type', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_TYPE, required: true },
-            { label: 'Job id', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID, required: true, datatype: 'integer' },
-            { label: 'AFE #', field: ENUMS.FORM_FIELDS.JOB_INFO.AFE_ID, required: true, datatype: 'integer' },
-            { label: 'Country', field: ENUMS.FORM_FIELDS.JOB_INFO.COUNTRY_NAME, required: true },
-            { label: 'Basin', field: ENUMS.FORM_FIELDS.JOB_INFO.BASIN_NAME, required: true },
-            { label: 'State', field: ENUMS.FORM_FIELDS.JOB_INFO.STATE, required: true },
-            { label: 'Start date', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE, required: true },
-            { label: 'End date', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE, required: false },
-          ]
+            rows: [
+                { label: 'Job name', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_NAME, required: true },
+                { label: 'Job type', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_TYPE, required: true },
+                { label: 'Job id', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID, required: true, datatype: 'integer' },
+                { label: 'AFE #', field: ENUMS.FORM_FIELDS.JOB_INFO.AFE_ID, required: true, datatype: 'integer' },
+                { label: 'County', field: ENUMS.FORM_FIELDS.JOB_INFO.COUNTY_NAME, required: true },
+                { label: 'Basin', field: ENUMS.FORM_FIELDS.JOB_INFO.BASIN_NAME, required: true },
+                { label: 'State', field: ENUMS.FORM_FIELDS.JOB_INFO.STATE, required: true },
+                { label: 'Start date', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE, required: true },
+                { label: 'End date', field: ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE, required: false },
+            ]
         }
     ]
 }
@@ -57,16 +57,16 @@ const padInfoFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            { label: 'Pad name', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_NAME, required: true },
-            { label: 'Pad Id', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_ID, required: true },
-            { label: 'Client name', field: ENUMS.FORM_FIELDS.PAD_INFO.CLIENT_NAME, required: true },
-            { label: 'Customer field rep', field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_FIELD_REP, required: true },
-            { label: 'Rep contact #', field: ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER, required: true, datatype: 'integer' },
-            { label: 'Operator', field: ENUMS.FORM_FIELDS.PAD_INFO.OPERATOR, required: true },
-            { label: 'Service company', field: ENUMS.FORM_FIELDS.PAD_INFO.SERVICE_COMPANY, required: true },
-            { label: 'Wireline company', field: ENUMS.FORM_FIELDS.PAD_INFO.WIRELINE_COMPANY, required: true },
-          ]
+            rows: [
+                { label: 'Pad name', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_NAME, required: true },
+                // { label: 'Pad Id', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_ID, required: true },
+                { label: 'Client name', field: ENUMS.FORM_FIELDS.PAD_INFO.CLIENT_NAME, required: true },
+                { label: 'Customer field rep', field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_FIELD_REP, required: true },
+                { label: 'Rep contact #', field: ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER, required: true, datatype: 'integer' },
+                { label: 'Operator', field: ENUMS.FORM_FIELDS.PAD_INFO.OPERATOR, required: true },
+                { label: 'Service company', field: ENUMS.FORM_FIELDS.PAD_INFO.SERVICE_COMPANY, required: true },
+                { label: 'Wireline company', field: ENUMS.FORM_FIELDS.PAD_INFO.WIRELINE_COMPANY, required: true },
+            ]
         }
     ]
 }
@@ -77,15 +77,13 @@ const wellInfoFormTableData = {
         { key: "2", label: "# of stages", width: "13%", field: ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES, defaultValue: "", required: true, datatype: 'integer' },
         { key: "3", label: "Well API", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.WELL_API, defaultValue: "", required: true },
         { key: "4", label: "Formation", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.FORMATION, defaultValue: "", required: true },
-        { key: "5", label: "Lat", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LAT, defaultValue: "", required: true },
-        { key: "6", label: "Long", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LONG, defaultValue: "", required: true },
-        { key: "7", label: "Easting", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.EASTING, defaultValue: "", required: true },
-        { key: "8", label: "Northing", width: "13%", field: ENUMS.FORM_FIELDS.WELL_INFO.NORTHING, defaultValue: "", required: true },
+        { key: "5", label: "Lat", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LAT, defaultValue: "", required: true, datatype: 'float' },
+        { key: "6", label: "Long", width: "14%", field: ENUMS.FORM_FIELDS.WELL_INFO.LONG, defaultValue: "", required: true, datatype: 'float' },
         { key: "9", label: "", width: "5%", field: "action", defaultValue: "", actionColumn: true, className: "noborder" },
     ],
     grid: [
         {
-          row: "row1"
+            row: "row1"
         }
     ]
 }
@@ -101,11 +99,11 @@ const wellVolumeFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            'casing',
-            'liner',
-            'liner_sec'
-          ]
+            rows: [
+                'casing',
+                'liner',
+                'liner_sec'
+            ]
         }
     ]
 }
@@ -118,11 +116,11 @@ const wellVolumeEstimationsFormTableData = {
     },
     grid: [
         {
-          rows: [
-            { label: 'Surface Vol. [bbls]', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL, datatype: 'integer' },
-            { label: 'bbls', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.BBLS, datatype: 'integer' },
-            { label: 'gallons', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.GALLONS, datatype: 'integer' },
-          ]
+            rows: [
+                { label: 'Surface Vol. [bbls]', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL, datatype: 'integer' },
+                { label: 'bbls', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.BBLS, datatype: 'integer' },
+                { label: 'gallons', field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.GALLONS, datatype: 'integer' },
+            ]
         }
     ]
 }
@@ -136,9 +134,9 @@ const clientInfoFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            ''
-          ]
+            rows: [
+                ''
+            ]
         }
     ]
 }
@@ -152,9 +150,9 @@ const crewInfoFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            ''
-          ]
+            rows: [
+                ''
+            ]
         }
     ]
 }
@@ -166,15 +164,15 @@ const equipmentFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            { label: 'Trailers', field: ENUMS.FORM_FIELDS.EQUIPMENT.TRAILERS_ID, required: true, datatype: 'integer' },
-            { label: 'Powerpack', field: ENUMS.FORM_FIELDS.EQUIPMENT.POWERPACK_ID, required: true, datatype: 'integer' },
-            { label: 'Source', field: ENUMS.FORM_FIELDS.EQUIPMENT.SOURCE_ID, required: true, datatype: 'integer' },
-            { label: 'Accumulator', field: ENUMS.FORM_FIELDS.EQUIPMENT.ACCUMULATOR_ID, required: true, datatype: 'integer' },
-            { label: 'Hydrophones', field: ENUMS.FORM_FIELDS.EQUIPMENT.HYDROPHONES_ID, required: true, datatype: 'integer' },
-            { label: 'PSI transducer', field: ENUMS.FORM_FIELDS.EQUIPMENT.PSI_TRANSDUCER_ID, required: true, datatype: 'integer' },
-            { label: 'Hotspot', field: ENUMS.FORM_FIELDS.EQUIPMENT.HOTSPOT_ID, required: true, datatype: 'integer' },
-          ]
+            rows: [
+                { label: 'Trailers', field: ENUMS.FORM_FIELDS.EQUIPMENT.TRAILERS_ID, required: true, datatype: 'integer' },
+                { label: 'Powerpack', field: ENUMS.FORM_FIELDS.EQUIPMENT.POWERPACK_ID, required: true, datatype: 'integer' },
+                { label: 'Source', field: ENUMS.FORM_FIELDS.EQUIPMENT.SOURCE_ID, required: true, datatype: 'integer' },
+                { label: 'Accumulator', field: ENUMS.FORM_FIELDS.EQUIPMENT.ACCUMULATOR_ID, required: true, datatype: 'integer' },
+                { label: 'Hydrophones', field: ENUMS.FORM_FIELDS.EQUIPMENT.HYDROPHONES_ID, required: true, datatype: 'integer' },
+                { label: 'PSI transducer', field: ENUMS.FORM_FIELDS.EQUIPMENT.PSI_TRANSDUCER_ID, required: true, datatype: 'integer' },
+                { label: 'Hotspot', field: ENUMS.FORM_FIELDS.EQUIPMENT.HOTSPOT_ID, required: true, datatype: 'integer' },
+            ]
         }
     ]
 }
@@ -186,10 +184,10 @@ const projectInfoFormTableData = {
     ],
     grid: [
         {
-          rows: [
-            { label: 'Project Name', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_NAME, required: true },
-            { label: 'Project UUID', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_UUID, required: true },
-          ]
+            rows: [
+                { label: 'Project Name', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_NAME, required: true },
+                // { label: 'Project UUID', field: ENUMS.FORM_FIELDS.PROJECT.PROJECT_UUID, required: true },
+            ]
         }
     ]
 }

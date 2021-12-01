@@ -1,6 +1,3 @@
-import axios from "axiosConfig";
-import config from "config";
-import ENUMS from "constants/appEnums";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ProjectUtil from "util/ProjectUtil";
@@ -13,8 +10,9 @@ import CrewInfo from "components/Forms/ProjectCreate/CrewInfo";
 import Equipment from "components/Forms/ProjectCreate/Equipment";
 import ProjectInfo from "components/Forms/ProjectCreate/ProjectInfo";
 import _ from "lodash";
-import HttpUtil from "util/HttpUtil";
 import { useToasts } from "react-toast-notifications";
+import { projectApi } from "./../../api/projectApi"
+import classes from './NewProject.module.css'
 
 // components
 const { Step } = Steps;
@@ -44,47 +42,41 @@ export default function NewProject() {
         setCurrent(current - 1);
     };
 
-    const handleCreateProjectFormSubmit = () => {
+    const handleCreateProjectFormSubmit = async () => {
         const wellVolumeData = wellVolumeValues ? wellVolumeValues.map(wellVol => {
             return ProjectUtil.formatFormValuesFromColumnGridData(wellVol);
         }) : [];
         const wellVolumeEstimationsData = wellVolumeEstimationsValues ? wellVolumeEstimationsValues.map(wellVolEst => {
             return ProjectUtil.formatFormValuesFromRowGridData(wellVolEst);
         }) : [];
-        
+
         const projectData = {
             projectValues: ProjectUtil.formatFormValuesFromRowGridData(projectInfoValues),
             jobInfoValues: ProjectUtil.formatFormValuesFromRowGridData(_.cloneDeep(jobInfoValues)),
             padInfoValues: ProjectUtil.formatFormValuesFromRowGridData(padInfoValues),
-            wellInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(wellInfoValues).map((x, index) => {return {...x}}),
+            wellInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(wellInfoValues).map((x, index) => { return { ...x } }),
             wellVolumeValues: wellVolumeData,
             wellVolumeEstimationsValues: wellVolumeEstimationsData,
             clientInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(clientInfoValues),
             crewInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(crewInfoValues),
             equipmentValues: ProjectUtil.formatFormValuesFromRowGridData(equipmentValues),
         };
-        
-        axios.post(config.API_URL + ENUMS.API_ROUTES.PROJECT_CREATE,
-            {
-                ...projectData
-            }, {...HttpUtil.adminHttpHeaders()})
-            .then(res => {
-                if (res.status === 200 && res.data) {
-                    const projectId = res.data.data.project.id;
-                    addToast("Project created successfully!", { 
-                        appearance: 'success',
-                        autoDismiss: true
-                    });
-                    history.push({
-                        pathname: '/admin/dashboard',
-                        search: '?projectId=' + projectId,
-                        state: { passedId: projectId }
-                    });
-                }
-            })
-            .catch(e => {
-                console.log(e)
+
+        try {
+            const { data } = await projectApi.postCreateProject(projectData)
+            const projectId = data.project.uuid;
+            addToast("Project created successfully!", {
+                appearance: 'success',
+                autoDismiss: true
             });
+            history.push({
+                pathname: '/admin/dashboard',
+                search: '?projectId=' + projectId,
+                state: { passedId: projectId }
+            });
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const steps = [
@@ -146,33 +138,33 @@ export default function NewProject() {
 
     return (
         <>
-            <div style={{minHeight: "80vh"}} className="flex justify-center items-center bg-white">
-                <div style={{width: "1100px"}}>
+            <div className={`flex justify-center items-center bg-white ${classes.container}`}>
+                <div className={classes.progress_container}>
                     <PageHeader
                         ghost={false}
                         onBack={() => window.history.back()}
                         title="Fill in the information below to create a new project"
                     >
                     </PageHeader>
-                        <Card>
-                            <Steps progressDot current={current}>
-                                {
-                                    steps.map(item => (
-                                        <Step key={item.title} title={item.title} className="mb-6"/>
-                                    ))
-                                }
-                            </Steps>
-                            <div className="steps-content mb-6">
-                                {steps[current].content}
-                            </div>
-                            <div className="steps-action flex justify-between" style={{position: 'absolute', bottom: '48px'}}>
-                                {
-                                    <Button style={{ margin: '0 8px' }} disabled={current < 1} onClick={() => prev()}>
-                                        Previous
-                                    </Button>
-                                }
-                            </div>
-                        </Card>
+                    <Card>
+                        <Steps responsive progressDot current={current}>
+                            {
+                                steps.map(item => (
+                                    <Step key={item.title} title={item.title} className="mb-6" />
+                                ))
+                            }
+                        </Steps>
+                        <div className="steps-content mb-6">
+                            {steps[current].content}
+                        </div>
+                        <div className="steps-action flex justify-between" style={{ position: 'absolute', bottom: '48px' }}>
+                            {
+                                <Button style={{ margin: '0 8px' }} disabled={current < 1} onClick={() => prev()}>
+                                    Previous
+                                </Button>
+                            }
+                        </div>
+                    </Card>
                 </div>
             </div>
         </>
