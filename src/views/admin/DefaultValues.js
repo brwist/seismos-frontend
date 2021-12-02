@@ -364,7 +364,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="layer"
+                                        name="layers"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -1035,13 +1035,13 @@ export default function DefaultValues() {
                                     <Form.Item
                                         label={
                                             <span>
-                                                Start2
+                                                Strat2
                                                 <Tooltip title="?">
                                                     <QuestionCircleOutlined className="icon-form-info" />
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="start2"
+                                        name="strat2"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -1057,7 +1057,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="ng"
+                                        name="NG"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber />
@@ -1076,7 +1076,7 @@ export default function DefaultValues() {
                                         name="stage_ques"
                                         style={{ marginLeft: '5rem' }}
                                     >
-                                        <Input />
+                                        <InputNumber />
                                     </Form.Item>
                                 </Col>
                                 <Col span={10}>
@@ -1089,12 +1089,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="breaker"
+                                        name="breaker_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1108,12 +1108,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="poisson_var"
+                                        name="poisson_var_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1127,7 +1127,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="poisson_method"
+                                        name="passion_method"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -1143,12 +1143,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="stress_shadow"
+                                        name="stress_shadow_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1162,12 +1162,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="plotraw"
+                                        name="plotraw_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1181,12 +1181,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="skip_losses"
+                                        name="skip_losses_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1200,12 +1200,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="use_wns"
+                                        name="use_wns_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1219,12 +1219,12 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="use_wncuts"
+                                        name="use_wncuts_YN"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="N">N</Option>
-                                            <Option value="Y">Y</Option>
+                                            <Option value="0">N</Option>
+                                            <Option value="1">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1238,7 +1238,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="fit_iterations"
+                                        name="fit_iteration"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />

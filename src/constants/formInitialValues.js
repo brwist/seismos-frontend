@@ -110,7 +110,7 @@ const defaultValueForm = {
     model: "assymetric",  //x //x
     response: "full",  //x
     source: "reflection",  //x
-    layer: 0,
+    layers: 0,
     viscosity: 10.0,
     density: 1000,
     compressibility: 1,
@@ -149,18 +149,18 @@ const defaultValueForm = {
     biot: 1,
     shadow: 300,
     fit_end_point: 0,
-    start2: 1,
-    ng: 0,
-    stage_ques: '',
-    breaker: "N",
-    poisson_var: "Y",
-    poisson_method: 2,
-    stress_shadow: "Y",
-    plotraw: "N",
-    skip_losses: "N",
-    use_wns: "N",
-    use_wncuts: "N",
-    fit_iterations: 50
+    strat2: 1,
+    NG: 0,
+    stage_ques: 0,
+    breaker_YN: 0,
+    poisson_var_YN: 1,
+    passion_method: 2,
+    stress_shadow_YN: 1,
+    plotraw_YN: 0,
+    skip_losses_YN: 0,
+    use_wns_YN: 0,
+    use_wncuts_YN: 0,
+    fit_iteration: 50
 }
 const FormInitialValues = {
     dynamicFormNestItemValues,
