@@ -57,7 +57,7 @@ export default function DailyLog() {
         });
         try {
             await projectApi.postDailyLog(projectId, wellId, val)
-            fetchDailyLog(+wellId)
+            fetchDailyLog(wellId);
             addToast("Daily logs added successfully.", {
                 appearance: 'success',
                 autoDismiss: true

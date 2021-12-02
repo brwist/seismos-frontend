@@ -19,10 +19,8 @@ export const projectApi = {
     },
     postDailyLog: async (projectId, wellId, val) => {
         try {
-            const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG,
+            const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG + '/' + wellId,
                 {
-                    project_id: +projectId, // parse to int
-                    well_id: +wellId,
                     logs: val
                 }, { ...HttpUtil.adminHttpHeaders() })
             if (response.status === 201) return response.data;
@@ -44,6 +42,9 @@ export const projectApi = {
         }
     },
     putDefaultValue: async (wellId, data) => {
+        const x = {...FormDataSerializer.defultValueFormSubmitSerializer(data)};
+        console.log(x)
+        console.log(data)
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
                 {
