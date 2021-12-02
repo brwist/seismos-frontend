@@ -73,7 +73,7 @@ export default function Admin(props) {
                     setNoSidebarLayout(false);
                     const project = data.project;
                     dispatch(allActions.authActions.setCurrentProject(project));
-                    const wellInfo = _.sortBy(project.wells, function (w) { return w.id; });
+                    const wellInfo = _.sortBy(project.wells, function (w) { return w.name; });
                     const menu = wellInfo.map((well, index) => {
                         return <SubMenu key={"menu" + (well.uuid)} title={well.well_name}>
                             <Menu.Item key={"data-input/" + well.uuid} onClick={() => { menuChange(ENUMS.ROUTES.DATA_INPUT, well.uuid, project.uuid) }}>Data input</Menu.Item>
