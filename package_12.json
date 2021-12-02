@@ -15,7 +15,7 @@
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "moment": "^2.29.1",
-    "postcss": "8.3.11",
+    "postcss": "8.2.8",
     "react": "17.0.1",
     "react-csv": "^2.0.3",
     "react-datasheet": "^1.4.9",
@@ -39,7 +39,7 @@
     "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
