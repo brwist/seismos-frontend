@@ -110,7 +110,7 @@ const defaultValueForm = {
     model: "assymetric",  //x //x
     response: "full",  //x
     source: "reflection",  //x
-    layers: 0,
+    layer: 0,
     viscosity: 10.0,
     density: 1000,
     compressibility: 1,
@@ -152,14 +152,14 @@ const defaultValueForm = {
     strat2: 1,
     NG: 0,
     stage_ques: 0,
-    breaker_YN: 0,
-    poisson_var_YN: 1,
+    breaker_YN: "N",
+    poisson_var_YN: "Y",
     passion_method: 2,
-    stress_shadow_YN: 1,
-    plotraw_YN: 0,
-    skip_losses_YN: 0,
-    use_wns_YN: 0,
-    use_wncuts_YN: 0,
+    stress_shadow_YN: "Y",
+    plotraw_YN: "N",
+    skip_losses_YN: "N",
+    use_wns_YN: "N",
+    use_wncuts_YN: "N",
     fit_iteration: 50
 }
 const FormInitialValues = {
