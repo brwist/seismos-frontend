@@ -11,7 +11,7 @@ const defultValueFormSubmitSerializer = (formData) => {
         "f_low_hz": formData.f_low_hz,
         "grid_density": formData.grid_density,
         "interation": formData.iterations,
-        "layers": formData.layers,
+        "layer": formData.layer,
         "loop": formData.loop,
         "method": formData.method,
         "model": formData.model,

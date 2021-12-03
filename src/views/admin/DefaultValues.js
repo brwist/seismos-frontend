@@ -364,7 +364,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="layers"
+                                        name="layer"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -1093,8 +1093,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1112,8 +1112,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1147,8 +1147,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1166,8 +1166,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1185,8 +1185,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1204,8 +1204,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -1223,8 +1223,8 @@ export default function DefaultValues() {
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <Select>
-                                            <Option value="0">N</Option>
-                                            <Option value="1">Y</Option>
+                                            <Option value="N">N</Option>
+                                            <Option value="Y">Y</Option>
                                         </Select>
                                     </Form.Item>
                                 </Col>
