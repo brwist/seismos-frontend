@@ -17,12 +17,13 @@ export const projectApi = {
             throw new Error(error.message)
         }
     },
-    postDailyLog: async (projectId, wellId, val) => {
+    postDailyLog: async (wellId, val) => {
         try {
             const response = await axios.post(config.API_URL + ENUMS.API_ROUTES.DAILY_LOG + '/' + wellId,
                 {
                     logs: val
                 }, { ...HttpUtil.adminHttpHeaders() })
+            console.log(`POST response of [postDailyLog] method:`, response)
             if (response.status === 201) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
@@ -157,9 +158,11 @@ export const projectApi = {
                 {
                     ...HttpUtil.adminHttpHeaders(),
                 })
+            console.log(`GET response of [getTrackingSheetList] method:`, response)
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
+            console.log(error)
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
