@@ -1,41 +1,35 @@
 
 const dynamicFormNestItemValues = {
-    bht_f: null,
-    bht_psi: null,
-    customer: null,
-    date: null,
-    event_occur: null,
-    field_engineer_days: null,
-    field_engineer_nights: null,
+    bottomhole_bht: null,
+    bottomhole_bhp: null,
+    did_an_event_occur: null,
     frac_design: null,
     plug_seat_technique: null,
     plug_type: null,
     seismos_data_collection: null,
-    stage: null,
-    well: null
 }
 
 const perforationIntervalInformationValues = {
     acid: null,
-    bottom_perf: null,
-    clusters_number: null,
+    bottom_measured_depth: null,
+    n_clusters: null,
     displacement_vol_bottom: null,
     displacement_vol_plug: null,
     displacement_vol_top: null,
     diverter_type: null,
     perf_daiameter: null,
-    perf_gun_desc: null,
+    perf_gun_description: null,
     plug_depth: null,
     pumped_diverter: null,
     spf: null,
-    top_perf: null
+    top_measured_depth: null
 }
 
 const stageDataValues = {
     stage_start_time: null,
     stage_end_time: null,
     opening_well: null,
-    isip: null,
+    // isip: null,
     base_fluid_type: null,
     base_fluid_density: null,
     max_conc_density: null,
@@ -81,19 +75,20 @@ const fluidFormValues = {
 const activeDataFormValues = {
     amplitude: null,
     frequency: null,
-    number_of_pulses: null,
+    pre_frac_num_pulse: null,
+    post_frac_num_pulse: null,
     offset: null,
-    periods: null,
-    post_end_time: null,
-    post_start_time: null,
-    pre_end_time: null,
-    pre_start_time: null,
+    period: null,
+    post_frac_end_time: null,
+    post_frac_start_time: null,
+    pre_frac_end_time: null,
+    pre_frac_start_time: null,
 }
 
 const notesFataFormValues = {
-    other_notes: null,
-    pre_notes: null,
-    post_notes: null
+    additional_note: null,
+    pre_frac_pulse_note: null,
+    post_frac_pulse_note: null
 }
 
 const defaultValueForm = {
