@@ -39,35 +39,35 @@ const defultValueFormSubmitSerializer = (formData) => {
         "default_value": {
             "beta_ss": formData.beta_ss,
             "biot": formData.biot,
-            "breaker": formData.breaker,
+            "breaker_YN": formData.breaker_YN,
             "diverter_time": formData.diverter_time,
             "eta_cp": formData.eta_cp,
             "ffkw_correction": formData.ffkw_correction,
             "fit_end_point": formData.fit_end_point,
-            "fit_iterations": formData.fit_iterations,
+            "fit_iteration": formData.fit_iteration,
             "fuild_density": formData.fluid_density,
             "fuildt": formData.fluid_t,
             "k_mpa": formData.k_mpa,
             "met_res": formData.met_res,
-            "ng": formData.ng,
+            "NG": formData.NG,
             "nu_lim": formData.nu_lim,
             "overburden": formData.overburden,
             "per_red": formData.perRed,
-            "plotraw": formData.plotraw,
+            "plotraw_YN": formData.plotraw_YN,
             "poisson": formData.poisson,
-            "poisson_method": formData.poisson_method,
-            "poisson_var": formData.poisson_var,
+            "passion_method": formData.passion_method,
+            "poisson_var_YN": formData.poisson_var_YN,
             "pres": formData.pres,
             "shadow": formData.shadow,
-            "skip_losses": formData.skip_losses,
+            "skip_losses_YN": formData.skip_losses_YN,
             "st_lim": formData.st_lim,
             "stage_ques": formData.stage_ques,
             "start1": formData.start1,
-            "start2": formData.start2,
-            "stress_shadow": formData.stress_shadow,
+            "strat2": formData.strat2,
+            "stress_shadow_YN": formData.stress_shadow_YN,
             "tect": formData.tect,
-            "use_wncuts": formData.use_wncuts,
-            "use_wns": formData.use_wns,
+            "use_wncuts_YN": formData.use_wncuts_YN,
+            "use_wns_YN": formData.use_wns_YN,
             "young": formData.young,
         }
     }
@@ -86,28 +86,20 @@ const trackingSheetSubmitSerializer = (
     return {
         stage: Number(selectedStage),
         stage_tracking: {
-            date: dynamicFormNestItemValues.date ? Number(dynamicFormNestItemValues.date.format('x')) : moment().format("x"),
-            customer: dynamicFormNestItemValues.customer,
-            well: dynamicFormNestItemValues.well,
-            stage: dynamicFormNestItemValues.stage,
-            bht_f: dynamicFormNestItemValues.bht_f,
-            bht_psi: dynamicFormNestItemValues.bht_psi,
+            bottomhole_bht: dynamicFormNestItemValues.bottomhole_bht,
+            bottomhole_bhp: dynamicFormNestItemValues.bottomhole_bhp,
+            did_an_event_occur: dynamicFormNestItemValues.did_an_event_occur,
             frac_design: dynamicFormNestItemValues.frac_design,
-            field_engineer: {
-                days: dynamicFormNestItemValues.field_engineer_days,
-                nights: dynamicFormNestItemValues.field_engineer_nights,
-            },
-            plug_type: dynamicFormNestItemValues.plug_type,
             plug_seat_technique: dynamicFormNestItemValues.plug_seat_technique,
-            did_an_event_occur: dynamicFormNestItemValues.event_occur,
+            plug_type: dynamicFormNestItemValues.plug_type,
             seismos_data_collection: dynamicFormNestItemValues.seismos_data_collection,
         },
         perforation_interval_information: {
-            top_perf: perforationIntervalInformationValues.top_perf,
-            bottom_perf: perforationIntervalInformationValues.bottom_perf,
+            top_measured_depth: perforationIntervalInformationValues.top_measured_depth,
+            bottom_measured_depth: perforationIntervalInformationValues.bottom_measured_depth,
             plug_depth: perforationIntervalInformationValues.plug_depth,
-            n_clusters: Number(perforationIntervalInformationValues.clusters_number),
-            perf_gun_description: perforationIntervalInformationValues.perf_gun_desc,
+            n_clusters: Number(perforationIntervalInformationValues.n_clusters),
+            perf_gun_description: perforationIntervalInformationValues.perf_gun_description,
             perf_daiameter: perforationIntervalInformationValues.perf_daiameter,
             spf: perforationIntervalInformationValues.spf,
             pumped_diverter: perforationIntervalInformationValues.pumped_diverter,
@@ -120,17 +112,17 @@ const trackingSheetSubmitSerializer = (
             }
         },
         stage_data: {
-            stage_start_time: stageDataValues.stage_end_time ? Number(stageDataValues.stage_end_time.format('x')) : moment().format("x"),
-            stage_end_time: stageDataValues.stage_end_time ? Number(stageDataValues.stage_end_time.format('x')) : moment().format("x"),
+            stage_start_time: Number(stageDataValues.stage_start_time.format('x')),
+            stage_end_time: Number(stageDataValues.stage_end_time.format('x')),
             opening_well: stageDataValues.opening_well,
-            isip: stageDataValues.isip,
+            // isip: stageDataValues.isip,
             fluid_parameters: {
                 base_fluid_type: stageDataValues.base_fluid_type,
                 base_fluid_density: stageDataValues.base_fluid_density,
                 max_conc_density: stageDataValues.max_conc_density,
             },
-            fluid_data: fluidFormValues.fluidData,
-            propant_data: propantFormValues.proppantData,
+            fluids_injected_into_formation: fluidFormValues.fluidData,
+            proppant_data: propantFormValues.proppantData,
             pumping_summary: {
                 max_prop_conc: { design: stageDataValues.max_prop_conc_ppa_design, actual: stageDataValues.max_prop_conc_ppa_actual },
                 total_pad_volume: { design: stageDataValues.total_pad_volume_bbls_design, actual: stageDataValues.total_pad_volume_bbls_actual },
@@ -143,62 +135,54 @@ const trackingSheetSubmitSerializer = (
 
         },
         active_data: {
-            pulsing_parameters: {
+            pulsing_parameteres: {
                 wave_type: activeDataFormValues.wave_type,
-                periods: activeDataFormValues.periods,
-                freq: activeDataFormValues.frequency,
+                period: activeDataFormValues.period,
+                frequency: activeDataFormValues.frequency,
                 offset: activeDataFormValues.offset,
                 amplitude: activeDataFormValues.amplitude,
             },
-            pre_frac_pulses: {
-                start_time: activeDataFormValues.pre_start_time ? Number(activeDataFormValues.pre_start_time.format('x')) : moment().format('x'), end_time: activeDataFormValues.pre_end_time ? Number(activeDataFormValues.pre_end_time.format('x')) : moment().format('x'), n_pulses: Number(activeDataFormValues.pre_number_of_pulses)
-            },
-            post_frac_pulses: { start_time: activeDataFormValues.post_start_time ? Number(activeDataFormValues.post_start_time.format('x')) : moment().format('x'), end_time: activeDataFormValues.post_end_time ? Number(activeDataFormValues.post_end_time.format('x')) : moment().format('x'), n_pulses: Number(activeDataFormValues.post_number_of_pulses) },
+            pre_frac_pulses: { pre_frac_start_time: Number(activeDataFormValues.pre_frac_start_time.format('x')), pre_frac_end_time: Number(activeDataFormValues.pre_frac_end_time.format('x')), pre_frac_num_pulse: Number(activeDataFormValues.pre_frac_num_pulse) },
+            post_frac_pulses: { post_frac_start_time: Number(activeDataFormValues.post_frac_start_time.format('x')), post_frac_end_time: Number(activeDataFormValues.post_frac_end_time.format('x')), post_frac_num_pulse: Number(activeDataFormValues.post_frac_num_pulse) },
         },
         notes: {
-            pre_frac_pulse: notesDataFormValues.pre_notes,
-            post_frac_pulse: notesDataFormValues.post_notes,
-            other: notesDataFormValues.other_notes,
+            pre_frac_pulse_note: notesDataFormValues.pre_frac_pulse_note,
+            post_frac_pulse_note: notesDataFormValues.post_frac_pulse_note,
+            additional_note: notesDataFormValues.additional_note,
         }
     }
 }
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
     const dynamicFormNestItemValuesData = {
-        bht_f: trackingSheetData.stage_tracking.bht_f,
-        bht_psi: trackingSheetData.stage_tracking.bht_psi,
-        customer: trackingSheetData.stage_tracking.customer,
-        date: moment(trackingSheetData.stage_tracking.date),
-        event_occur: trackingSheetData.stage_tracking.did_an_event_occur,
-        field_engineer_days: trackingSheetData.stage_tracking.field_engineer.days,
-        field_engineer_nights: trackingSheetData.stage_tracking.field_engineer.nights,
+        bottomhole_bht: trackingSheetData.stage_tracking.bottomhole_bht,
+        bottomhole_bhp: trackingSheetData.stage_tracking.bottomhole_bhp,
+        did_an_event_occur: trackingSheetData.stage_tracking.did_an_event_occur,
         frac_design: trackingSheetData.stage_tracking.frac_design,
         plug_seat_technique: trackingSheetData.stage_tracking.plug_seat_technique,
         plug_type: trackingSheetData.stage_tracking.plug_type,
         seismos_data_collection: trackingSheetData.stage_tracking.seismos_data_collection,
-        stage: trackingSheetData.stage_tracking.stage,
-        well: trackingSheetData.stage_tracking.well,
     };
     const perforationIntervalInformationValuesData = {
         acid: trackingSheetData.perforation_interval_information.acid,
-        bottom_perf: trackingSheetData.perforation_interval_information.bottom_perf,
-        clusters_number: trackingSheetData.perforation_interval_information.n_clusters,
+        bottom_measured_depth: trackingSheetData.perforation_interval_information.bottom_measured_depth,
+        n_clusters: trackingSheetData.perforation_interval_information.n_clusters,
         displacement_vol_bottom: trackingSheetData.perforation_interval_information.displacement_volume.bottom_perf,
         displacement_vol_plug: trackingSheetData.perforation_interval_information.displacement_volume.plug,
         displacement_vol_top: trackingSheetData.perforation_interval_information.displacement_volume.top_perf,
         diverter_type: trackingSheetData.perforation_interval_information.diverter_type,
         perf_daiameter: trackingSheetData.perforation_interval_information.perf_daiameter,
-        perf_gun_desc: trackingSheetData.perforation_interval_information.perf_gun_description,
+        perf_gun_description: trackingSheetData.perforation_interval_information.perf_gun_description,
         plug_depth: trackingSheetData.perforation_interval_information.plug_depth,
         pumped_diverter: trackingSheetData.perforation_interval_information.pumped_diverter,
         spf: trackingSheetData.perforation_interval_information.spf,
-        top_perf: trackingSheetData.perforation_interval_information.top_perf
+        top_measured_depth: trackingSheetData.perforation_interval_information.top_measured_depth
     };
     const stageDataValuesData = {
         stage_start_time: moment(trackingSheetData.stage_data.stage_start_time),
         stage_end_time: moment(trackingSheetData.stage_data.stage_end_time),
         opening_well: trackingSheetData.stage_data.opening_well,
-        isip: trackingSheetData.stage_data.isip,
+        // isip: trackingSheetData.stage_data.isip,
         base_fluid_type: trackingSheetData.stage_data.fluid_parameters.base_fluid_type,
         base_fluid_density: trackingSheetData.stage_data.fluid_parameters.base_fluid_density,
         max_conc_density: trackingSheetData.stage_data.fluid_parameters.max_conc_density,
@@ -218,28 +202,28 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         slurry_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.slurry_volume.actual,
     };
     const fluidFormValuesData = {
-        fluidData: trackingSheetData.stage_data.fluid_data
+        fluidData: trackingSheetData.stage_data.fluids_injected_into_formation
     };
     const propantFormValuesData = {
         proppantData: trackingSheetData.stage_data.propant_data
     };
     const activeDataFormValuesData = {
         wave_type: trackingSheetData.active_data.pulsing_parameters.wave_type,
-        periods: trackingSheetData.active_data.pulsing_parameters.periods,
-        frequency: trackingSheetData.active_data.pulsing_parameters.freq,
+        period: trackingSheetData.active_data.pulsing_parameters.period,
+        frequency: trackingSheetData.active_data.pulsing_parameters.frequency,
         offset: trackingSheetData.active_data.pulsing_parameters.offset,
         amplitude: trackingSheetData.active_data.pulsing_parameters.amplitude,
-        pre_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.start_time),
-        pre_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.end_time),
-        pre_number_of_pulses: trackingSheetData.active_data.pre_number_of_pulses,
-        post_start_time: moment(trackingSheetData.active_data.post_frac_pulses.start_time),
-        post_end_time: moment(trackingSheetData.active_data.post_frac_pulses.end_time),
-        post_number_of_pulses: trackingSheetData.active_data.post_number_of_pulses,
+        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.start_time),
+        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time),
+        pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.pre_frac_num_pulse,
+        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time),
+        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time),
+        post_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.post_frac_num_pulse,
     }
     const notesDataFormValuesData = {
-        pre_notes: trackingSheetData.notes.pre_frac_pulse,
-        post_notes: trackingSheetData.notes.post_frac_pulse,
-        other_notes: trackingSheetData.notes.other,
+        pre_frac_pulse_note: trackingSheetData.notes.pre_frac_pulse_note,
+        post_frac_pulse_note: trackingSheetData.notes.post_frac_pulse_note,
+        additional_note: trackingSheetData.notes.additional_note,
     }
 
     return {
