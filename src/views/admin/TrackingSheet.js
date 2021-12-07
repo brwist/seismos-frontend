@@ -219,8 +219,21 @@ export default function TrackingSheet(props) {
         );
         try {
             if (isUpdating) {
-                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n + 1) == selectedStage);
-                await projectApi.putUpdateTrackingSheet(stageTrackingPresent.id, trackingSheet)
+                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n) === Number(selectedStage));
+                const updatedTrackingSheet = {
+                    ...trackingSheet,
+                    remove: {
+                        fluids_injected_into_formation_ids: [],
+                        proppant_data_ids: []
+                    },
+                    add: {
+                        fluids_injected_into_formation: [],
+                        proppant: []
+                    },
+                }
+                console.log(stageSheetList, selectedStage, stageTrackingPresent)
+                console.log(updatedTrackingSheet, stageTrackingPresent);
+                await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet)
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
                     autoDismiss: true
@@ -255,6 +268,13 @@ export default function TrackingSheet(props) {
         propantFormForm.setFieldsValue(propantFormValuesData);
         activeDataFormForm.setFieldsValue(activeDataFormValuesData);
         notesDataFormForm.setFieldsValue(notesDataFormValuesData);
+        setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
+        setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
+        setStageDataValues(stageDataValuesData);
+        setFluidFormValues(fluidFormValuesData);
+        setPropantFormValues(propantFormValuesData);
+        setActiveDataFormValues(activeDataFormValuesData);
+        setNotesFataFormValues(notesDataFormValuesData);
     }
 
     const fetchTrackingSheet = async (sheet_id) => {
