@@ -154,6 +154,7 @@ const trackingSheetSubmitSerializer = (
 }
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
+    console.log(trackingSheetData)
     const dynamicFormNestItemValuesData = {
         bottomhole_bht: trackingSheetData.stage_tracking.bottomhole_bht,
         bottomhole_bhp: trackingSheetData.stage_tracking.bottomhole_bhp,
@@ -192,8 +193,8 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         total_pad_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_pad_volume.actual,
         total_clean_fluid_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.design,
         total_clean_fluid_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.actual,
-        total_proppant_lbs_design: trackingSheetData.stage_data.pumping_summary.total_proppant,
-        total_proppant_lbs_actual: trackingSheetData.stage_data.pumping_summary.total_proppant,
+        total_proppant_lbs_design: trackingSheetData.stage_data.pumping_summary.total_proppant.design,
+        total_proppant_lbs_actual: trackingSheetData.stage_data.pumping_summary.total_proppant.actual,
         acid_volume_gals_design: trackingSheetData.stage_data.pumping_summary.acid_volume.design,
         acid_volume_gals_actual: trackingSheetData.stage_data.pumping_summary.acid_volume.actual,
         flush_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.flush_volume.design,
@@ -208,17 +209,17 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         proppantData: trackingSheetData.stage_data.proppant_data
     };
     const activeDataFormValuesData = {
-        wave_type: trackingSheetData.active_data.pulsing_parameters.wave_type,
-        period: trackingSheetData.active_data.pulsing_parameters.period,
-        frequency: trackingSheetData.active_data.pulsing_parameters.frequency,
-        offset: trackingSheetData.active_data.pulsing_parameters.offset,
-        amplitude: trackingSheetData.active_data.pulsing_parameters.amplitude,
-        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_start_time),
-        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_end_time),
-        pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_num_pulse,
-        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_start_time),
-        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_end_time),
-        post_frac_num_pulse: trackingSheetData.active_data.post_frac_num_pulse
+        wave_type: trackingSheetData.active_data.pulsing_parameteres.wave_type,
+        period: trackingSheetData.active_data.pulsing_parameteres.period,
+        frequency: trackingSheetData.active_data.pulsing_parameteres.frequency,
+        offset: trackingSheetData.active_data.pulsing_parameteres.offset,
+        amplitude: trackingSheetData.active_data.pulsing_parameteres.amplitude,
+        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time*1000),
+        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time*1000),
+        pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.pre_frac_num_pulse,
+        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time*1000),
+        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time*1000),
+        post_frac_num_pulse: trackingSheetData.active_data.post_frac_pulses.post_frac_num_pulse
     }
     const notesDataFormValuesData = {
         pre_frac_pulse_note: trackingSheetData.notes.pre_frac_pulse_note,

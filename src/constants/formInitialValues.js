@@ -73,6 +73,7 @@ const fluidFormValues = {
 }
 
 const activeDataFormValues = {
+    wave_type: null,
     amplitude: null,
     frequency: null,
     pre_frac_num_pulse: null,
