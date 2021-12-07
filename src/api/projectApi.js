@@ -43,6 +43,9 @@ export const projectApi = {
         }
     },
     putDefaultValue: async (wellId, data) => {
+        const x = {...FormDataSerializer.defultValueFormSubmitSerializer(data)};
+        console.log(x)
+        console.log(data)
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
                 {
