@@ -116,6 +116,7 @@ export default function TrackingSheet(props) {
     })
 
     const [activeDataFormValues, setActiveDataFormValues] = useState({
+        wave_type: null,
         amplitude: null,
         frequency: null,
         pre_frac_num_pulse: null,
@@ -138,9 +139,8 @@ export default function TrackingSheet(props) {
     const handeSelectStage = (e) => {
         setSelectedStage(e);
         if (e) {
-            console.log(stageSheetList, e);
-            const sheetData = stageSheetList.find(l => l.stage === Number(e))
-            console.log(sheetData);
+            const sheetData = stageSheetList.find(l => l.stage_n === Number(e))
+            console.log(sheetData, stageSheetList, e);
             if (sheetData) {
                 fetchTrackingSheet(sheetData.uuid);
             } else {
@@ -248,14 +248,13 @@ export default function TrackingSheet(props) {
             activeDataFormValuesData,
             notesDataFormValuesData
         } = FormDataSerializer.trackingSheetPopulateDataSerializer(trackingSheetData)
-
-        setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
-        setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
-        setStageDataValues(stageDataValuesData);
-        setPropantFormValues(propantFormValuesData);
-        setFluidFormValues(fluidFormValuesData);
-        setActiveDataFormValues(activeDataFormValuesData);
-        setNotesFataFormValues(notesDataFormValuesData);
+        dynamicFormNestItemForm.setFieldsValue(dynamicFormNestItemValuesData);
+        perforationIntervalInformationForm.setFieldsValue(perforationIntervalInformationValuesData);
+        stageDataForm.setFieldsValue(stageDataValuesData);
+        fluidFormForm.setFieldsValue(fluidFormValuesData);
+        propantFormForm.setFieldsValue(propantFormValuesData);
+        activeDataFormForm.setFieldsValue(activeDataFormValuesData);
+        notesDataFormForm.setFieldsValue(notesDataFormValuesData);
     }
 
     const fetchTrackingSheet = async (sheet_id) => {
@@ -307,13 +306,13 @@ export default function TrackingSheet(props) {
     }
 
     const resetForm = () => {
-        setDynamicFormNestItemValues(FormInitialValues.dynamicFormNestItemValues);
-        setPerforationIntervalInformationValues(FormInitialValues.perforationIntervalInformationValues);
-        setStageDataValues(FormInitialValues.stageDataValues);
-        setPropantFormValues(FormInitialValues.propantFormValues);
-        setFluidFormValues(FormInitialValues.fluidFormValues);
-        setActiveDataFormValues(FormInitialValues.activeDataFormValues);
-        setNotesFataFormValues(FormInitialValues.notesFataFormValues);
+        dynamicFormNestItemForm.setFieldsValue(FormInitialValues.dynamicFormNestItemValues);
+        perforationIntervalInformationForm.setFieldsValue(FormInitialValues.perforationIntervalInformationValues);
+        stageDataForm.setFieldsValue(FormInitialValues.stageDataValues);
+        fluidFormForm.setFieldsValue(FormInitialValues.fluidFormValues);
+        propantFormForm.setFieldsValue(FormInitialValues.propantFormValues);
+        activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
+        notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
     }
 
     useState(() => {
