@@ -217,7 +217,7 @@ export default function TrackingSheet(props) {
         );
         try {
             if (isUpdating) {
-                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n + 1) == selectedStage);
+                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n + 1) === selectedStage);
                 await projectApi.putUpdateTrackingSheet(stageTrackingPresent.id, trackingSheet)
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
@@ -280,8 +280,11 @@ export default function TrackingSheet(props) {
 
     const fetchStagesSubmitted = async (well_id) => {
         const stages = getStages(project.wells.find(well => well.uuid === well_id).num_stages);
+        console.log("### filtered stages stages", stages);
+        console.log("filtered stages project", project);
+        console.log("filtered stages well_id", well_id);
         try {
-            const { data } = await projectApi.getTrackingSheetList(well_id)
+            const data = await projectApi.getTrackingSheetList(well_id)
             console.log(`fetchStagesSubmitted data`, data)
             setItems(stages);
             setStageSheetList(data.stages);
