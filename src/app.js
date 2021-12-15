@@ -31,7 +31,6 @@ export default function Application() {
      * @param {Object} data 
      */
     const saveUserState = (data) => {
-        console.log(data, 'here');
         userHasAuthenticated(true);
         dispatch(allActions.authActions.setUserState(data.user));
         dispatch(allActions.authActions.setUserProjectIds(data.project_ids));

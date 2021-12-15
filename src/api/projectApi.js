@@ -44,8 +44,6 @@ export const projectApi = {
     },
     putDefaultValue: async (wellId, data) => {
         const x = {...FormDataSerializer.defultValueFormSubmitSerializer(data)};
-        console.log(x)
-        console.log(data)
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
                 {
@@ -138,7 +136,7 @@ export const projectApi = {
                 {
                     ...trackingSheet
                 }, { ...HttpUtil.adminHttpHeaders() })
-            if (response.status === 201) return;
+            if (response.status === 200) return;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
             if (error.response.status === 403) throw new Error("Incorrect username or password!")

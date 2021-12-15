@@ -152,8 +152,6 @@ export default function WellVolume(props) {
         });
         
         if(formValid) {
-            console.log('wellVolumeGrids', wellVolumeGrids)
-            console.log('wellVolumeEstimationsGrids', wellVolumeEstimationsGrids)
             props.next();
         } else {
             const newWellVolGrid = _.cloneDeep(wellVolumeGrids);
