@@ -150,7 +150,6 @@ export default function WellInfo(props) {
         if (!isWellInfoValid) {
             handleWellInfoGridChanged(validatedWellGrid)
         } else {
-            console.log('wellInfoGrid', wellInfoGrid)
             props.next();
         }
     }

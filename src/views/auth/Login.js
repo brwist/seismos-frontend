@@ -40,7 +40,6 @@ export default function Login() {
      * @param {Object} data 
      */
     const saveUserState = (data) => {
-        console.log(data)
         localStorage.setItem('JWT', data.access_token);
         userHasAuthenticated(true);
         dispatch(allActions.authActions.setUserState(data.user));

@@ -27,7 +27,6 @@ export default function TrackingSheet(props) {
 
     const [isLoadingFormData, setIsLoadingFormData] = useState(true);
     const project = useSelector(state => state.authReducer.project);
-    console.log(`Tracking sheet project`, project)
     const [wellId, setWellId] = useState(null);
 
     const [items, setItems] = useState([{ value: 1, label: 'Stage 1' }]);
@@ -116,6 +115,7 @@ export default function TrackingSheet(props) {
     })
 
     const [activeDataFormValues, setActiveDataFormValues] = useState({
+        wave_type: null,
         amplitude: null,
         frequency: null,
         pre_frac_num_pulse: null,
@@ -138,9 +138,9 @@ export default function TrackingSheet(props) {
     const handeSelectStage = (e) => {
         setSelectedStage(e);
         if (e) {
-            const sheetData = stageSheetList.find(l => l.stage === Number(e))
+            const sheetData = stageSheetList.find(l => l.stage_n === Number(e));
             if (sheetData) {
-                fetchTrackingSheet(sheetData.sheet_id);
+                fetchTrackingSheet(sheetData.uuid);
             } else {
                 resetForm();
                 setIsUpdating(false);
@@ -217,8 +217,19 @@ export default function TrackingSheet(props) {
         );
         try {
             if (isUpdating) {
-                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n + 1) === selectedStage);
-                await projectApi.putUpdateTrackingSheet(stageTrackingPresent.id, trackingSheet)
+                const stageTrackingPresent = stageSheetList.find(s => (s.stage_n) === Number(selectedStage));
+                const updatedTrackingSheet = {
+                    ...trackingSheet,
+                    remove: {
+                        fluids_injected_into_formation_ids: [],
+                        proppant_data_ids: []
+                    },
+                    add: {
+                        fluids_injected_into_formation: [],
+                        proppant: []
+                    },
+                }
+                await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet)
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
                     autoDismiss: true
@@ -246,12 +257,18 @@ export default function TrackingSheet(props) {
             activeDataFormValuesData,
             notesDataFormValuesData
         } = FormDataSerializer.trackingSheetPopulateDataSerializer(trackingSheetData)
-
+        dynamicFormNestItemForm.setFieldsValue(dynamicFormNestItemValuesData);
+        perforationIntervalInformationForm.setFieldsValue(perforationIntervalInformationValuesData);
+        stageDataForm.setFieldsValue(stageDataValuesData);
+        fluidFormForm.setFieldsValue(fluidFormValuesData);
+        propantFormForm.setFieldsValue(propantFormValuesData);
+        activeDataFormForm.setFieldsValue(activeDataFormValuesData);
+        notesDataFormForm.setFieldsValue(notesDataFormValuesData);
         setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
         setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
         setStageDataValues(stageDataValuesData);
-        setPropantFormValues(propantFormValuesData);
         setFluidFormValues(fluidFormValuesData);
+        setPropantFormValues(propantFormValuesData);
         setActiveDataFormValues(activeDataFormValuesData);
         setNotesFataFormValues(notesDataFormValuesData);
     }
@@ -260,8 +277,7 @@ export default function TrackingSheet(props) {
         setIsLoadingFormData(true);
         setIsUpdating(false);
         try {
-            const { data } = await projectApi.getTrackingSheet(sheet_id)
-            console.log(data);
+            const data = await projectApi.getTrackingSheet(sheet_id);
             populateFormData(data);
             setIsUpdating(true);
             setIsLoadingFormData(false);
@@ -285,14 +301,13 @@ export default function TrackingSheet(props) {
         console.log("filtered stages well_id", well_id);
         try {
             const data = await projectApi.getTrackingSheetList(well_id)
-            console.log(`fetchStagesSubmitted data`, data)
             setItems(stages);
             setStageSheetList(data.stages);
             setSelectedStage(selectedStage + "");
             if (data.stages.length > 0) {
-                const stageTrackingPresent = data.stages.find(s => (s.stage_n + 1) === stages[0].value)
+                const stageTrackingPresent = data.stages.find(s => (s.stage_n) === stages[0].value);
                 if (stageTrackingPresent) {
-                    fetchTrackingSheet(stageTrackingPresent.sheet_id);
+                    fetchTrackingSheet(stageTrackingPresent.uuid);
                 } else {
                     setIsUpdating(false);
                 }
@@ -305,20 +320,18 @@ export default function TrackingSheet(props) {
     }
 
     const resetForm = () => {
-        setDynamicFormNestItemValues(FormInitialValues.dynamicFormNestItemValues);
-        setPerforationIntervalInformationValues(FormInitialValues.perforationIntervalInformationValues);
-        setStageDataValues(FormInitialValues.stageDataValues);
-        setPropantFormValues(FormInitialValues.propantFormValues);
-        setFluidFormValues(FormInitialValues.fluidFormValues);
-        setActiveDataFormValues(FormInitialValues.activeDataFormValues);
-        setNotesFataFormValues(FormInitialValues.notesFataFormValues);
+        dynamicFormNestItemForm.setFieldsValue(FormInitialValues.dynamicFormNestItemValues);
+        perforationIntervalInformationForm.setFieldsValue(FormInitialValues.perforationIntervalInformationValues);
+        stageDataForm.setFieldsValue(FormInitialValues.stageDataValues);
+        fluidFormForm.setFieldsValue(FormInitialValues.fluidFormValues);
+        propantFormForm.setFieldsValue(FormInitialValues.propantFormValues);
+        activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
+        notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
     }
 
     useState(() => {
         if (project && locationData.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-            console.log(`first time: ${locationData.pathname}`)
             if (locationData.state && locationData.state.wellId) {
-                console.log(locationData.state.wellId);
                 setWellId(locationData.state.wellId);
                 resetForm();
                 fetchStagesSubmitted(locationData.state.wellId);
@@ -326,7 +339,6 @@ export default function TrackingSheet(props) {
             else if (locationData.search) {
                 const params = new URLSearchParams(locationData.search);
                 const wellIdSearch = params.get('wellId');
-                console.log(wellIdSearch);
                 setWellId(wellIdSearch);
                 resetForm();
                 fetchStagesSubmitted(wellIdSearch);
@@ -337,9 +349,7 @@ export default function TrackingSheet(props) {
     useEffect(() => {
         return history.listen((location) => {
             if (location.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-                console.log(`You changed the page to: ${location.pathname}`)
                 if (location.state && location.state.wellId) {
-                    console.log(location.state.wellId);
                     setWellId(location.state.wellId);
                     resetForm();
                     fetchStagesSubmitted(location.state.wellId);
@@ -347,7 +357,6 @@ export default function TrackingSheet(props) {
                 else if (location.search) {
                     const params = new URLSearchParams(location.search);
                     const wellIdSearch = params.get('wellId');
-                    console.log(wellIdSearch);
                     setWellId(wellIdSearch);
                     resetForm();
                     fetchStagesSubmitted(wellIdSearch);
@@ -608,7 +617,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <Input className="w-full" />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -643,7 +652,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <InputNumber className="w-full" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
@@ -858,7 +867,7 @@ export default function TrackingSheet(props) {
                                                                 labelCol={{ span: 16, offset: 0 }}
                                                                 labelAlign="left"
                                                             >
-                                                                <Input className="w-full" />
+                                                                <InputNumber className="w-full" />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={5}>
@@ -871,7 +880,7 @@ export default function TrackingSheet(props) {
                                                                 labelCol={{ span: 14, offset: 0 }}
                                                                 labelAlign="left"
                                                             >
-                                                                <Input className="w-full" />
+                                                                <InputNumber className="w-full" />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={6}>

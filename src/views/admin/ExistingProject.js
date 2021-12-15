@@ -15,7 +15,6 @@ export default function ExistingProject() {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             const project = data.find(x => x.key === selectedRowKeys[0]);
-            console.log(`project`, project)
             setSelectedProject(project);
         },
         getCheckboxProps: (record) => ({
@@ -26,7 +25,6 @@ export default function ExistingProject() {
     };
 
     const handleTableChange = (pagination, filters, sorter) => {
-        console.log('here')
         // this.fetch({
         //   sortField: sorter.field,
         //   sortOrder: sorter.order,

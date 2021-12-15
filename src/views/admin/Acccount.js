@@ -7,7 +7,6 @@ export default function Account() {
     const user = useSelector(state => state.authReducer.user);
 
     useEffect(() => {
-        console.log(user)
     })
     return (
         <>

@@ -55,7 +55,6 @@ const formatFormValuesFromColumnGridData = (gridValues) => {
                 fieldValues = extend(fieldValues, { [col.field]: col.datatype === 'integer' ? getNumberValue(col.value) : col.value })
             }
             if (col.datatype === "float") {
-                console.log(`col.value`, col['value'])
                 fieldValues = extend(fieldValues, { [col.field]: parseFloat(col.value) })
             }
             return col;

@@ -4,13 +4,13 @@ const defultValueFormSubmitSerializer = (formData) => {
     return {
         "default_advance_val": {
             "algorithm": formData.algorithm,
-            "compresssibility": formData.compressibility,
+            "compresssibility": formData.compresssibility,
             "data_sample_rate": formData.data_sample_rate,
             "density": formData.density,
             "f_high_hz": formData.f_high_hz,
             "f_low_hz": formData.f_low_hz,
             "grid_density": formData.grid_density,
-            "interation": formData.iterations,
+            "interation": formData.interation,
             "layer": formData.layer,
             "loop": formData.loop,
             "method": formData.method,
@@ -18,7 +18,7 @@ const defultValueFormSubmitSerializer = (formData) => {
             "new_sample_rate": formData.new_sample_rate,
             "response": formData.response,
             "source": formData.source,
-            "tolerance": formData.tolerence,
+            "tolerance": formData.tolerance,
             "total_width": formData.total_width,
             "viscosity": formData.viscosity,
             "weighting": formData.weighting,
@@ -45,14 +45,14 @@ const defultValueFormSubmitSerializer = (formData) => {
             "ffkw_correction": formData.ffkw_correction,
             "fit_end_point": formData.fit_end_point,
             "fit_iteration": formData.fit_iteration,
-            "fuild_density": formData.fluid_density,
-            "fuildt": formData.fluid_t,
+            "fuild_density": formData.fuild_density,
+            "fuildt": formData.fuildt,
             "k_mpa": formData.k_mpa,
             "met_res": formData.met_res,
             "NG": formData.NG,
             "nu_lim": formData.nu_lim,
             "overburden": formData.overburden,
-            "per_red": formData.perRed,
+            "per_red": formData.per_red,
             "plotraw_YN": formData.plotraw_YN,
             "poisson": formData.poisson,
             "passion_method": formData.passion_method,
@@ -205,20 +205,20 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         fluidData: trackingSheetData.stage_data.fluids_injected_into_formation
     };
     const propantFormValuesData = {
-        proppantData: trackingSheetData.stage_data.propant_data
+        proppantData: trackingSheetData.stage_data.proppant_data
     };
     const activeDataFormValuesData = {
-        wave_type: trackingSheetData.active_data.pulsing_parameters.wave_type,
-        period: trackingSheetData.active_data.pulsing_parameters.period,
-        frequency: trackingSheetData.active_data.pulsing_parameters.frequency,
-        offset: trackingSheetData.active_data.pulsing_parameters.offset,
-        amplitude: trackingSheetData.active_data.pulsing_parameters.amplitude,
-        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.start_time),
-        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time),
+        wave_type: trackingSheetData.active_data.pulsing_parameteres.wave_type,
+        period: trackingSheetData.active_data.pulsing_parameteres.period,
+        frequency: trackingSheetData.active_data.pulsing_parameteres.frequency,
+        offset: trackingSheetData.active_data.pulsing_parameteres.offset,
+        amplitude: trackingSheetData.active_data.pulsing_parameteres.amplitude,
+        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time*1000),
+        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time*1000),
         pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.pre_frac_num_pulse,
-        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time),
-        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time),
-        post_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.post_frac_num_pulse,
+        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time*1000),
+        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time*1000),
+        post_frac_num_pulse: trackingSheetData.active_data.post_frac_pulses.post_frac_num_pulse
     }
     const notesDataFormValuesData = {
         pre_frac_pulse_note: trackingSheetData.notes.pre_frac_pulse_note,
@@ -236,8 +236,18 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         notesDataFormValuesData,
     }
 }
+
+const defultValuePopulateDataSerializer = (defaultValuesData) => {
+    return {
+        ...defaultValuesData.default_advance_val,
+        ...defaultValuesData.default_param_val,
+        ...defaultValuesData.default_value,
+    }
+}
+
 const FormDataSerializer = {
     defultValueFormSubmitSerializer,
+    defultValuePopulateDataSerializer,
     trackingSheetSubmitSerializer,
     trackingSheetPopulateDataSerializer
 }
