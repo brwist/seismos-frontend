@@ -296,6 +296,9 @@ export default function TrackingSheet(props) {
 
     const fetchStagesSubmitted = async (well_id) => {
         const stages = getStages(project.wells.find(well => well.uuid === well_id).num_stages);
+        console.log("### filtered stages stages", stages);
+        console.log("filtered stages project", project);
+        console.log("filtered stages well_id", well_id);
         try {
             const data = await projectApi.getTrackingSheetList(well_id)
             setItems(stages);
