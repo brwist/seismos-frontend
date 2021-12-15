@@ -27,7 +27,6 @@ export default function TrackingSheet(props) {
 
     const [isLoadingFormData, setIsLoadingFormData] = useState(true);
     const project = useSelector(state => state.authReducer.project);
-    console.log(`Tracking sheet project`, project)
     const [wellId, setWellId] = useState(null);
 
     const [items, setItems] = useState([{ value: 1, label: 'Stage 1' }]);
@@ -139,8 +138,7 @@ export default function TrackingSheet(props) {
     const handeSelectStage = (e) => {
         setSelectedStage(e);
         if (e) {
-            const sheetData = stageSheetList.find(l => l.stage_n === Number(e))
-            console.log(sheetData, stageSheetList, e);
+            const sheetData = stageSheetList.find(l => l.stage_n === Number(e));
             if (sheetData) {
                 fetchTrackingSheet(sheetData.uuid);
             } else {
@@ -231,8 +229,6 @@ export default function TrackingSheet(props) {
                         proppant: []
                     },
                 }
-                console.log(stageSheetList, selectedStage, stageTrackingPresent)
-                console.log(updatedTrackingSheet, stageTrackingPresent);
                 await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet)
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
@@ -281,8 +277,7 @@ export default function TrackingSheet(props) {
         setIsLoadingFormData(true);
         setIsUpdating(false);
         try {
-            const data = await projectApi.getTrackingSheet(sheet_id)
-            console.log(data);
+            const data = await projectApi.getTrackingSheet(sheet_id);
             populateFormData(data);
             setIsUpdating(true);
             setIsLoadingFormData(false);
@@ -300,18 +295,14 @@ export default function TrackingSheet(props) {
     }
 
     const fetchStagesSubmitted = async (well_id) => {
-        console.log(well_id)
         const stages = getStages(project.wells.find(well => well.uuid === well_id).num_stages);
         try {
             const data = await projectApi.getTrackingSheetList(well_id)
-            console.log(`fetchStagesSubmitted data`, data)
             setItems(stages);
             setStageSheetList(data.stages);
             setSelectedStage(selectedStage + "");
             if (data.stages.length > 0) {
-                const stageTrackingPresent = data.stages.find(s => (s.stage_n) === stages[0].value)
-                console.log("HERE", stageTrackingPresent);
-                console.log("stages", stages);
+                const stageTrackingPresent = data.stages.find(s => (s.stage_n) === stages[0].value);
                 if (stageTrackingPresent) {
                     fetchTrackingSheet(stageTrackingPresent.uuid);
                 } else {
@@ -337,9 +328,7 @@ export default function TrackingSheet(props) {
 
     useState(() => {
         if (project && locationData.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-            console.log(`first time: ${locationData.pathname}`)
             if (locationData.state && locationData.state.wellId) {
-                console.log(locationData.state.wellId);
                 setWellId(locationData.state.wellId);
                 resetForm();
                 fetchStagesSubmitted(locationData.state.wellId);
@@ -347,7 +336,6 @@ export default function TrackingSheet(props) {
             else if (locationData.search) {
                 const params = new URLSearchParams(locationData.search);
                 const wellIdSearch = params.get('wellId');
-                console.log(wellIdSearch);
                 setWellId(wellIdSearch);
                 resetForm();
                 fetchStagesSubmitted(wellIdSearch);
@@ -358,9 +346,7 @@ export default function TrackingSheet(props) {
     useEffect(() => {
         return history.listen((location) => {
             if (location.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
-                console.log(`You changed the page to: ${location.pathname}`)
                 if (location.state && location.state.wellId) {
-                    console.log(location.state.wellId);
                     setWellId(location.state.wellId);
                     resetForm();
                     fetchStagesSubmitted(location.state.wellId);
@@ -368,7 +354,6 @@ export default function TrackingSheet(props) {
                 else if (location.search) {
                     const params = new URLSearchParams(location.search);
                     const wellIdSearch = params.get('wellId');
-                    console.log(wellIdSearch);
                     setWellId(wellIdSearch);
                     resetForm();
                     fetchStagesSubmitted(wellIdSearch);

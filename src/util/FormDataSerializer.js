@@ -4,13 +4,13 @@ const defultValueFormSubmitSerializer = (formData) => {
     return {
         "default_advance_val": {
         "algorithm": formData.algorithm,
-        "compresssibility": formData.compressibility,
+        "compresssibility": formData.compresssibility,
         "data_sample_rate": formData.data_sample_rate,
         "density": formData.density,
         "f_high_hz": formData.f_high_hz,
         "f_low_hz": formData.f_low_hz,
         "grid_density": formData.grid_density,
-        "interation": formData.iterations,
+        "interation": formData.interation,
         "layer": formData.layer,
         "loop": formData.loop,
         "method": formData.method,
@@ -18,7 +18,7 @@ const defultValueFormSubmitSerializer = (formData) => {
         "new_sample_rate": formData.new_sample_rate,
         "response": formData.response,
         "source": formData.source,
-        "tolerance": formData.tolerence,
+        "tolerance": formData.tolerance,
         "total_width": formData.total_width,
         "viscosity": formData.viscosity,
         "weighting": formData.weighting,
@@ -45,14 +45,14 @@ const defultValueFormSubmitSerializer = (formData) => {
         "ffkw_correction": formData.ffkw_correction,
         "fit_end_point": formData.fit_end_point,
         "fit_iteration": formData.fit_iteration,
-        "fuild_density": formData.fluid_density,
-        "fuildt": formData.fluid_t,
+        "fuild_density": formData.fuild_density,
+        "fuildt": formData.fuildt,
         "k_mpa": formData.k_mpa,
         "met_res": formData.met_res,
         "NG": formData.NG,
         "nu_lim": formData.nu_lim,
         "overburden": formData.overburden,
-        "per_red": formData.perRed,
+        "per_red": formData.per_red,
         "plotraw_YN": formData.plotraw_YN,
         "poisson": formData.poisson,
         "passion_method": formData.passion_method,
@@ -154,7 +154,6 @@ const trackingSheetSubmitSerializer = (
 }
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
-    console.log(trackingSheetData)
     const dynamicFormNestItemValuesData = {
         bottomhole_bht: trackingSheetData.stage_tracking.bottomhole_bht,
         bottomhole_bhp: trackingSheetData.stage_tracking.bottomhole_bhp,
@@ -237,8 +236,18 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         notesDataFormValuesData,
     }
 }
+
+const defultValuePopulateDataSerializer = (defaultValuesData) => {
+    return {
+        ...defaultValuesData.default_advance_val,
+        ...defaultValuesData.default_param_val,
+        ...defaultValuesData.default_value,
+    }
+}
+
 const FormDataSerializer = {
     defultValueFormSubmitSerializer,
+    defultValuePopulateDataSerializer,
     trackingSheetSubmitSerializer,
     trackingSheetPopulateDataSerializer
 }

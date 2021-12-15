@@ -17,7 +17,6 @@ class SelectEditor extends PureComponent {
     }
     const { e } = this.state
     onCommit(opt.value, e)
-    console.log('COMMITTED', opt.value)
   }
 
   handleKeyDown (e) {
