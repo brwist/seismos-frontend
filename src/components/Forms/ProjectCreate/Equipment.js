@@ -4,10 +4,13 @@ import TableHeadersUtil from "util/TableHeaderUtil";
 import Grid from "components/Grid/Grid";
 import _ from "lodash";
 import NumberInput from "components/Grid/DataEditor/NumberInput";
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function Equipment(props) {
     
     const [equipmentGrid, setEquipmentGrid] = useState([]);
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const getEquipmentGridRow = (t) => {
         return t.rows.map(row => {
@@ -67,9 +70,15 @@ export default function Equipment(props) {
                 ></Grid>
             </div>
             <div className="text-right">
-                <Button type="primary" onClick={(e) => {createProject()}}>
-                    Create Project
-                </Button>
+                {
+                    props.isFormSubmitting
+                    ? <Button type="primary">
+                        <span><Spin indicator={antIcon} /> Creating Project</span>
+                    </Button>
+                    : <Button type="primary" onClick={(e) => {createProject()}}>
+                        Create Project
+                    </Button>
+                }
             </div>
         </>
     );

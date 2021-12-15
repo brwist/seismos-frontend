@@ -83,6 +83,16 @@ const trackingSheetSubmitSerializer = (
     activeDataFormValues,
     notesDataFormValues
 ) => {
+    console.log(
+        selectedStage,
+        dynamicFormNestItemValues,
+        perforationIntervalInformationValues,
+        stageDataValues,
+        propantFormValues,
+        fluidFormValues,
+        activeDataFormValues,
+        notesDataFormValues
+    )
     return {
         stage: Number(selectedStage),
         stage_tracking: {
@@ -112,8 +122,8 @@ const trackingSheetSubmitSerializer = (
             }
         },
         stage_data: {
-            stage_start_time: Number(stageDataValues.stage_start_time.format('x')),
-            stage_end_time: Number(stageDataValues.stage_end_time.format('x')),
+            stage_start_time: stageDataValues.stage_start_time ? Number(stageDataValues.stage_start_time.format('x')) : null,
+            stage_end_time: stageDataValues.stage_end_time ? Number(stageDataValues.stage_end_time.format('x')) : null,
             opening_well: stageDataValues.opening_well,
             // isip: stageDataValues.isip,
             fluid_parameters: {
@@ -142,8 +152,16 @@ const trackingSheetSubmitSerializer = (
                 offset: activeDataFormValues.offset,
                 amplitude: activeDataFormValues.amplitude,
             },
-            pre_frac_pulses: { pre_frac_start_time: Number(activeDataFormValues.pre_frac_start_time.format('x')), pre_frac_end_time: Number(activeDataFormValues.pre_frac_end_time.format('x')), pre_frac_num_pulse: Number(activeDataFormValues.pre_frac_num_pulse) },
-            post_frac_pulses: { post_frac_start_time: Number(activeDataFormValues.post_frac_start_time.format('x')), post_frac_end_time: Number(activeDataFormValues.post_frac_end_time.format('x')), post_frac_num_pulse: Number(activeDataFormValues.post_frac_num_pulse) },
+            pre_frac_pulses: { 
+                pre_frac_start_time: activeDataFormValues.pre_frac_start_time ? Number(activeDataFormValues.pre_frac_start_time.format('x')) : null,
+                pre_frac_end_time: activeDataFormValues.pre_frac_end_time ? Number(activeDataFormValues.pre_frac_end_time.format('x')) : null,
+                pre_frac_num_pulse: activeDataFormValues.pre_frac_num_pulse ? Number(activeDataFormValues.pre_frac_num_pulse) : null 
+            },
+            post_frac_pulses: { 
+                post_frac_start_time: activeDataFormValues.post_frac_start_time ? Number(activeDataFormValues.post_frac_start_time.format('x')) : null,
+                post_frac_end_time: activeDataFormValues.post_frac_end_time ? Number(activeDataFormValues.post_frac_end_time.format('x')) : null,
+                post_frac_num_pulse: activeDataFormValues.post_frac_num_pulse ? Number(activeDataFormValues.post_frac_num_pulse) : null 
+            },
         },
         notes: {
             pre_frac_pulse_note: notesDataFormValues.pre_frac_pulse_note,

@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 import FormInitialValues from "constants/formInitialValues";
 import FormDataSerializer from "util/FormDataSerializer";
 import { projectApi } from "./../../api/projectApi"
-
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 export default function TrackingSheet(props) {
     const { Option } = Select;
     const { Panel } = Collapse;
@@ -244,6 +245,10 @@ export default function TrackingSheet(props) {
             fetchStagesSubmitted(wellId);
         } catch (error) {
             console.log(error);
+            addToast("Something went wrong. Please contact admin.", {
+                appearance: 'error',
+                autoDismiss: true
+            });
         }
     }
 

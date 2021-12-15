@@ -31,6 +31,7 @@ export default function NewProject() {
     const [clientInfoValues, setClientInfoValues] = useState(null);
     const [crewInfoValues, setCrewInfoValues] = useState(null);
     const [equipmentValues, setEquipmentValues] = useState(null);
+    const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
     const next = () => {
         console.log('next', _.cloneDeep(jobInfoValues));
@@ -43,6 +44,7 @@ export default function NewProject() {
     };
 
     const handleCreateProjectFormSubmit = async () => {
+        setIsFormSubmitting(true);
         const wellVolumeData = wellVolumeValues ? wellVolumeValues.map(wellVol => {
             return ProjectUtil.formatFormValuesFromColumnGridData(wellVol);
         }) : [];
@@ -69,6 +71,7 @@ export default function NewProject() {
                 appearance: 'success',
                 autoDismiss: true
             });
+            setIsFormSubmitting(false);
             history.push({
                 pathname: '/admin/dashboard',
                 search: '?projectId=' + projectId,
@@ -76,6 +79,7 @@ export default function NewProject() {
             });
         } catch (error) {
             console.log(error)
+            setIsFormSubmitting(false);
         }
     }
 
@@ -131,6 +135,7 @@ export default function NewProject() {
                 next={next}
                 setFormValue={setEquipmentValues}
                 formValues={equipmentValues}
+                isFormSubmitting={isFormSubmitting}
                 createProjectSubmit={handleCreateProjectFormSubmit}></Equipment>
         }
     ];
