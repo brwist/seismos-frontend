@@ -49,9 +49,11 @@ export const projectApi = {
                 {
                     ...FormDataSerializer.defultValueFormSubmitSerializer(data)
                 }, { ...HttpUtil.adminHttpHeaders() })
+            console.log("putDefaultValue: ", response);
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
+            console.log("putDefaultValue: ", error.response.data);
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
@@ -62,9 +64,11 @@ export const projectApi = {
                 {
                     ...HttpUtil.adminHttpHeaders(),
                 })
+            console.log("GET response [getDefaultValue]: ", response)
             if (response.status === 200 && response.data) return response.data;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
+            console.log("GET error response [postCreateTrackingSheet]: ", error.response)
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
@@ -117,9 +121,11 @@ export const projectApi = {
                 {
                     ...trackingSheet
                 }, { ...HttpUtil.adminHttpHeaders() })
+            console.log("POST response [postCreateTrackingSheet]: ", response)
             if (response.status === 201) return;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
+            console.log("ERROR POST response [postCreateTrackingSheet]: ", error.response)
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }
