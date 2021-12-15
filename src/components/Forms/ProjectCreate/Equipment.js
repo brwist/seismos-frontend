@@ -11,7 +11,6 @@ export default function Equipment(props) {
 
     const getEquipmentGridRow = (t) => {
         return t.rows.map(row => {
-            console.log(row.field)
             return [
                 { value: row.label, readOnly: true, disableEvents: true},
                 { value: "", field: row.field, dataEditor: NumberInput, required: row.required, datatype: row.datatype },
@@ -26,7 +25,6 @@ export default function Equipment(props) {
     }
 
     const handleEquipmentGridChanged = (updatedGridData) => {
-        console.log(updatedGridData)
         props.setFormValue(updatedGridData);
         setEquipmentGrid(updatedGridData)
     }

@@ -73,7 +73,6 @@ export default function Grid(props) {
                 onCellsChanged={changes => {
                     const gridData = grid.map(row => [...row]);
                     changes.forEach(({ cell, row, col, value }) => {
-                        console.log({ cell, row, col, value })
                         let error = false;
                         let className = cell.className;
                         if(gridData[row][col]['required'] && value === "") {

@@ -8,6 +8,7 @@ import { useHistory, useLocation } from "react-router";
 import { useToasts } from "react-toast-notifications";
 import FormInitialValues from "constants/formInitialValues";
 import { projectApi } from "./../../api/projectApi"
+import FormDataSerializer from "util/FormDataSerializer";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -16,6 +17,8 @@ export default function DefaultValues() {
     let location = useLocation();
     const { addToast } = useToasts();
     const history = useHistory();
+
+    const [defaultValuesForm] = Form.useForm();
 
     const [modalData, setModalData] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -60,8 +63,9 @@ export default function DefaultValues() {
 
     const fetchDefaultValues = async (well_id) => {
         try {
-            const data = await projectApi.getDefaultValue(well_id)
-            console.log("fetchDefaultValues data", data)
+            const data = await projectApi.getDefaultValue(well_id);
+            const formData = FormDataSerializer.defultValuePopulateDataSerializer(data);
+            defaultValuesForm.setFieldsValue(formData)
         } catch (error) {
             console.log(error)
         }
@@ -110,10 +114,11 @@ export default function DefaultValues() {
                 <Form
                     labelAlign="left"
                     name="basic"
-                    initialValues={FormInitialValues.defaultValueForm}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     className="default-values-form"
+                    initialValues={FormInitialValues.defaultValueForm}
+                    form={defaultValuesForm}
                 >
                     <Tabs onChange={callback} type="card">
                         <TabPane tab="Parameter bounds" key="1">
@@ -425,7 +430,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="compressibility"
+                                        name="compresssibility"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -652,7 +657,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="tolerence"
+                                        name="tolerance"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -668,7 +673,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="iterations"
+                                        name="interation"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -781,7 +786,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="fluid_t"
+                                        name="fuildt"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -815,7 +820,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="fluid_density"
+                                        name="fuild_density"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
@@ -919,7 +924,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="perRed"
+                                        name="per_red"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />

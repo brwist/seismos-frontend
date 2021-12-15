@@ -68,7 +68,6 @@ export default function Admin(props) {
             //FETCH PROJECT DETAILS
             try {
                 const { data } = await projectApi.getProjectById(projectId)
-                console.log(`data`, data)
                 if (data) {
                     setNoSidebarLayout(false);
                     const project = data.project;
@@ -98,7 +97,6 @@ export default function Admin(props) {
 
     useEffect(() => {
         if (props.isAuthenticated) {
-            console.log('here', projectIds)
             if (APP_CONSTANTS.ROUTES_WITHOUT_SIDEBAR.indexOf(history.location.pathname) > -1) {
                 setNoSidebarLayout(true);
                 setSidebarMenu([]);
