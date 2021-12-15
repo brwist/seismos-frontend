@@ -7,6 +7,8 @@ import ENUMS from "constants/appEnums";
 import { useHistory, useLocation } from "react-router";
 import moment from "moment";
 import { projectApi } from "./../../api/projectApi"
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function DailyLog() {
     let location = useLocation();
@@ -14,11 +16,13 @@ export default function DailyLog() {
     const history = useHistory();
     const [form] = Form.useForm();
 
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     const initialFormValues = { dailyLogData: [{ date: null, time: null, description: null }] }
 
     const [dailyLogs, setDailyLogs] = useState([]);
     const [projectId, setProjectId] = useState();
     const [wellId, setWellId] = useState();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onChange = (date, dateString) => {
         // console.log(date, dateString);
@@ -49,6 +53,7 @@ export default function DailyLog() {
     const onFinish = async (values) => {
         if (values.dailyLogData.length < 1)
             return;
+        setIsSubmitting(true);
         const val = values.dailyLogData.map(log => {
             return {
                 description: log.description,
@@ -57,14 +62,20 @@ export default function DailyLog() {
         });
         try {
             await projectApi.postDailyLog(wellId, val)
-            fetchDailyLog(wellId)
+            fetchDailyLog(wellId);
             addToast("Daily logs added successfully.", {
                 appearance: 'success',
                 autoDismiss: true
             });
             resetForm(values);
+            setIsSubmitting(false);
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            addToast("Something went wrong. Please report to admin.", {
+                appearance: 'error',
+                autoDismiss: true
+            });
+            setIsSubmitting(false);
         }
     };
 
@@ -216,9 +227,15 @@ export default function DailyLog() {
                             )}
                         </Form.List>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Submit log
-                            </Button>
+                            {
+                                isSubmitting
+                                ? <Button type="primary">
+                                    <span><Spin indicator={antIcon} /> Submitting log</span>
+                                </Button>
+                                : <Button type="primary" htmlType="submit">
+                                    Submit log
+                                </Button>
+                            }
                         </Form.Item>
                     </Form>
                 </div>
