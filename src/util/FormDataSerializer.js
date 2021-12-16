@@ -93,7 +93,7 @@ const trackingSheetSubmitSerializer = (
         activeDataFormValues,
         notesDataFormValues
     )
-    return {
+    const tsFormData = {
         stage: Number(selectedStage),
         stage_tracking: {
             bottomhole_bht: dynamicFormNestItemValues.bottomhole_bht,
@@ -169,6 +169,33 @@ const trackingSheetSubmitSerializer = (
             additional_note: notesDataFormValues.additional_note,
         }
     }
+
+    /** Removing null values from the object */
+    tsFormData.stage_tracking = Object.entries(tsFormData.stage_tracking).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.perforation_interval_information = Object.entries(tsFormData.perforation_interval_information).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.perforation_interval_information.displacement_volume = Object.entries(tsFormData.perforation_interval_information.displacement_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data = Object.entries(tsFormData.stage_data).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.fluid_parameters = Object.entries(tsFormData.stage_data.fluid_parameters).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    // tsFormData.stage_data.pumping_summary =  Object.entries(tsFormData.stage_data.fluid_parameters).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.max_prop_conc = Object.entries(tsFormData.stage_data.pumping_summary.max_prop_conc).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_pad_volume = Object.entries(tsFormData.stage_data.pumping_summary.total_pad_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_clean_fluid_volume = Object.entries(tsFormData.stage_data.pumping_summary.total_clean_fluid_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_proppant = Object.entries(tsFormData.stage_data.pumping_summary.total_proppant).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.acid_volume = Object.entries(tsFormData.stage_data.pumping_summary.acid_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.flush_volume = Object.entries(tsFormData.stage_data.pumping_summary.flush_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.slurry_volume = Object.entries(tsFormData.stage_data.pumping_summary.slurry_volume).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.fluids_injected_into_formation = tsFormData.stage_data.fluids_injected_into_formation.map(obj => {
+        Object.entries(obj).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    }).filter(x => x)
+    tsFormData.stage_data.proppant_data = tsFormData.stage_data.proppant_data.map(obj => {
+        Object.entries(obj).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    }).filter(x => x)
+    tsFormData.active_data = Object.entries(tsFormData.active_data).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.active_data.pulsing_parameteres = Object.entries(tsFormData.active_data.pulsing_parameteres).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.active_data.pre_frac_pulses = Object.entries(tsFormData.active_data.pre_frac_pulses).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.active_data.post_frac_pulses = Object.entries(tsFormData.active_data.post_frac_pulses).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.notes = Object.entries(tsFormData.notes).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    return tsFormData;
 }
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
@@ -197,8 +224,8 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         top_measured_depth: trackingSheetData.perforation_interval_information.top_measured_depth
     };
     const stageDataValuesData = {
-        stage_start_time: moment(trackingSheetData.stage_data.stage_start_time),
-        stage_end_time: moment(trackingSheetData.stage_data.stage_end_time),
+        stage_start_time: trackingSheetData.stage_data.stage_start_time ? moment(trackingSheetData.stage_data.stage_start_time) : null,
+        stage_end_time: trackingSheetData.stage_data.stage_end_time ? moment(trackingSheetData.stage_data.stage_end_time) : null,
         opening_well: trackingSheetData.stage_data.opening_well,
         // isip: trackingSheetData.stage_data.isip,
         base_fluid_type: trackingSheetData.stage_data.fluid_parameters.base_fluid_type,
@@ -231,11 +258,11 @@ const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
         frequency: trackingSheetData.active_data.pulsing_parameteres.frequency,
         offset: trackingSheetData.active_data.pulsing_parameteres.offset,
         amplitude: trackingSheetData.active_data.pulsing_parameteres.amplitude,
-        pre_frac_start_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time*1000),
-        pre_frac_end_time: moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time*1000),
+        pre_frac_start_time: trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time ? moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time*1000) : null,
+        pre_frac_end_time: trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time ? moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time*1000) : null,
         pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.pre_frac_num_pulse,
-        post_frac_start_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time*1000),
-        post_frac_end_time: moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time*1000),
+        post_frac_start_time: trackingSheetData.active_data.post_frac_pulses.post_frac_start_time ? moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time*1000) : null,
+        post_frac_end_time: trackingSheetData.active_data.post_frac_pulses.post_frac_end_time ? moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time*1000) : null,
         post_frac_num_pulse: trackingSheetData.active_data.post_frac_pulses.post_frac_num_pulse
     }
     const notesDataFormValuesData = {

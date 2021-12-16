@@ -216,6 +216,7 @@ export default function TrackingSheet(props) {
             activeDataFormValues,
             notesDataFormValues
         );
+
         try {
             if (isUpdating) {
                 const stageTrackingPresent = stageSheetList.find(s => (s.stage_n) === Number(selectedStage));
@@ -231,12 +232,14 @@ export default function TrackingSheet(props) {
                     },
                 }
                 await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet)
+                
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
                     autoDismiss: true
                 });
             } else {
                 await projectApi.postCreateTrackingSheet(wellId, trackingSheet)
+                setIsUpdating(true);
                 addToast("Tracking sheet data added successfully.", {
                     appearance: 'success',
                     autoDismiss: true
