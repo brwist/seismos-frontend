@@ -429,7 +429,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full" tabindex={1}/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -441,7 +441,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full"  tabindex={2}/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -451,7 +451,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full"  tabindex={5}/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -463,7 +463,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full"  tabindex={3}/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -473,7 +473,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full"  tabindex={6}/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -485,7 +485,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full"  tabindex={4}/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -495,7 +495,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full"  tabindex={7}/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -518,8 +518,9 @@ export default function TrackingSheet(props) {
                                             label="Top perf [MD]"
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
+
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={8} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -529,7 +530,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={13} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -537,11 +538,12 @@ export default function TrackingSheet(props) {
                                     <Col span={10}>
                                         <Form.Item
                                             name={'bottom_measured_depth'}
-                                            label="Bottom perf"
+                                            label="Bottom perf [MD]"
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
+
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={9} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -551,7 +553,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={14} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -563,7 +565,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={10} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -573,7 +575,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full" tabindex={15} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -585,7 +587,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={11} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -595,7 +597,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full" tabindex={16} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -607,7 +609,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full" tabindex={12} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -617,7 +619,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full" tabindex={17} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -630,7 +632,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={18} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -640,7 +642,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={20} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -652,7 +654,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" tabindex={19} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
@@ -677,7 +679,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full"  tabindex={21} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -687,7 +689,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full"  tabindex={22} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -699,7 +701,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full"  tabindex={23} />
                                         </Form.Item>
                                     </Col>
                                     {/* <Col span={10}>
@@ -722,7 +724,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" />
+                                            <Input className="w-full"  tabindex={24} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -732,7 +734,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full"  tabindex={25} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -744,7 +746,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full"  tabindex={26} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
