@@ -4,7 +4,7 @@ const defultValueFormSubmitSerializer = (formData) => {
     return {
         "default_advance_val": {
             "algorithm": formData.algorithm,
-            "compresssibility": formData.compresssibility,
+            "compressibility": formData.compressibility,
             "data_sample_rate": formData.data_sample_rate,
             "density": formData.density,
             "f_high_hz": formData.f_high_hz,
