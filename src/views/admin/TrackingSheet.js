@@ -698,7 +698,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full"  tabindex={21} />
+                                            <DatePicker onChange={onChange} className="w-full" showTime  tabindex={21} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -708,7 +708,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full"  tabindex={22} />
+                                            <DatePicker onChange={onChange} className="w-full"  tabindex={22} showTime/>
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1184,7 +1184,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full" showTime/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1194,7 +1194,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full" showTime/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1217,7 +1217,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full" showTime/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1227,7 +1227,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" />
+                                            <DatePicker onChange={onChange} className="w-full" showTime/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
