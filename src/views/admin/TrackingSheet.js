@@ -5,12 +5,14 @@ import { useHistory, useLocation } from "react-router";
 import ConfirmationModal from "components/Modal/ConfirmationModal";
 import ENUMS from "constants/appEnums";
 import { useToasts } from "react-toast-notifications";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormInitialValues from "constants/formInitialValues";
 import FormDataSerializer from "util/FormDataSerializer";
 import { projectApi } from "./../../api/projectApi"
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import allActions from "redux/actions";
+
 export default function TrackingSheet(props) {
     const { Option } = Select;
     const { Panel } = Collapse;
@@ -27,9 +29,12 @@ export default function TrackingSheet(props) {
     const [notesDataFormForm] = Form.useForm();
 
     const [isLoadingFormData, setIsLoadingFormData] = useState(true);
-    const project = useSelector(state => state.authReducer.project);
-    const [wellId, setWellId] = useState(null);
 
+    const dispatch = useDispatch();
+    const project = useSelector(state => state.authReducer.project);
+
+    const [wellId, setWellId] = useState(null);
+    const [projectId, setProjectId] = useState(null);
     const [items, setItems] = useState([{ value: 1, label: 'Stage 1' }]);
     const [stageSheetList, setStageSheetList] = useState([]);
     const [selectedStage, setSelectedStage] = useState(1);
@@ -245,7 +250,10 @@ export default function TrackingSheet(props) {
                     autoDismiss: true
                 });
             }
-            fetchStagesSubmitted(wellId);
+            const { data } = await projectApi.getProjectById(projectId);
+            const projectData = data.project;
+            dispatch(allActions.authActions.setCurrentProject(projectData));
+            fetchStagesSubmitted(wellId, projectData);
         } catch (error) {
             console.log(error);
             addToast("Something went wrong. Please contact admin.", {
@@ -302,18 +310,15 @@ export default function TrackingSheet(props) {
         return stages;
     }
 
-    const fetchStagesSubmitted = async (well_id) => {
-        const stages = getStages(project.wells.find(well => well.uuid === well_id).num_stages);
-        console.log("### filtered stages stages", stages);
-        console.log("filtered stages project", project);
-        console.log("filtered stages well_id", well_id);
+    const fetchStagesSubmitted = async (well_id, projectData) => {
+        const stages = getStages(projectData.wells.find(well => well.uuid === well_id).num_stages);
         try {
             const data = await projectApi.getTrackingSheetList(well_id)
             setItems(stages);
             setStageSheetList(data.stages);
             setSelectedStage(selectedStage + "");
             if (data.stages.length > 0) {
-                const stageTrackingPresent = data.stages.find(s => (s.stage_n) === stages[0].value);
+                const stageTrackingPresent = data.stages.find(s => (s.stage_n) === stages[Number(selectedStage) - 1].value);
                 if (stageTrackingPresent) {
                     fetchTrackingSheet(stageTrackingPresent.uuid);
                 } else {
@@ -341,15 +346,18 @@ export default function TrackingSheet(props) {
         if (project && locationData.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
             if (locationData.state && locationData.state.wellId) {
                 setWellId(locationData.state.wellId);
+                setProjectId(locationData.state.projectId);
                 resetForm();
-                fetchStagesSubmitted(locationData.state.wellId);
+                fetchStagesSubmitted(locationData.state.wellId, project);
             }
             else if (locationData.search) {
                 const params = new URLSearchParams(locationData.search);
                 const wellIdSearch = params.get('wellId');
+                const projectIdSearch = params.get('projectId');
                 setWellId(wellIdSearch);
+                setProjectId(projectIdSearch);
                 resetForm();
-                fetchStagesSubmitted(wellIdSearch);
+                fetchStagesSubmitted(wellIdSearch, project);
             }
         }
     }, [project])
@@ -359,15 +367,18 @@ export default function TrackingSheet(props) {
             if (location.pathname === (ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET)) {
                 if (location.state && location.state.wellId) {
                     setWellId(location.state.wellId);
+                    setProjectId(location.state.projectId);
                     resetForm();
-                    fetchStagesSubmitted(location.state.wellId);
+                    fetchStagesSubmitted(location.state.wellId, project);
                 }
                 else if (location.search) {
                     const params = new URLSearchParams(location.search);
                     const wellIdSearch = params.get('wellId');
+                    const projectIdSearch = params.get('projectId');
                     setWellId(wellIdSearch);
+                    setProjectId(projectIdSearch);
                     resetForm();
-                    fetchStagesSubmitted(wellIdSearch);
+                    fetchStagesSubmitted(wellIdSearch, project);
                 }
             }
         })
