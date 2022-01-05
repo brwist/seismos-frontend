@@ -109,7 +109,7 @@ const defaultValueForm = {
     layer: 0,
     viscosity: 10.0,
     density: 1000,
-    compresssibility: 1,
+    compressibility: 1,
     f_low_hz: 0.01,
     f_high_hz: 2.5,
     new_sample_rate: 20.0,

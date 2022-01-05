@@ -430,7 +430,7 @@ export default function DefaultValues() {
                                                 </Tooltip>
                                             </span>
                                         }
-                                        name="compresssibility"
+                                        name="compressibility"
                                         style={{ marginLeft: '5rem' }}
                                     >
                                         <InputNumber className="w-100" />
