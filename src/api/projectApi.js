@@ -43,7 +43,7 @@ export const projectApi = {
         }
     },
     putDefaultValue: async (wellId, data) => {
-        const x = {...FormDataSerializer.defultValueFormSubmitSerializer(data)};
+        const x = { ...FormDataSerializer.defultValueFormSubmitSerializer(data) };
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + '/' + wellId,
                 {
@@ -131,6 +131,7 @@ export const projectApi = {
         }
     },
     putUpdateTrackingSheet: async (stage_id, trackingSheet) => {
+        console.log("SENT DATA:", trackingSheet)
         try {
             const response = await axios.put(config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_UPDATE + '/' + stage_id,
                 {
@@ -139,6 +140,7 @@ export const projectApi = {
             if (response.status === 200) return;
             throw new Error(`Response status code: ${response.status}`)
         } catch (error) {
+            console.log(`putUpdateTrackingSheet error`, error.response)
             if (error.response.status === 403) throw new Error("Incorrect username or password!")
             throw new Error(error.message)
         }

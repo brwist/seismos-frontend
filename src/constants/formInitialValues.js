@@ -39,8 +39,8 @@ const stageDataValues = {
     total_pad_volume_bbls_actual: null,
     total_clean_fluid_volume_bbls_design: null,
     total_clean_fluid_volume_bbls_actual: null,
-    total_lbs_design: null,
-    total_lbs_actual: null,
+    total_proppant_lbs_design: null,
+    total_proppant_lbs_actual: null,
     total_sand_lbs_design: null,
     total_sand_lbs_actual: null,
     acid_volume_gals_design: null,
@@ -50,8 +50,8 @@ const stageDataValues = {
     slurry_volume_bbls_design: null,
     slurry_volume_bbls_actual: null,
 }
-        
-const propantFormValues = {
+
+const proppantFormValues = {
     proppantData: [
         {
             bulk_density: null,
@@ -162,7 +162,7 @@ const FormInitialValues = {
     dynamicFormNestItemValues,
     perforationIntervalInformationValues,
     stageDataValues,
-    propantFormValues,
+    proppantFormValues,
     fluidFormValues,
     activeDataFormValues,
     notesFataFormValues,
