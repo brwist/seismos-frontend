@@ -24,7 +24,7 @@ export default function TrackingSheet(props) {
     const [perforationIntervalInformationForm] = Form.useForm();
     const [stageDataForm] = Form.useForm();
     const [fluidFormForm] = Form.useForm();
-    const [propantFormForm] = Form.useForm();
+    const [proppantFormForm] = Form.useForm();
     const [activeDataFormForm] = Form.useForm();
     const [notesDataFormForm] = Form.useForm();
 
@@ -45,7 +45,7 @@ export default function TrackingSheet(props) {
     const [resetDynamicFormNestItemValues, setResetDynamicFormNestItemValues] = useState(false);
     const [resetPerforationIntervalInformationValues, setResetPerforationIntervalInformationValues] = useState(false);
     const [resetStageDataValues, setResetStageDataValues] = useState(false);
-    const [resetPropantFormValues, setResetPropantFormValues] = useState(false);
+    const [resetProppantFormValues, setResetProppantFormValues] = useState(false);
     const [resetFluidFormValues, setResetFluidFormValues] = useState(false);
     const [resetActiveDataFormValues, setResetActiveDataFormValues] = useState(false);
     const [resetNotesFataFormValues, setResetNotesFataFormValues] = useState(false);
@@ -90,7 +90,7 @@ export default function TrackingSheet(props) {
         total_clean_fluid_volume_bbls_design: null,
         total_clean_fluid_volume_bbls_actual: null,
         total_proppant_lbs_design: null,
-        total_proppant_lbs_actual: null,
+        // total_proppant_lbs_actual: null,
         acid_volume_gals_design: null,
         acid_volume_gals_actual: null,
         flush_volume_bbls_design: null,
@@ -99,7 +99,7 @@ export default function TrackingSheet(props) {
         slurry_volume_bbls_actual: null,
     })
 
-    const [propantFormValues, setPropantFormValues] = useState({
+    const [proppantFormValues, setProppantFormValues] = useState({
         proppantData: [
             {
                 bulk_density: null,
@@ -140,8 +140,16 @@ export default function TrackingSheet(props) {
         post_frac_pulse_note: null
     })
 
+    const [addedFluidsAndProppant, setAddedFluidsAndProppant] = useState({
+        fluids_injected_into_formation: [],
+        proppant: []
+    })
+    const [removedFluidsAndProppant, setRemovedFluidsAndProppant] = useState({
+        fluids_injected_into_formation_ids: [],
+        proppant_data_ids: []
+    })
 
-    const handeSelectStage = (e) => {
+    const handleSelectStage = (e) => {
         setSelectedStage(e);
         if (e) {
             const sheetData = stageSheetList.find(l => l.stage_n === Number(e));
@@ -185,8 +193,8 @@ export default function TrackingSheet(props) {
         setStageDataValues(newFormValues);
     }
 
-    const propantFormChange = (changedValue, newFormValues) => {
-        setPropantFormValues(newFormValues);
+    const proppantFormChange = (changedValue, newFormValues) => {
+        setProppantFormValues(newFormValues);
     }
 
     const fluidFormChange = (changedValue, newFormValues) => {
@@ -216,28 +224,37 @@ export default function TrackingSheet(props) {
             dynamicFormNestItemValues,
             perforationIntervalInformationValues,
             stageDataValues,
-            propantFormValues,
+            proppantFormValues,
             fluidFormValues,
             activeDataFormValues,
             notesDataFormValues
         );
 
+        console.log(trackingSheet);
         try {
             if (isUpdating) {
                 const stageTrackingPresent = stageSheetList.find(s => (s.stage_n) === Number(selectedStage));
+                const addedProppantData = proppantFormValues.proppantData.filter(item => {
+                    if (!item) return false
+                    return !item.id
+
+                })
+                const addedFluidData = fluidFormValues.fluidData.filter(item => {
+                    if (!item) return false
+                    return !item.id
+
+                })
                 const updatedTrackingSheet = {
                     ...trackingSheet,
-                    remove: {
-                        fluids_injected_into_formation_ids: [],
-                        proppant_data_ids: []
-                    },
+                    remove: removedFluidsAndProppant,
                     add: {
-                        fluids_injected_into_formation: [],
-                        proppant: []
+                        fluids_injected_into_formation: addedFluidData,
+                        proppant: addedProppantData
                     },
                 }
+                console.log("updatedTrackingSheet", updatedTrackingSheet);
                 await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet)
-                
+
                 addToast("Tracking sheet data updated successfully.", {
                     appearance: 'success',
                     autoDismiss: true
@@ -268,7 +285,7 @@ export default function TrackingSheet(props) {
             dynamicFormNestItemValuesData,
             perforationIntervalInformationValuesData,
             stageDataValuesData,
-            propantFormValuesData,
+            proppantFormValuesData,
             fluidFormValuesData,
             activeDataFormValuesData,
             notesDataFormValuesData
@@ -277,14 +294,14 @@ export default function TrackingSheet(props) {
         perforationIntervalInformationForm.setFieldsValue(perforationIntervalInformationValuesData);
         stageDataForm.setFieldsValue(stageDataValuesData);
         fluidFormForm.setFieldsValue(fluidFormValuesData);
-        propantFormForm.setFieldsValue(propantFormValuesData);
+        proppantFormForm.setFieldsValue(proppantFormValuesData);
         activeDataFormForm.setFieldsValue(activeDataFormValuesData);
         notesDataFormForm.setFieldsValue(notesDataFormValuesData);
         setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
         setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
         setStageDataValues(stageDataValuesData);
         setFluidFormValues(fluidFormValuesData);
-        setPropantFormValues(propantFormValuesData);
+        setProppantFormValues(proppantFormValuesData);
         setActiveDataFormValues(activeDataFormValuesData);
         setNotesFataFormValues(notesDataFormValuesData);
     }
@@ -294,6 +311,7 @@ export default function TrackingSheet(props) {
         setIsUpdating(false);
         try {
             const data = await projectApi.getTrackingSheet(sheet_id);
+            console.log("fetchTrackingSheet", data);
             populateFormData(data);
             setIsUpdating(true);
             setIsLoadingFormData(false);
@@ -337,7 +355,7 @@ export default function TrackingSheet(props) {
         perforationIntervalInformationForm.setFieldsValue(FormInitialValues.perforationIntervalInformationValues);
         stageDataForm.setFieldsValue(FormInitialValues.stageDataValues);
         fluidFormForm.setFieldsValue(FormInitialValues.fluidFormValues);
-        propantFormForm.setFieldsValue(FormInitialValues.propantFormValues);
+        proppantFormForm.setFieldsValue(FormInitialValues.proppantFormValues);
         activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
         notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
     }
@@ -404,7 +422,7 @@ export default function TrackingSheet(props) {
                                 style={{ width: "100%" }}
                                 placeholder="Stage"
                                 value={selectedStage}
-                                onChange={(e) => handeSelectStage(e)}
+                                onChange={(e) => handleSelectStage(e)}
                                 dropdownRender={menu => (
                                     <div>
                                         {menu}
@@ -448,7 +466,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full" tabindex={1}/>
+                                            <Input className="w-full" tabindex={1} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -460,7 +478,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"  tabindex={2}/>
+                                            <InputNumber className="w-full" tabindex={2} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -470,7 +488,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"  tabindex={5}/>
+                                            <Input className="w-full" tabindex={5} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -482,7 +500,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"  tabindex={3}/>
+                                            <InputNumber className="w-full" tabindex={3} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -492,7 +510,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"  tabindex={6}/>
+                                            <Input className="w-full" tabindex={6} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -504,7 +522,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 7, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"  tabindex={4}/>
+                                            <Input className="w-full" tabindex={4} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -514,7 +532,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 10, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"  tabindex={7}/>
+                                            <Input className="w-full" tabindex={7} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -698,7 +716,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" showTime  tabindex={21} />
+                                            <DatePicker onChange={onChange} className="w-full" showTime tabindex={21} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -708,7 +726,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full"  tabindex={22} showTime/>
+                                            <DatePicker onChange={onChange} className="w-full" tabindex={22} showTime />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -720,7 +738,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"  tabindex={23} />
+                                            <InputNumber className="w-full" tabindex={23} />
                                         </Form.Item>
                                     </Col>
                                     {/* <Col span={10}>
@@ -743,7 +761,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <Input className="w-full"  tabindex={24} />
+                                            <Input className="w-full" tabindex={24} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}>
@@ -753,7 +771,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"  tabindex={25} />
+                                            <InputNumber className="w-full" tabindex={25} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -765,7 +783,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <InputNumber className="w-full"  tabindex={26} />
+                                            <InputNumber className="w-full" tabindex={26} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={10}></Col>
@@ -829,7 +847,14 @@ export default function TrackingSheet(props) {
                                                             lb/gal
                                                         </Col>
                                                         <Col span={2}>
-                                                            <MinusCircleOutlined onClick={() => remove(name)} />
+                                                            <MinusCircleOutlined onClick={() => {
+                                                                if (fluidFormValues.fluidData[name])
+                                                                    setRemovedFluidsAndProppant(prev => {
+                                                                        return { ...prev, fluids_injected_into_formation_ids: [...prev.fluids_injected_into_formation_ids, fluidFormValues.fluidData[name].id] }
+
+                                                                    })
+                                                                remove(name)
+                                                            }} />
                                                         </Col>
                                                     </Row>
                                                 ))}
@@ -854,80 +879,92 @@ export default function TrackingSheet(props) {
                                 </Form>
                                 <Divider orientation="left" plain><strong>Proppant data</strong></Divider>
                                 <Form
-                                    name="propant_form"
-                                    onValuesChange={propantFormChange}
+                                    name="proppant_form"
+                                    onValuesChange={proppantFormChange}
                                     autoComplete="off"
-                                    initialValues={propantFormValues}
-                                    form={propantFormForm}
+                                    initialValues={proppantFormValues}
+                                    form={proppantFormForm}
                                 >
                                     <Form.List name="proppantData">
                                         {(fields, { add, remove }) => (
                                             <>
-                                                {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                                    <Row gutter={24} key={key}>
-                                                        <Col span={6}>
-                                                            <Form.Item
-                                                                {...restField}
-                                                                name={[name, 'description']}
-                                                                fieldKey={[fieldKey, 'description']}
-                                                                rules={[{ required: true, message: 'Description' }]}
-                                                                label="Description"
-                                                                labelCol={{ span: 11, offset: 0 }}
-                                                                labelAlign="left"
-                                                            >
-                                                                <Input className="w-full" />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        <Col span={5}>
-                                                            <Form.Item
-                                                                {...restField}
-                                                                name={[name, 'specific_gravity']}
-                                                                fieldKey={[fieldKey, 'Specific_gravity']}
-                                                                rules={[{ required: true, message: 'Specific gravity' }]}
-                                                                label="Specific gravity"
-                                                                labelCol={{ span: 16, offset: 0 }}
-                                                                labelAlign="left"
-                                                            >
-                                                                <InputNumber className="w-full" />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        <Col span={5}>
-                                                            <Form.Item
-                                                                {...restField}
-                                                                name={[name, 'bulk_density']}
-                                                                fieldKey={[fieldKey, 'bulk_density']}
-                                                                rules={[{ required: true, message: 'Bulk density' }]}
-                                                                label="Bulk density"
-                                                                labelCol={{ span: 14, offset: 0 }}
-                                                                labelAlign="left"
-                                                            >
-                                                                <InputNumber className="w-full" />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        <Col span={6}>
-                                                            <Form.Item
-                                                                {...restField}
-                                                                name={[name, 'amount_pumped']}
-                                                                fieldKey={[fieldKey, 'amount_pumped']}
-                                                                rules={[{ required: true, message: 'Amount Pumped' }]}
-                                                                label="Amount pumped"
-                                                                labelCol={{ span: 16, offset: 0 }}
-                                                                labelAlign="left"
-                                                            >
-                                                                <InputNumber className="w-full" />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        <Col span={2}>
-                                                            <MinusCircleOutlined onClick={() => remove(name)} />
-                                                        </Col>
-                                                    </Row>
-                                                ))}
+                                                {fields.map(({ key, name, fieldKey, ...restField }) => {
+                                                    return (
+                                                        <Row gutter={24} key={key}>
+                                                            <Col span={6}>
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    name={[name, 'description']}
+                                                                    fieldKey={[fieldKey, 'description']}
+                                                                    rules={[{ required: true, message: 'Description' }]}
+                                                                    label="Description"
+                                                                    labelCol={{ span: 11, offset: 0 }}
+                                                                    labelAlign="left"
+                                                                >
+                                                                    <Input className="w-full" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={5}>
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    name={[name, 'specific_gravity']}
+                                                                    fieldKey={[fieldKey, 'Specific_gravity']}
+                                                                    rules={[{ required: true, message: 'Specific gravity' }]}
+                                                                    label="Specific gravity"
+                                                                    labelCol={{ span: 16, offset: 0 }}
+                                                                    labelAlign="left"
+                                                                >
+                                                                    <InputNumber className="w-full" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={5}>
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    name={[name, 'bulk_density']}
+                                                                    fieldKey={[fieldKey, 'bulk_density']}
+                                                                    rules={[{ required: true, message: 'Bulk density' }]}
+                                                                    label="Bulk density"
+                                                                    labelCol={{ span: 14, offset: 0 }}
+                                                                    labelAlign="left"
+                                                                >
+                                                                    <InputNumber className="w-full" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={6}>
+                                                                <Form.Item
+                                                                    {...restField}
+                                                                    name={[name, 'amount_pumped']}
+                                                                    fieldKey={[fieldKey, 'amount_pumped']}
+                                                                    rules={[{ required: true, message: 'Amount Pumped' }]}
+                                                                    label="Amount pumped"
+                                                                    labelCol={{ span: 16, offset: 0 }}
+                                                                    labelAlign="left"
+                                                                >
+                                                                    <InputNumber className="w-full" />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={2}>
+                                                                <MinusCircleOutlined onClick={() => {
+                                                                    if (proppantFormValues.proppantData[name])
+                                                                        setRemovedFluidsAndProppant(prev => {
+                                                                            return { ...prev, proppant_data_ids: [...prev.proppant_data_ids, proppantFormValues.proppantData[name].id] }
+
+                                                                        })
+                                                                    remove(name)
+                                                                }
+                                                                } />
+                                                            </Col>
+                                                        </Row>
+                                                    )
+                                                })}
                                                 <Row gutter={24}>
                                                     <Col span={8}>
                                                         <Form.Item>
                                                             <Button
                                                                 type="dashed"
-                                                                onClick={() => add()}
+                                                                onClick={() => {
+                                                                    add()
+                                                                }}
                                                                 block
                                                                 icon={<PlusOutlined />}
                                                             >
@@ -1043,8 +1080,9 @@ export default function TrackingSheet(props) {
                                     <Col span={5}>
                                         <Form.Item
                                             name={"total_proppant_lbs_actual"}
+
                                         >
-                                            <InputNumber className="w-full" />
+                                            <InputNumber className="w-full" disabled />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -1184,7 +1222,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" showTime/>
+                                            <DatePicker onChange={onChange} className="w-full" showTime />
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1194,7 +1232,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" showTime/>
+                                            <DatePicker onChange={onChange} className="w-full" showTime />
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1217,7 +1255,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" showTime/>
+                                            <DatePicker onChange={onChange} className="w-full" showTime />
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
@@ -1227,7 +1265,7 @@ export default function TrackingSheet(props) {
                                             labelCol={{ span: 9, offset: 0 }}
                                             labelAlign="left"
                                         >
-                                            <DatePicker onChange={onChange} className="w-full" showTime/>
+                                            <DatePicker onChange={onChange} className="w-full" showTime />
                                         </Form.Item>
                                     </Col>
                                     <Col span={8}>
