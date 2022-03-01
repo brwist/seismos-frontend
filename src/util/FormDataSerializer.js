@@ -4,22 +4,22 @@ const defultValueFormSubmitSerializer = (formData) => {
     return {
         "default_advance_val": {
             "algorithm": formData.algorithm,
-            "compresssibility": formData.compressibility,
+            "compressibility": formData.compressibility,
             "data_sample_rate": formData.data_sample_rate,
             "density": formData.density,
             "f_high_hz": formData.f_high_hz,
             "f_low_hz": formData.f_low_hz,
             "grid_density": formData.grid_density,
-            "interation": formData.iterations,
-            // "layer": formData.layer,
+            "interation": formData.interation,
+            "layer": formData.layer,
             "loop": formData.loop,
             "method": formData.method,
             "model": formData.model,
             "new_sample_rate": formData.new_sample_rate,
             "response": formData.response,
             "source": formData.source,
-            "tolerance": formData.tolerence,
-            // "total_width": formData.total_width,
+            "tolerance": formData.tolerance,
+            "total_width": formData.total_width,
             "viscosity": formData.viscosity,
             "weighting": formData.weighting,
             "wlevexp": formData.wlevexp,
@@ -39,75 +39,87 @@ const defultValueFormSubmitSerializer = (formData) => {
         "default_value": {
             "beta_ss": formData.beta_ss,
             "biot": formData.biot,
-            // "breaker": formData.breaker,
+            "breaker_YN": formData.breaker_YN,
             "diverter_time": formData.diverter_time,
             "eta_cp": formData.eta_cp,
             "ffkw_correction": formData.ffkw_correction,
-            // "fit_end_point": formData.fit_end_point,
-            // "fit_iterations": formData.fit_iterations,
-            "fuild_density": formData.fluid_density,
-            "fuildt": formData.fluid_t,
+            "fit_end_point": formData.fit_end_point,
+            "fit_iteration": formData.fit_iteration,
+            "fuild_density": formData.fuild_density,
+            "fuildt": formData.fuildt,
             "k_mpa": formData.k_mpa,
             "met_res": formData.met_res,
-            // "ng": formData.ng,
+            "NG": formData.NG,
             "nu_lim": formData.nu_lim,
             "overburden": formData.overburden,
-            "per_red": formData.perRed,
-            // "plotraw": formData.plotraw,
+            "per_red": formData.per_red,
+            "plotraw_YN": formData.plotraw_YN,
             "poisson": formData.poisson,
-            // "poisson_method": formData.poisson_method,
-            // "poisson_var": formData.poisson_var,
+            "passion_method": formData.passion_method,
+            "poisson_var_YN": formData.poisson_var_YN,
             "pres": formData.pres,
             "shadow": formData.shadow,
-            // "skip_losses": formData.skip_losses,
+            "skip_losses_YN": formData.skip_losses_YN,
             "st_lim": formData.st_lim,
-            // "stage_ques": formData.stage_ques,
+            "stage_ques": formData.stage_ques,
             "start1": formData.start1,
-            // "start2": formData.start2,
-            // "stress_shadow": formData.stress_shadow,
+            "strat2": formData.strat2,
+            "stress_shadow_YN": formData.stress_shadow_YN,
             "tect": formData.tect,
-            // "use_wncuts": formData.use_wncuts,
-            // "use_wns": formData.use_wns,
+            "use_wncuts_YN": formData.use_wncuts_YN,
+            "use_wns_YN": formData.use_wns_YN,
             "young": formData.young,
         }
     }
 }
 
 const trackingSheetSubmitSerializer = (
+    selectedStage,
+    dynamicFormNestItemValues,
+    perforationIntervalInformationValues,
+    stageDataValues,
+    proppantFormValues,
+    fluidFormValues,
+    activeDataFormValues,
+    notesDataFormValues
+) => {
+    console.log(
         selectedStage,
         dynamicFormNestItemValues,
         perforationIntervalInformationValues,
         stageDataValues,
-        propantFormValues,
+        proppantFormValues,
         fluidFormValues,
         activeDataFormValues,
         notesDataFormValues
-    ) => {
-    return {
+    )
+    let proppantData = proppantFormValues.proppantData.filter(item => {
+        if (!item) return false
+        return item.id
+    })
+    console.log(
+        "proppantFormValues", proppantFormValues.proppantData
+    )
+    console.log(
+        "fluidFormValues", fluidFormValues.fluidData
+    )
+    const tsFormData = {
         stage: Number(selectedStage),
         stage_tracking: {
-            date: Number(dynamicFormNestItemValues.date.format('x')),
-            customer: dynamicFormNestItemValues.customer,
-            well: dynamicFormNestItemValues.well,
-            stage: dynamicFormNestItemValues.stage,
-            bht_f: dynamicFormNestItemValues.bht_f,
-            bht_psi: dynamicFormNestItemValues.bht_psi,
+            bottomhole_bht: dynamicFormNestItemValues.bottomhole_bht,
+            bottomhole_bhp: dynamicFormNestItemValues.bottomhole_bhp,
+            did_an_event_occur: dynamicFormNestItemValues.did_an_event_occur,
             frac_design: dynamicFormNestItemValues.frac_design,
-            // field_engineer: {
-            //     days: dynamicFormNestItemValues.field_engineer_days,
-            //     nights: dynamicFormNestItemValues.field_engineer_nights,
-            // },
-            plug_type: dynamicFormNestItemValues.plug_type,
             plug_seat_technique: dynamicFormNestItemValues.plug_seat_technique,
-            did_an_event_occur: dynamicFormNestItemValues.event_occur,
+            plug_type: dynamicFormNestItemValues.plug_type,
             seismos_data_collection: dynamicFormNestItemValues.seismos_data_collection,
         },
         perforation_interval_information: {
-            top_perf: perforationIntervalInformationValues.top_perf,
-            bottom_perf: perforationIntervalInformationValues.bottom_perf,
+            top_measured_depth: perforationIntervalInformationValues.top_measured_depth,
+            bottom_measured_depth: perforationIntervalInformationValues.bottom_measured_depth,
             plug_depth: perforationIntervalInformationValues.plug_depth,
-            n_clusters: Number(perforationIntervalInformationValues.clusters_number),
-            perf_gun_description: perforationIntervalInformationValues.perf_gun_desc,
+            n_clusters: Number(perforationIntervalInformationValues.n_clusters),
+            perf_gun_description: perforationIntervalInformationValues.perf_gun_description,
             perf_daiameter: perforationIntervalInformationValues.perf_daiameter,
             spf: perforationIntervalInformationValues.spf,
             pumped_diverter: perforationIntervalInformationValues.pumped_diverter,
@@ -120,144 +132,180 @@ const trackingSheetSubmitSerializer = (
             }
         },
         stage_data: {
-            stage_start_time: Number(stageDataValues.stage_end_time.format('x')),
-            stage_end_time: Number(stageDataValues.stage_end_time.format('x')),
+            stage_start_time: stageDataValues.stage_start_time ? Number(stageDataValues.stage_start_time.format('x')) : null,
+            stage_end_time: stageDataValues.stage_end_time ? Number(stageDataValues.stage_end_time.format('x')) : null,
             opening_well: stageDataValues.opening_well,
-            isip: stageDataValues.isip,
-            stage_uuid: stageDataValues.stage_uuid,
+            // isip: stageDataValues.isip,
             fluid_parameters: {
                 base_fluid_type: stageDataValues.base_fluid_type,
                 base_fluid_density: stageDataValues.base_fluid_density,
                 max_conc_density: stageDataValues.max_conc_density,
             },
             fluids_injected_into_formation: fluidFormValues.fluidData,
-            proppant_data: propantFormValues.proppantData,
+            proppant_data: proppantData,
             pumping_summary: {
-                max_prop_conc: {design: stageDataValues.max_prop_conc_ppa_design, actual: stageDataValues.max_prop_conc_ppa_actual},
-                total_pad_volume: {design: stageDataValues.total_pad_volume_bbls_design, actual: stageDataValues.total_pad_volume_bbls_actual},
-                total_clean_fluid_volume: {design: stageDataValues.total_clean_fluid_volume_bbls_design, actual: stageDataValues.total_clean_fluid_volume_bbls_actual},
-                total_proppant: {design: stageDataValues.total_proppant_lbs_design, actual: stageDataValues.total_proppant_lbs_actual},
-                acid_volume: {design: stageDataValues.acid_volume_gals_design, actual: stageDataValues.acid_volume_gals_actual},
-                flush_volume: {design: stageDataValues.flush_volume_bbls_design, actual: stageDataValues.flush_volume_bbls_actual},
-                slurry_volume: {design: stageDataValues.slurry_volume_bbls_design, actual: stageDataValues.slurry_volume_bbls_actual},
+                max_prop_conc: { design: stageDataValues.max_prop_conc_ppa_design, actual: stageDataValues.max_prop_conc_ppa_actual },
+                total_pad_volume: { design: stageDataValues.total_pad_volume_bbls_design, actual: stageDataValues.total_pad_volume_bbls_actual },
+                total_clean_fluid_volume: { design: stageDataValues.total_clean_fluid_volume_bbls_design, actual: stageDataValues.total_clean_fluid_volume_bbls_actual },
+                total_proppant: { design: stageDataValues.total_proppant_lbs_design },
+                // total_proppant: { design: stageDataValues.total_proppant_lbs_design, actual: stageDataValues.total_proppant_lbs_actual },
+                acid_volume: { design: stageDataValues.acid_volume_gals_design, actual: stageDataValues.acid_volume_gals_actual },
+                flush_volume: { design: stageDataValues.flush_volume_bbls_design, actual: stageDataValues.flush_volume_bbls_actual },
+                slurry_volume: { design: stageDataValues.slurry_volume_bbls_design, actual: stageDataValues.slurry_volume_bbls_actual },
             }
-        
+
         },
         active_data: {
-            pulsing_parameters: {
+            pulsing_parameteres: {
                 wave_type: activeDataFormValues.wave_type,
                 period: activeDataFormValues.period,
-                freq: activeDataFormValues.frequency,
+                frequency: activeDataFormValues.frequency,
                 offset: activeDataFormValues.offset,
                 amplitude: activeDataFormValues.amplitude,
             },
-            pre_frac_pulses: {start_time: Number(activeDataFormValues.pre_start_time.format('x')), end_time: Number(activeDataFormValues.pre_end_time.format('x')), n_pulses: Number(activeDataFormValues.pre_number_of_pulses)},
-            post_frac_pulses: {start_time: Number(activeDataFormValues.post_start_time.format('x')), end_time: Number(activeDataFormValues.post_end_time.format('x')), n_pulses: Number(activeDataFormValues.post_number_of_pulses)},
+            pre_frac_pulses: {
+                pre_frac_start_time: activeDataFormValues.pre_frac_start_time ? Number(activeDataFormValues.pre_frac_start_time.format('x')) : null,
+                pre_frac_end_time: activeDataFormValues.pre_frac_end_time ? Number(activeDataFormValues.pre_frac_end_time.format('x')) : null,
+                pre_frac_num_pulse: activeDataFormValues.pre_frac_num_pulse ? Number(activeDataFormValues.pre_frac_num_pulse) : null
+            },
+            post_frac_pulses: {
+                post_frac_start_time: activeDataFormValues.post_frac_start_time ? Number(activeDataFormValues.post_frac_start_time.format('x')) : null,
+                post_frac_end_time: activeDataFormValues.post_frac_end_time ? Number(activeDataFormValues.post_frac_end_time.format('x')) : null,
+                post_frac_num_pulse: activeDataFormValues.post_frac_num_pulse ? Number(activeDataFormValues.post_frac_num_pulse) : null
+            },
         },
         notes: {
-            pre_frac_pulses: notesDataFormValues.pre_notes,
-            post_frac_pulses: notesDataFormValues.post_notes,
-            other: notesDataFormValues.other_notes,
+            pre_frac_pulse_note: notesDataFormValues.pre_frac_pulse_note,
+            post_frac_pulse_note: notesDataFormValues.post_frac_pulse_note,
+            additional_note: notesDataFormValues.additional_note,
         }
     }
+    console.log("tsFormData", tsFormData.stage_data)
+
+    /** Removing null values from the object */
+    tsFormData.stage_tracking = Object.entries(tsFormData.stage_tracking).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.perforation_interval_information = Object.entries(tsFormData.perforation_interval_information).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.perforation_interval_information.displacement_volume = Object.entries(tsFormData.perforation_interval_information.displacement_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data = Object.entries(tsFormData.stage_data).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.fluid_parameters = Object.entries(tsFormData.stage_data.fluid_parameters).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    // tsFormData.stage_data.pumping_summary =  Object.entries(tsFormData.stage_data.fluid_parameters).reduce((a,[k,v]) => (v === null ? a : (a[k]=v, a)), {})
+    tsFormData.stage_data.pumping_summary.max_prop_conc = Object.entries(tsFormData.stage_data.pumping_summary.max_prop_conc).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_pad_volume = Object.entries(tsFormData.stage_data.pumping_summary.total_pad_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_clean_fluid_volume = Object.entries(tsFormData.stage_data.pumping_summary.total_clean_fluid_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.total_proppant = Object.entries(tsFormData.stage_data.pumping_summary.total_proppant).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.acid_volume = Object.entries(tsFormData.stage_data.pumping_summary.acid_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.flush_volume = Object.entries(tsFormData.stage_data.pumping_summary.flush_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.pumping_summary.slurry_volume = Object.entries(tsFormData.stage_data.pumping_summary.slurry_volume).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.stage_data.fluids_injected_into_formation = tsFormData.stage_data.fluids_injected_into_formation.map(obj => {
+        Object.entries(obj).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    }).filter(x => x)
+    tsFormData.stage_data.proppant_data = tsFormData.stage_data.proppant_data.map(obj => {
+        if (!obj) return {}
+        return Object.entries(obj).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    }).filter(x => x)
+    tsFormData.active_data = Object.entries(tsFormData.active_data).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.active_data.pulsing_parameteres = Object.entries(tsFormData.active_data.pulsing_parameteres).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.active_data.pre_frac_pulses = Object.entries(tsFormData.active_data.pre_frac_pulses).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.active_data.post_frac_pulses = Object.entries(tsFormData.active_data.post_frac_pulses).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    tsFormData.notes = Object.entries(tsFormData.notes).reduce((a, [k, v]) => (v === null ? a : (a[k] = v, a)), {})
+    return tsFormData;
 }
 
 const trackingSheetPopulateDataSerializer = (trackingSheetData) => {
     const dynamicFormNestItemValuesData = {
-        bht_f: trackingSheetData.bottomhole_bht, // 
-        bht_psi: trackingSheetData.bottomhole_bhp, //
-        customer: trackingSheetData.customer, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        date: moment(trackingSheetData.date), // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        event_occur: trackingSheetData.stage_event, //
-        frac_design: trackingSheetData.frac_design,
-        plug_seat_technique: trackingSheetData.plug_seat_technique, //
-        plug_type: trackingSheetData.plug_type, //
-        seismos_data_collection: trackingSheetData.seismos_data_collection, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        stage: trackingSheetData.stage, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        well: trackingSheetData.well, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
+        bottomhole_bht: trackingSheetData.stage_tracking.bottomhole_bht,
+        bottomhole_bhp: trackingSheetData.stage_tracking.bottomhole_bhp,
+        did_an_event_occur: trackingSheetData.stage_tracking.did_an_event_occur,
+        frac_design: trackingSheetData.stage_tracking.frac_design,
+        plug_seat_technique: trackingSheetData.stage_tracking.plug_seat_technique,
+        plug_type: trackingSheetData.stage_tracking.plug_type,
+        seismos_data_collection: trackingSheetData.stage_tracking.seismos_data_collection,
     };
     const perforationIntervalInformationValuesData = {
-        acid: trackingSheetData.chem_fluids.acid, //
-        bottom_perf: trackingSheetData.perforation.bottom_measured_depth, //
-        clusters_number: trackingSheetData.number_of_cluster, //
-        displacement_vol_bottom: trackingSheetData.bottom_perf, // x mismatch datatype: {request: String, response: Float(0.0)}
-        displacement_vol_plug: trackingSheetData.plug_name, //
-        displacement_vol_top: trackingSheetData.top_perf, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        diverter_type: trackingSheetData.diverter_type, //
-        perf_daiameter: trackingSheetData.perforation.estimated_hole_diameter, //
-        perf_gun_desc: trackingSheetData.perforation.perf_gun_description, //
-        plug_depth: trackingSheetData.plug_depth, //
-        pumped_diverter: trackingSheetData.pumped_diverter, //
-        spf: trackingSheetData.spf, // 
-        top_perf: trackingSheetData.perforation.top_measured_depth //
+        acid: trackingSheetData.perforation_interval_information.acid,
+        bottom_measured_depth: trackingSheetData.perforation_interval_information.bottom_measured_depth,
+        n_clusters: trackingSheetData.perforation_interval_information.n_clusters,
+        displacement_vol_bottom: trackingSheetData.perforation_interval_information.displacement_volume.bottom_perf,
+        displacement_vol_plug: trackingSheetData.perforation_interval_information.displacement_volume.plug,
+        displacement_vol_top: trackingSheetData.perforation_interval_information.displacement_volume.top_perf,
+        diverter_type: trackingSheetData.perforation_interval_information.diverter_type,
+        perf_daiameter: trackingSheetData.perforation_interval_information.perf_daiameter,
+        perf_gun_description: trackingSheetData.perforation_interval_information.perf_gun_description,
+        plug_depth: trackingSheetData.perforation_interval_information.plug_depth,
+        pumped_diverter: trackingSheetData.perforation_interval_information.pumped_diverter,
+        spf: trackingSheetData.perforation_interval_information.spf,
+        top_measured_depth: trackingSheetData.perforation_interval_information.top_measured_depth
     };
     const stageDataValuesData = {
-        stage_start_time: moment(trackingSheetData.stage_start_time), // incorrect data received {request: 1634166213042, response: 1634166213}
-        stage_end_time: moment(trackingSheetData.stage_end_time),  // incorrect data received {request: 1634166213042, response: 1634166213}
-        opening_well: trackingSheetData.opening_well, // x Data not present on response (Decide to either remove from Frontend or else FE needs data back in response)
-        isip: trackingSheetData.stage_avg.isip, //
-        base_fluid_type: trackingSheetData.chem_fluids.base_fluid_type, //
-        base_fluid_density: trackingSheetData.base_fluid_density, // x mismatch datatype: {request: String, response: Float (0.0)}
-        max_conc_density: trackingSheetData.max_conc_density, // x mismatch datatype: {request: String , response: Float (0.0)}
-        max_prop_conc_ppa_design: trackingSheetData.designed_max_prop, //
-        max_prop_conc_ppa_actual: trackingSheetData.stage_avg.max_prop_conc, //
-        total_pad_volume_bbls_design: trackingSheetData.designed_pad_vol, //
-        total_pad_volume_bbls_actual: trackingSheetData.stage_avg.pad_vol, //
-        total_clean_fluid_volume_bbls_design: trackingSheetData.designed_total_clean_fluid_volume, //
-        total_clean_fluid_volume_bbls_actual: trackingSheetData.stage_avg.total_clean, //
-        total_proppant_lbs_design: trackingSheetData.proppant[0].designed_lbs, // request is not in array but response came in array (request: pumping_summary.total_proppant.design, response -> proppant: [{design_lbs}])
-        total_proppant_lbs_actual: trackingSheetData.proppant[0].actual_lbs, // request is not in array but response came in array (request -> pumping_summary.total_proppant.actual, response -> proppant: [{actual_lbs}])
-        acid_volume_gals_design: trackingSheetData.designed_acid_vol, //
-        acid_volume_gals_actual: trackingSheetData.stage_avg.acid, //
-        flush_volume_bbls_design: trackingSheetData.designed_flush_vol, //
-        flush_volume_bbls_actual: trackingSheetData.stage_avg.flush_volume, //
-        slurry_volume_bbls_design: trackingSheetData.designed_slurry_vol, //
-        slurry_volume_bbls_actual: trackingSheetData.stage_avg.total_slurry, //
+        stage_start_time: trackingSheetData.stage_data.stage_start_time ? moment(trackingSheetData.stage_data.stage_start_time) : null,
+        stage_end_time: trackingSheetData.stage_data.stage_end_time ? moment(trackingSheetData.stage_data.stage_end_time) : null,
+        opening_well: trackingSheetData.stage_data.opening_well,
+        // isip: trackingSheetData.stage_data.isip,
+        base_fluid_type: trackingSheetData.stage_data.fluid_parameters.base_fluid_type,
+        base_fluid_density: trackingSheetData.stage_data.fluid_parameters.base_fluid_density,
+        max_conc_density: trackingSheetData.stage_data.fluid_parameters.max_conc_density,
+        max_prop_conc_ppa_design: trackingSheetData.stage_data.pumping_summary.max_prop_conc.design,
+        max_prop_conc_ppa_actual: trackingSheetData.stage_data.pumping_summary.max_prop_conc.actual,
+        total_pad_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.total_pad_volume.design,
+        total_pad_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_pad_volume.actual,
+        total_clean_fluid_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.design,
+        total_clean_fluid_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.total_clean_fluid_volume.actual,
+        total_proppant_lbs_design: trackingSheetData.stage_data.pumping_summary.total_proppant.design,
+        total_proppant_lbs_actual: trackingSheetData.stage_data.pumping_summary.total_proppant.actual,
+        acid_volume_gals_design: trackingSheetData.stage_data.pumping_summary.acid_volume.design,
+        acid_volume_gals_actual: trackingSheetData.stage_data.pumping_summary.acid_volume.actual,
+        flush_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.flush_volume.design,
+        flush_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.flush_volume.actual,
+        slurry_volume_bbls_design: trackingSheetData.stage_data.pumping_summary.slurry_volume.design,
+        slurry_volume_bbls_actual: trackingSheetData.stage_data.pumping_summary.slurry_volume.actual,
     };
     const fluidFormValuesData = {
-        fluidData: trackingSheetData.chem_fluids.fluids_items // 
+        fluidData: trackingSheetData.stage_data.fluids_injected_into_formation
     };
-    const propantFormValuesData = {
-        proppantData: trackingSheetData.proppant.map(p => {
-            return  {
-                bulk_density: p.bulk_density,
-                description: p.proppant_name,
-                specific_gravity: p.specific_gravity,
-                amount_pumped: p.total_proppant_volume
-            }
-        })
+    const proppantFormValuesData = {
+        proppantData: trackingSheetData.stage_data.proppant_data
     };
     const activeDataFormValuesData = {
-        wave_type: trackingSheetData.active_data.wave_type, //
-        period: trackingSheetData.period, // x mismatch datatype: {request: String, response: Int (0)}
-        frequency: trackingSheetData.freq, // x mismatch datatype: {request: String, response: Float (0.0)}
-        offset: trackingSheetData.offset, // x mismatch datatype: {request: String, response: Int (0)}
-        amplitude: trackingSheetData.amplitude, // x mismatch datatype: {request: String, response: Int (0)}
-        pre_start_time: moment(trackingSheetData.active_data.pre_frac_start_time), // incorrect data received {request: 1633993501224, response: 2147483647}
-        pre_end_time: moment(trackingSheetData.active_data.pre_frac_end_time), // incorrect data received {request: 1634166302558, response: 2147483647}
-        pre_number_of_pulses: trackingSheetData.active_data.pre_frac_num_pulse,
-        post_start_time: moment(trackingSheetData.active_data.post_frac_start_time), // incorrect data received {request: 1635289510424, response: 2147483647}
-        post_end_time: moment(trackingSheetData.active_data.post_frac_end_time), // incorrect data received {request: 1635462311758, response: 2147483647}
-        post_number_of_pulses: trackingSheetData.active_data.post_frac_num_pulse,
+        wave_type: trackingSheetData.active_data.pulsing_parameteres.wave_type,
+        period: trackingSheetData.active_data.pulsing_parameteres.period,
+        frequency: trackingSheetData.active_data.pulsing_parameteres.frequency,
+        offset: trackingSheetData.active_data.pulsing_parameteres.offset,
+        amplitude: trackingSheetData.active_data.pulsing_parameteres.amplitude,
+        pre_frac_start_time: trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time ? moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_start_time * 1000) : null,
+        pre_frac_end_time: trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time ? moment(trackingSheetData.active_data.pre_frac_pulses.pre_frac_end_time * 1000) : null,
+        pre_frac_num_pulse: trackingSheetData.active_data.pre_frac_pulses.pre_frac_num_pulse,
+        post_frac_start_time: trackingSheetData.active_data.post_frac_pulses.post_frac_start_time ? moment(trackingSheetData.active_data.post_frac_pulses.post_frac_start_time * 1000) : null,
+        post_frac_end_time: trackingSheetData.active_data.post_frac_pulses.post_frac_end_time ? moment(trackingSheetData.active_data.post_frac_pulses.post_frac_end_time * 1000) : null,
+        post_frac_num_pulse: trackingSheetData.active_data.post_frac_pulses.post_frac_num_pulse
     }
     const notesDataFormValuesData = {
-        pre_notes: trackingSheetData.active_data.pre_frac_pulse_note, //
-        post_notes: trackingSheetData.active_data.post_frac_pulse_note, //
-        other_notes: trackingSheetData.active_data.additional_note, //
+        pre_frac_pulse_note: trackingSheetData.notes.pre_frac_pulse_note,
+        post_frac_pulse_note: trackingSheetData.notes.post_frac_pulse_note,
+        additional_note: trackingSheetData.notes.additional_note,
     }
 
     return {
         dynamicFormNestItemValuesData,
         perforationIntervalInformationValuesData,
         stageDataValuesData,
-        propantFormValuesData,
+        proppantFormValuesData,
         fluidFormValuesData,
         activeDataFormValuesData,
         notesDataFormValuesData,
     }
 }
+
+const defultValuePopulateDataSerializer = (defaultValuesData) => {
+    return {
+        ...defaultValuesData.default_advance_val,
+        ...defaultValuesData.default_param_val,
+        ...defaultValuesData.default_value,
+    }
+}
+
 const FormDataSerializer = {
     defultValueFormSubmitSerializer,
+    defultValuePopulateDataSerializer,
     trackingSheetSubmitSerializer,
     trackingSheetPopulateDataSerializer
 }

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import config from "config";
-import axios from "axiosConfig";
 import { Card, Space, Table, Button, Row, Col } from 'antd';
 import FAKE_DATA from "constants/fakeData";
 import _ from "lodash";
-import ENUMS from "constants/appEnums";
-import HttpUtil from "util/HttpUtil";
-import { ReloadOutlined } from "@ant-design/icons"; 
+import { ReloadOutlined } from "@ant-design/icons";
 import { CSVLink, CSVDownload } from "react-csv";
+import { projectApi } from "./../../api/projectApi"
 
 export default function OcReport() {
     const [data, setData] = useState(FAKE_DATA.STAGE_REPORT);
 
     const csvData = [
-        ["C0","C1","C2","C3","Q0","Q1","Q2","Q3","Fit Error","Nf Param Id","Connect Ops Risk","Connect Efficiency","Connect Condition"],
+        ["C0", "C1", "C2", "C3", "Q0", "Q1", "Q2", "Q3", "Fit Error", "Nf Param Id", "Connect Ops Risk", "Connect Efficiency", "Connect Condition"],
         [
             '1',
             0,
@@ -36,7 +33,7 @@ export default function OcReport() {
         newData[index].approved = true;
         setData(newData)
     }
-    
+
     const columns = [
         {
             title: 'C0',
@@ -108,7 +105,7 @@ export default function OcReport() {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    {   record.approved 
+                    {record.approved
                         ? 'Approved'
                         : <Button type="primary" onClick={(e) => approveStage(text, record)}>Approve</Button>
                     }
@@ -116,35 +113,28 @@ export default function OcReport() {
             ),
         },
     ];
-    
+
 
     const renderBody = (props, columns) => {
         return (
-          <tr className={props.className}>
-            {columns.map((item, idx) => {
-                // console.log(item)
-              if (!item.hidden) {
-                return props.children[idx]
-              }
-            })}
-          </tr>
+            <tr className={props.className}>
+                {columns.map((item, idx) => {
+                    // console.log(item)
+                    if (!item.hidden) {
+                        return props.children[idx]
+                    }
+                })}
+            </tr>
         );
     }
 
-    const fetchQcReport = () => {
-        axios.get(config.API_URL + ENUMS.API_ROUTES.QC_REPORT + '/'+3,
-            {
-                ...HttpUtil.adminHttpHeaders(),
-            })
-            .then(res => {
-                console.log(res);
-                if (res.status === 200 && res.data) {
-                    
-                }
-            })
-            .catch(e => {
-                console.log(e)
-            })
+    const fetchQcReport = async () => {
+        try {
+            const data = await projectApi.getQcReport(3)
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -160,7 +150,7 @@ export default function OcReport() {
                         </Col>
                         <Col span={4}>
                             <div>
-                            <Button type="secondary"><ReloadOutlined /> Refresh</Button>
+                                <Button type="secondary"><ReloadOutlined /> Refresh</Button>
                             </div>
                         </Col>
                     </Row>
@@ -172,9 +162,9 @@ export default function OcReport() {
                     dataSource={data}
                     components={{
                         body: {
-                          row: (props) => renderBody(props, columns)
+                            row: (props) => renderBody(props, columns)
                         },
-                      }}
+                    }}
                 />
                 <div className="">
                     <Row gutter={24} className="flex items-center">
@@ -185,13 +175,13 @@ export default function OcReport() {
                         </Col>
                         <Col span={3}>
                             <div>
-                            <Button type="primary" disabled={data.filter(d => d.approved).length < 1}>Sync to cloud</Button>
+                                <Button type="primary" disabled={data.filter(d => d.approved).length < 1}>Sync to cloud</Button>
                             </div>
                         </Col>
                     </Row>
                 </div>
-                
-                
+
+
             </Card>
         </>
     );

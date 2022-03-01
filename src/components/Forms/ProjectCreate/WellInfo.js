@@ -3,13 +3,13 @@ import { Button } from 'antd';
 import TableHeadersUtil from "util/TableHeaderUtil";
 import Grid from "components/Grid/Grid";
 import _ from "lodash";
-import { MinusCircleOutlined } from "@ant-design/icons"; 
+import { MinusCircleOutlined } from "@ant-design/icons";
 import ConfirmationModal from "components/Modal/ConfirmationModal";
 import ENUMS from "constants/appEnums";
 import NumberInput from "components/Grid/DataEditor/NumberInput";
 
 export default function WellInfo(props) {
-    
+
     const [wellInfoGrid, setWellInfoGrid] = useState([]);
     const [showConfirmationModal, setShowConfirmationModal] = useState();
     const [modalData, setModalData] = useState();
@@ -30,7 +30,7 @@ export default function WellInfo(props) {
     const handleRemoveConfirmed = (data) => {
         data.grid.splice(data.rowIdx, 1);
         setWellInfoGrid(data.grid.map((x, index) => {
-            return x.map(y => { 
+            return x.map(y => {
                 const componentData = y.field === "action" ? component(index, data.grid) : null
                 return {
                     ...y,
@@ -43,7 +43,7 @@ export default function WellInfo(props) {
     }
 
     const component = (rowIdx, grid) => {
-        return <MinusCircleOutlined onClick={(event) => remove(rowIdx, grid)}/>;
+        return <MinusCircleOutlined onClick={(event) => remove(rowIdx, grid)} />;
     }
 
     const isForcedComponent = (column) => {
@@ -63,14 +63,18 @@ export default function WellInfo(props) {
                     forceComponent: isForcedComponent(column),
                     className: className,
                     datatype: column.datatype,
-                    dataEditor: column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ? NumberInput : null
+                    dataEditor: (
+                        column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES
+                        || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT
+                        || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
+                    ) ? NumberInput : null
                 });
                 return column;
             })
             return rows.concat([columns]);
         }, []);
         setWellInfoGrid(grid.map((x, index) => {
-            return x.map(y => { 
+            return x.map(y => {
                 const componentData = y.field === "action" ? component(index, grid) : null
                 return {
                     ...y,
@@ -93,7 +97,11 @@ export default function WellInfo(props) {
                 forceComponent: isForcedComponent(column),
                 className: className,
                 datatype: column.datatype,
-                dataEditor: column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ? NumberInput : null
+                dataEditor: (
+                    column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES
+                    || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT
+                    || column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
+                ) ? NumberInput : null
             });
             return column;
         });
@@ -102,7 +110,7 @@ export default function WellInfo(props) {
             columns
         ];
         setWellInfoGrid(newWellInfoGrid.map((x, index) => {
-            return x.map(y => { 
+            return x.map(y => {
                 const componentData = y.field === "action" ? component(index, newWellInfoGrid) : null
                 return {
                     ...y,
@@ -115,7 +123,7 @@ export default function WellInfo(props) {
     const handleWellInfoGridChanged = (updatedGridData) => {
         props.setFormValue(updatedGridData);
         setWellInfoGrid(updatedGridData.map((x, index) => {
-            return x.map(y => { 
+            return x.map(y => {
                 const componentData = y.field === "action" ? component(index, updatedGridData) : null
                 return {
                     ...y,
@@ -130,7 +138,7 @@ export default function WellInfo(props) {
         const validatedWellGrid = _.cloneDeep(wellInfoGrid);
         validatedWellGrid.map(row => {
             row.map(cell => {
-                if(cell.required && cell.value === "") {
+                if (cell.required && cell.value === "") {
                     isWellInfoValid = false;
                     cell.className = 'cell-error';
                 }
@@ -139,18 +147,17 @@ export default function WellInfo(props) {
             return row;
         })
 
-        if(!isWellInfoValid) {
+        if (!isWellInfoValid) {
             handleWellInfoGridChanged(validatedWellGrid)
         } else {
-            console.log('wellInfoGrid', wellInfoGrid)
             props.next();
         }
     }
 
     useState(() => {
-        if(props.formValues != null) {
+        if (props.formValues != null) {
             props.formValues && setWellInfoGrid(props.formValues.map((x, index) => {
-                return x.map(y => { 
+                return x.map(y => {
                     const componentData = y.field === "action" ? component(index, props.formValues) : null
                     return {
                         ...y,
@@ -166,7 +173,7 @@ export default function WellInfo(props) {
     return (
         <>
             <div className="mb-8">
-                <Grid 
+                <Grid
                     columns={TableHeadersUtil.wellInfoFormTableData.columns}
                     grid={wellInfoGrid}
                     gridValueChanged={handleWellInfoGridChanged}
@@ -174,7 +181,7 @@ export default function WellInfo(props) {
                 <div className="text-lightBlue-600 mt-2 cursor-pointer inline-block" onClick={(e) => addNewWell(e)}>+ Add a new well</div>
             </div>
             <div className="text-right">
-                <Button type="primary" onClick={(e) => {gotoNextStep()}}>
+                <Button type="primary" onClick={(e) => { gotoNextStep() }}>
                     Next
                 </Button>
             </div>
@@ -185,7 +192,7 @@ export default function WellInfo(props) {
                     handleOk={handleRemoveConfirmed}
                     modalTitle={"Delete Row"}
                     modalText={"Are you sure you want to delete this row?"}
-                    footerButtons={{cancel_text: 'Cancel', confirm_text: 'Yes'}}
+                    footerButtons={{ cancel_text: 'Cancel', confirm_text: 'Yes' }}
                     data={modalData}
                 >
                 </ConfirmationModal>

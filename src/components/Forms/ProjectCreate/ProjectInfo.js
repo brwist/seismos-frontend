@@ -10,7 +10,6 @@ export default function ProjectInfo(props) {
 
     const getProjectInfoGridRow = (t) => {
         return t.rows.map(row => {
-            console.log(row.field)
             return [
                 { value: row.label, readOnly: true, disableEvents: true},
                 { value: "", field: row.field, required: row.required },
@@ -25,7 +24,6 @@ export default function ProjectInfo(props) {
     }
 
     const handleProjectInfoGridChanged = (updatedGridData) => {
-        console.log(updatedGridData)
         props.setFormValue(updatedGridData);
         setProjectInfoGrid(updatedGridData)
     }

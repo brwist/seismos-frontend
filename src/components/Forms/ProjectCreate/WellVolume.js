@@ -81,16 +81,16 @@ export default function WellVolume(props) {
         const tolThisRow = gridDetail[index].find(g => g.field === "tol").value || 0;
         const idThisRow = gridDetail[index].find(g => g.field === "id").value || 0;
         if (depthThisRow) {
-            if (index == 2) {
+            if (index === 2) {
                 const tolPreviousRow = gridDetail[index - 1].find(g => g.field === "tol").value || 0;
                 const diff = formatNumber(depthThisRow) - formatNumber(tolPreviousRow);
                 return formatNumber(idThisRow) ** 2 * 0.0009714 * diff;
             } else {
                 const tolNextRow = gridDetail[index + 1].find(g => g.field === "tol").value || 0;
                 if (tolNextRow) {
-                    return formatNumber(idThisRow) ** 2 * 0.0009714 * (index == 0 ? formatNumber(tolNextRow) : (formatNumber(tolNextRow) - formatNumber(tolThisRow)));
+                    return formatNumber(idThisRow) ** 2 * 0.0009714 * (index === 0 ? formatNumber(tolNextRow) : (formatNumber(tolNextRow) - formatNumber(tolThisRow)));
                 } else {
-                    return formatNumber(idThisRow) ** 2 * 0.0009714 * (index == 0 ? formatNumber(depthThisRow) : (formatNumber(depthThisRow) - formatNumber(tolThisRow)));
+                    return formatNumber(idThisRow) ** 2 * 0.0009714 * (index === 0 ? formatNumber(depthThisRow) : (formatNumber(depthThisRow) - formatNumber(tolThisRow)));
                 }
             }
         }
@@ -152,8 +152,6 @@ export default function WellVolume(props) {
         });
         
         if(formValid) {
-            console.log('wellVolumeGrids', wellVolumeGrids)
-            console.log('wellVolumeEstimationsGrids', wellVolumeEstimationsGrids)
             props.next();
         } else {
             const newWellVolGrid = _.cloneDeep(wellVolumeGrids);
