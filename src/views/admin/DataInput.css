@@ -1,74 +1,80 @@
 .datainput-cards {
-    box-shadow: 1px 1px 3px #b7b7b7;
+  box-shadow: 1px 1px 3px #b7b7b7;
 }
 
 .datainput-cards .ant-card-head {
-    background: #eaeaea;
+  background: #eaeaea;
 }
 
 .di-card-grid {
-    text-transform: uppercase;
-    font-weight: 500;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .di-card-grid:hover {
-    background: #b91c1b;
-    color: #fff;
-    cursor: pointer;
+  background: #b91c1b;
+  color: #fff;
+  cursor: pointer;
 }
 
 .di-card-success {
-    background: #11b981;
-    color: #fff;
-    box-shadow: 0px 1px #11b981;
+  background: #11b981;
+  color: #fff;
+  box-shadow: 0px 1px #11b981;
 }
 
 .di-card-success:hover {
-    background: gray;
-    color: #fff;
+  background: gray;
+  color: #fff;
 }
 
 .reupload-text-container::before {
-    content: 'Reupload File';
+  content: "Reupload File";
 }
 
-.anticon.reupload-button, .reupload-text-container {
-    /* display: none; */
-    opacity: 0;
-    visibility: hidden;
-    top: -10px;
-    transition: opacity 700ms ease-out;
-    height: 0;
-    width: 0;
-    overflow: hidden;
+.anticon.reupload-button,
+.reupload-text-container {
+  /* display: none; */
+  opacity: 0;
+  visibility: hidden;
+  top: -10px;
+  transition: opacity 700ms ease-out;
+  height: 0;
+  width: 0;
+  overflow: hidden;
 }
 
-.di-card-success:hover .reupload-button, .di-card-success:hover .reupload-text-container {
-    /* display: inline-block; */
-    opacity: 1;
-    visibility: visible;
-    top: 0px;
-    transition: opacity 700ms ease-out;
-    height: auto;
-    width: auto;
+.di-card-success:hover .reupload-button,
+.di-card-success:hover .reupload-text-container {
+  /* display: inline-block; */
+  opacity: 1;
+  visibility: visible;
+  top: 0px;
+  transition: opacity 700ms ease-out;
+  height: auto;
+  width: auto;
 }
 
 .reupload-text {
-    opacity: 1;
-    visibility: visible;
-    top: 0px;
-    transition: opacity 700ms ease-out;
-    height: auto;
-    width: auto;
+  opacity: 1;
+  visibility: visible;
+  top: 0px;
+  transition: opacity 700ms ease-out;
+  height: auto;
+  width: auto;
 }
 
 .di-card-success:hover .reupload-text {
-    /* display: none; */
-    opacity: 0;
-    visibility: hidden;
-    top: -10px;
-    transition: opacity 700ms ease-out;
-    height: 0;
-    width: 0;
-    overflow: hidden;
+  /* display: none; */
+  opacity: 0;
+  visibility: hidden;
+  top: -10px;
+  transition: opacity 700ms ease-out;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.ant-card-body {
+  padding: 0;
 }
