@@ -9,10 +9,10 @@ export default function Settings() {
   return (
     <>
       <div className="flex flex-wrap">
-        <div className="w-full lg:w-8/12 px-4">
+        <div className="w-full px-4 lg:w-8/12">
           <CardSettings />
         </div>
-        <div className="w-full lg:w-4/12 px-4">
+        <div className="w-full px-4 lg:w-4/12">
           <CardProfile />
         </div>
       </div>
