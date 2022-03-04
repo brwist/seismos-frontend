@@ -29,7 +29,7 @@ const stageDataValues = {
     stage_start_time: null,
     stage_end_time: null,
     opening_well: null,
-    // isip: null,
+    //: null,
     base_fluid_type: null,
     base_fluid_density: null,
     max_conc_density: null,
@@ -41,8 +41,6 @@ const stageDataValues = {
     total_clean_fluid_volume_bbls_actual: null,
     total_proppant_lbs_design: null,
     total_proppant_lbs_actual: null,
-    total_sand_lbs_design: null,
-    total_sand_lbs_actual: null,
     acid_volume_gals_design: null,
     acid_volume_gals_actual: null,
     flush_volume_bbls_design: null,
@@ -74,22 +72,22 @@ const fluidFormValues = {
 
 const activeDataFormValues = {
     wave_type: null,
-    amplitude: null,
-    frequency: null,
-    pre_frac_num_pulse: null,
-    post_frac_num_pulse: null,
-    offset: null,
     period: null,
-    post_frac_end_time: null,
-    post_frac_start_time: null,
-    pre_frac_end_time: null,
+    frequency: null,
+    offset: null,
+    amplitude: null,
     pre_frac_start_time: null,
+    pre_frac_end_time: null,
+    pre_frac_num_pulse: null,
+    post_frac_start_time: null,
+    post_frac_end_time: null,
+    post_frac_num_pulse: null,
 }
 
 const notesFataFormValues = {
-    additional_note: null,
     pre_frac_pulse_note: null,
-    post_frac_pulse_note: null
+    post_frac_pulse_note: null,
+    additional_note: null
 }
 
 const defaultValueForm = {

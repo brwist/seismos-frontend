@@ -230,7 +230,7 @@ export default function TrackingSheet(props) {
             notesDataFormValues
         );
 
-        console.log(trackingSheet);
+        
         try {
             if (isUpdating) {
                 const stageTrackingPresent = stageSheetList.find(s => (s.stage_n) === Number(selectedStage));
@@ -358,6 +358,13 @@ export default function TrackingSheet(props) {
         proppantFormForm.setFieldsValue(FormInitialValues.proppantFormValues);
         activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
         notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
+        setDynamicFormNestItemValues(FormInitialValues.dynamicFormNestItemValues);
+        setPerforationIntervalInformationValues(FormInitialValues.perforationIntervalInformationValues);
+        setStageDataValues(FormInitialValues.stageDataValues);
+        setFluidFormValues(FormInitialValues.fluidFormValues);
+        setProppantFormValues(FormInitialValues.proppantFormValues);
+        setActiveDataFormValues(FormInitialValues.activeDataFormValues);
+        setNotesFataFormValues(FormInitialValues.notesFataFormValues);
     }
 
     useState(() => {
