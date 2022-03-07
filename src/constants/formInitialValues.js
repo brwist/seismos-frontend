@@ -6,7 +6,7 @@ const dynamicFormNestItemValues = {
   plug_seat_technique: null,
   plug_type: null,
   seismos_data_collection: null,
-};
+}
 
 const perforationIntervalInformationValues = {
   acid: null,
@@ -22,7 +22,7 @@ const perforationIntervalInformationValues = {
   pumped_diverter: null,
   spf: null,
   top_measured_depth: null,
-};
+}
 
 const stageDataValues = {
   stage_start_time: null,
@@ -48,7 +48,7 @@ const stageDataValues = {
   flush_volume_bbls_actual: null,
   slurry_volume_bbls_design: null,
   slurry_volume_bbls_actual: null,
-};
+}
 
 const proppantFormValues = {
   proppantData: [
@@ -59,7 +59,7 @@ const proppantFormValues = {
       amount_pumped: null,
     },
   ],
-};
+}
 
 const fluidFormValues = {
   fluidData: [
@@ -69,7 +69,7 @@ const fluidFormValues = {
       ppg: null,
     },
   ],
-};
+}
 
 const activeDataFormValues = {
   wave_type: null,
@@ -83,13 +83,13 @@ const activeDataFormValues = {
   post_frac_start_time: null,
   pre_frac_end_time: null,
   pre_frac_start_time: null,
-};
+}
 
 const notesFataFormValues = {
   additional_note: null,
   pre_frac_pulse_note: null,
   post_frac_pulse_note: null,
-};
+}
 
 const defaultValueForm = {
   c1_min: 1350,
@@ -102,9 +102,9 @@ const defaultValueForm = {
   q_max: 200,
   k_min: 0.001,
   k_max: 5000,
-  model: "assymetric", //x //x
-  response: "full", //x
-  source: "reflection", //x
+  model: 'assymetric', //x //x
+  response: 'full', //x
+  source: 'reflection', //x
   layer: 0,
   viscosity: 10.0,
   density: 1000,
@@ -113,17 +113,17 @@ const defaultValueForm = {
   f_high_hz: 2.5,
   new_sample_rate: 20.0,
   data_sample_rate: 20,
-  algorithm: "DiffEvolv", //x
+  algorithm: 'DiffEvolv', //x
   grid_density: 5,
-  weighting: "No", //x
+  weighting: 'No', //x
   wlevexp: 0.0001,
-  loop: "No", //x
-  method: "fix_w", //x
+  loop: 'No', //x
+  method: 'fix_w', //x
   total_width: 1.574804,
   tolerance: 0.01,
   interation: 10,
-  company: "Vesta",
-  well: "4",
+  company: 'Vesta',
+  well: '4',
   pres: 0.33,
   young: 27000,
   overburden: 1.18,
@@ -147,16 +147,16 @@ const defaultValueForm = {
   strat2: 1,
   NG: 0,
   stage_ques: 0,
-  breaker_YN: "N",
-  poisson_var_YN: "Y",
+  breaker_YN: 'N',
+  poisson_var_YN: 'Y',
   passion_method: 2,
-  stress_shadow_YN: "Y",
-  plotraw_YN: "N",
-  skip_losses_YN: "N",
-  use_wns_YN: "N",
-  use_wncuts_YN: "N",
+  stress_shadow_YN: 'Y',
+  plotraw_YN: 'N',
+  skip_losses_YN: 'N',
+  use_wns_YN: 'N',
+  use_wncuts_YN: 'N',
   fit_iteration: 50,
-};
+}
 const FormInitialValues = {
   dynamicFormNestItemValues,
   perforationIntervalInformationValues,
@@ -166,6 +166,6 @@ const FormInitialValues = {
   activeDataFormValues,
   notesFataFormValues,
   defaultValueForm,
-};
+}
 
-export default FormInitialValues;
+export default FormInitialValues
