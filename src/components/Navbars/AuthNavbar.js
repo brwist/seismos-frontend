@@ -10,17 +10,23 @@ export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-black">
-        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+      <nav className="absolute top-0 z-50 flex flex-wrap items-center justify-between w-full px-2 py-3 bg-black navbar-expand-lg">
+        <div className="container flex flex-wrap items-center justify-between px-4 mx-auto">
+          <div className="relative flex justify-between w-full lg:w-auto lg:static lg:block lg:justify-start">
             <Link
-              className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase pb-0"
+              className="inline-block py-2 pb-0 mr-4 text-sm font-bold leading-relaxed text-white uppercase whitespace-nowrap"
               to="/"
             >
-              <img src={require("assets/img/seismos/seismos_logo_animated.gif").default} className="logo-width"></img>
+              <img
+                src={
+                  require("assets/img/seismos/seismos_logo_animated.gif")
+                    .default
+                }
+                className="logo-width"
+              ></img>
             </Link>
             <button
-              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              className="block px-3 py-1 text-xl leading-none bg-transparent border border-transparent border-solid rounded outline-none cursor-pointer lg:hidden focus:outline-none"
               type="button"
               onClick={() => setNavbarOpen(!navbarOpen)}
             >
@@ -34,7 +40,7 @@ export default function Navbar(props) {
             }
             id="example-navbar-warning"
           >
-            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto mb-0">
+            <ul className="flex flex-col mb-0 list-none lg:flex-row lg:ml-auto">
               <li className="flex items-center">
                 <Link
                   to="/auth/login"
