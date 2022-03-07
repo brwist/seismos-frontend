@@ -135,7 +135,7 @@ export default function DailyLog() {
     return (
         <>
             <Card bordered={false} style={{ width: '100%', marginBottom: '5px' }}>
-                <div className="max-w-580-px mx-auto">
+                <div className="mx-auto max-w-580-px">
                     <strong>Note: </strong>
                     All times entered In tracking sheet are to be in 24 hour time format. The site layout and frac equipment info needs to be notated in the Daily log, with objectives including:
                     <br></br>
@@ -243,7 +243,7 @@ export default function DailyLog() {
             {
                 dailyLogs &&
                 <Card>
-                    <div className="max-w-580-px mx-auto">
+                    <div className="mx-auto max-w-580-px">
                         <div><h2 className="module-title">All Logs</h2></div>
                         <Table dataSource={dailyLogs} columns={columns} pagination={false} />
                         {/* <Row gutter={24} className="mb-2">
