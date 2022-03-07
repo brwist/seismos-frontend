@@ -1,35 +1,35 @@
-import React, { PureComponent } from 'react';
-import {ENTER_KEY, TAB_KEY} from 'react-datasheet/lib/keys';
-import Select from 'react-select';
+import React, { PureComponent } from "react";
+import { ENTER_KEY, TAB_KEY } from "react-datasheet/lib/keys";
+import Select from "react-select";
 
 class SelectEditor extends PureComponent {
-  constructor (props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.state = {}
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.state = {};
   }
 
-  handleChange (opt) {
-    const {onCommit, onRevert} = this.props
+  handleChange(opt) {
+    const { onCommit, onRevert } = this.props;
     if (!opt) {
-      return onRevert()
+      return onRevert();
     }
-    const { e } = this.state
-    onCommit(opt.value, e)
+    const { e } = this.state;
+    onCommit(opt.value, e);
   }
 
-  handleKeyDown (e) {
+  handleKeyDown(e) {
     // record last key pressed so we can handle enter
     if (e.which === ENTER_KEY || e.which === TAB_KEY) {
-      e.persist()
-      this.setState({ e })
+      e.persist();
+      this.setState({ e });
     } else {
-      this.setState({ e: null })
+      this.setState({ e: null });
     }
   }
 
-  render () {
+  render() {
     return (
       <Select
         autoFocus
@@ -39,12 +39,12 @@ class SelectEditor extends PureComponent {
         onChange={this.handleChange}
         onInputKeyDown={this.handleKeyDown}
         options={[
-          {label: 'Engineering Manager', value: 'engineering_manager'},
-          {label: 'Field engineer', value: 'field_engineer'},
+          { label: "Engineering Manager", value: "engineering_manager" },
+          { label: "Field engineer", value: "field_engineer" },
         ]}
         classNamePrefix="grid-react-select"
       />
-    )
+    );
   }
 }
 

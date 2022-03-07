@@ -9,8 +9,11 @@ import Navbar from "components/Navbars/AuthNavbar.js";
 
 export default function Auth(props) {
   const getRoutes = (routes) => {
-    if (props.isAuthenticated && APP_CONSTANTS.LOGIN_TO_APP_ROUTES.indexOf(props.location.pathname) > -1) {
-      return <Redirect to="/admin/project" />
+    if (
+      props.isAuthenticated &&
+      APP_CONSTANTS.LOGIN_TO_APP_ROUTES.indexOf(props.location.pathname) > -1
+    ) {
+      return <Redirect to="/admin/project" />;
     }
     return routes.map((prop, key) => {
       if (prop.layout === ENUMS.ROUTES.AUTH) {
@@ -31,13 +34,9 @@ export default function Auth(props) {
     <>
       <Navbar transparent />
       <main>
-        <section className="relative w-full h-full min-h-screen flex items-center">
-          <div
-            className="absolute top-0 w-full h-full bg-no-repeat bg-full"
-          ></div>
-          <Switch>
-              {getRoutes(routes)}
-          </Switch>
+        <section className="relative flex items-center w-full h-full min-h-screen">
+          <div className="absolute top-0 w-full h-full bg-no-repeat bg-full"></div>
+          <Switch>{getRoutes(routes)}</Switch>
         </section>
       </main>
     </>
