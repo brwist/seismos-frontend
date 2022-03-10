@@ -181,10 +181,7 @@ export default function OcReport() {
             </Col>
             <Col span={3}>
               <div>
-                <Button
-                  type="primary"
-                  disabled={data.filter((d) => d.approved).length < 1}
-                >
+                <Button type="primary" disabled={data.filter((d) => d.approved).length < 1}>
                   Sync to cloud
                 </Button>
               </div>

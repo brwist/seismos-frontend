@@ -31,14 +31,13 @@ export default function WellInfo(props) {
     setWellInfoGrid(
       data.grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === "action" ? component(index, data.grid) : null;
+          const componentData = y.field === "action" ? component(index, data.grid) : null;
           return {
             ...y,
             component: componentData,
           };
         });
-      })
+      }),
     );
     setShowConfirmationModal(false);
     setModalData(null);
@@ -53,43 +52,39 @@ export default function WellInfo(props) {
   };
 
   const populateWillInfoGrid = () => {
-    const grid = TableHeadersUtil.wellInfoFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        const columns = [];
-        TableHeadersUtil.wellInfoFormTableData.columns.map((column) => {
-          const className = column.actionColumn ? "noborder" : "";
-          columns.push({
-            value: column.defaultValue,
-            field: column.field,
-            required: column.required,
-            component: null,
-            forceComponent: isForcedComponent(column),
-            className: className,
-            datatype: column.datatype,
-            dataEditor:
-              column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ||
-              column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT ||
-              column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
-                ? NumberInput
-                : null,
-          });
-          return column;
+    const grid = TableHeadersUtil.wellInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+      const columns = [];
+      TableHeadersUtil.wellInfoFormTableData.columns.map((column) => {
+        const className = column.actionColumn ? "noborder" : "";
+        columns.push({
+          value: column.defaultValue,
+          field: column.field,
+          required: column.required,
+          component: null,
+          forceComponent: isForcedComponent(column),
+          className: className,
+          datatype: column.datatype,
+          dataEditor:
+            column.field === ENUMS.FORM_FIELDS.WELL_INFO.NO_OF_STAGES ||
+            column.field === ENUMS.FORM_FIELDS.WELL_INFO.LAT ||
+            column.field === ENUMS.FORM_FIELDS.WELL_INFO.LONG
+              ? NumberInput
+              : null,
         });
-        return rows.concat([columns]);
-      },
-      []
-    );
+        return column;
+      });
+      return rows.concat([columns]);
+    }, []);
     setWellInfoGrid(
       grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === "action" ? component(index, grid) : null;
+          const componentData = y.field === "action" ? component(index, grid) : null;
           return {
             ...y,
             component: componentData,
           };
         });
-      })
+      }),
     );
   };
 
@@ -119,14 +114,13 @@ export default function WellInfo(props) {
     setWellInfoGrid(
       newWellInfoGrid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === "action" ? component(index, newWellInfoGrid) : null;
+          const componentData = y.field === "action" ? component(index, newWellInfoGrid) : null;
           return {
             ...y,
             component: componentData,
           };
         });
-      })
+      }),
     );
   };
 
@@ -135,14 +129,13 @@ export default function WellInfo(props) {
     setWellInfoGrid(
       updatedGridData.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === "action" ? component(index, updatedGridData) : null;
+          const componentData = y.field === "action" ? component(index, updatedGridData) : null;
           return {
             ...y,
             component: componentData,
           };
         });
-      })
+      }),
     );
   };
 
@@ -173,16 +166,13 @@ export default function WellInfo(props) {
         setWellInfoGrid(
           props.formValues.map((x, index) => {
             return x.map((y) => {
-              const componentData =
-                y.field === "action"
-                  ? component(index, props.formValues)
-                  : null;
+              const componentData = y.field === "action" ? component(index, props.formValues) : null;
               return {
                 ...y,
                 component: componentData,
               };
             });
-          })
+          }),
         );
     } else {
       populateWillInfoGrid();
@@ -197,10 +187,7 @@ export default function WellInfo(props) {
           grid={wellInfoGrid}
           gridValueChanged={handleWellInfoGridChanged}
         ></Grid>
-        <div
-          className="inline-block mt-2 cursor-pointer text-lightBlue-600"
-          onClick={(e) => addNewWell(e)}
-        >
+        <div className="inline-block mt-2 cursor-pointer text-lightBlue-600" onClick={(e) => addNewWell(e)}>
           + Add a new well
         </div>
       </div>

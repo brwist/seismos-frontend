@@ -97,9 +97,7 @@ export default function Sidebar() {
                   <i
                     className={
                       "fas fa-tv mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/dashboard") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
+                      (window.location.href.indexOf("/admin/dashboard") !== -1 ? "opacity-75" : "text-blueGray-300")
                     }
                   ></i>{" "}
                   Dashboard
@@ -119,9 +117,7 @@ export default function Sidebar() {
                   <i
                     className={
                       "fas fa-tools mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/settings") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
+                      (window.location.href.indexOf("/admin/settings") !== -1 ? "opacity-75" : "text-blueGray-300")
                     }
                   ></i>{" "}
                   Settings
@@ -141,9 +137,7 @@ export default function Sidebar() {
                   <i
                     className={
                       "fas fa-table mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/tables") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
+                      (window.location.href.indexOf("/admin/tables") !== -1 ? "opacity-75" : "text-blueGray-300")
                     }
                   ></i>{" "}
                   Tables
@@ -163,9 +157,7 @@ export default function Sidebar() {
                   <i
                     className={
                       "fas fa-map-marked mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/maps") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
+                      (window.location.href.indexOf("/admin/maps") !== -1 ? "opacity-75" : "text-blueGray-300")
                     }
                   ></i>{" "}
                   Maps
@@ -187,8 +179,7 @@ export default function Sidebar() {
                   className="block py-3 text-xs font-bold uppercase text-blueGray-700 hover:text-blueGray-500"
                   to="/auth/login"
                 >
-                  <i className="mr-2 text-sm fas fa-fingerprint text-blueGray-400"></i>{" "}
-                  Login
+                  <i className="mr-2 text-sm fas fa-fingerprint text-blueGray-400"></i> Login
                 </Link>
               </li>
 
@@ -197,8 +188,7 @@ export default function Sidebar() {
                   className="block py-3 text-xs font-bold uppercase text-blueGray-700 hover:text-blueGray-500"
                   to="/auth/register"
                 >
-                  <i className="mr-2 text-sm fas fa-clipboard-list text-blueGray-300"></i>{" "}
-                  Register
+                  <i className="mr-2 text-sm fas fa-clipboard-list text-blueGray-300"></i> Register
                 </Link>
               </li>
             </ul>
@@ -217,8 +207,7 @@ export default function Sidebar() {
                   className="block py-3 text-xs font-bold uppercase text-blueGray-700 hover:text-blueGray-500"
                   to="/landing"
                 >
-                  <i className="mr-2 text-sm fas fa-newspaper text-blueGray-400"></i>{" "}
-                  Landing Page
+                  <i className="mr-2 text-sm fas fa-newspaper text-blueGray-400"></i> Landing Page
                 </Link>
               </li>
 
@@ -227,8 +216,7 @@ export default function Sidebar() {
                   className="block py-3 text-xs font-bold uppercase text-blueGray-700 hover:text-blueGray-500"
                   to="/profile"
                 >
-                  <i className="mr-2 text-sm fas fa-user-circle text-blueGray-400"></i>{" "}
-                  Profile Page
+                  <i className="mr-2 text-sm fas fa-user-circle text-blueGray-400"></i> Profile Page
                 </Link>
               </li>
             </ul>

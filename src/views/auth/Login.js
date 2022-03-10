@@ -30,8 +30,7 @@ export default function Login() {
       saveUserState(data);
     } catch (error) {
       setIsLoading(false);
-      if (error.message.includes("Incorrect"))
-        addToast(error.message, { appearance: "error", autoDismiss: true });
+      if (error.message.includes("Incorrect")) addToast(error.message, { appearance: "error", autoDismiss: true });
     }
   };
 
@@ -65,16 +64,11 @@ export default function Login() {
               <img
                 alt="seismos logo"
                 className="mx-auto"
-                src={
-                  require("assets/img/seismos/seismos_logo_animated.gif")
-                    .default
-                }
+                src={require("assets/img/seismos/seismos_logo_animated.gif").default}
               ></img>
             </Card>
             <Card>
-              <h6 className="text-sm text-center text-blueGray-500">
-                Log in to Seismos
-              </h6>
+              <h6 className="text-sm text-center text-blueGray-500">Log in to Seismos</h6>
               <Divider></Divider>
               <Form
                 name="normal_login"
@@ -93,10 +87,7 @@ export default function Login() {
                     },
                   ]}
                 >
-                  <Input
-                    prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="Username"
-                  />
+                  <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
                 </Form.Item>
                 <Form.Item
                   name="password"
@@ -125,11 +116,7 @@ export default function Login() {
                   {isLoading ? (
                     <Spin />
                   ) : (
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      className="w-full login-form-button"
-                    >
+                    <Button type="primary" htmlType="submit" className="w-full login-form-button">
                       Log in
                     </Button>
                   )}
@@ -138,19 +125,12 @@ export default function Login() {
             </Card>
             <div className="relative flex flex-wrap justify-between mt-2">
               <div className="w-1/2">
-                <a
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-seismos-primary"
-                >
+                <a href="#pablo" onClick={(e) => e.preventDefault()} className="text-seismos-primary">
                   Forgot password?
                 </a>
               </div>
               <div className="w-1/2 text-right">
-                <Link
-                  to="/auth/register"
-                  className="block text-seismos-primary"
-                >
+                <Link to="/auth/register" className="block text-seismos-primary">
                   Create new account
                 </Link>
               </div>
