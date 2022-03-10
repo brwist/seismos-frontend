@@ -11,9 +11,7 @@ import ENUMS from "constants/appEnums";
 export default function WellVolume(props) {
   const { Panel } = Collapse;
   const [wellVolumeGrids, setWellVolumeGrids] = useState([]);
-  const [wellVolumeEstimationsGrids, setWellVolumeEstimationsGrids] = useState(
-    []
-  );
+  const [wellVolumeEstimationsGrids, setWellVolumeEstimationsGrids] = useState([]);
 
   const getWellVolumeGridRow = (t) => {
     return t.rows.map((label) => {
@@ -54,10 +52,7 @@ export default function WellVolume(props) {
           field: row.field,
           datatype: row.datatype,
           dataEditor: NumberInput,
-          readOnly:
-            row.field === ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL
-              ? false
-              : true,
+          readOnly: row.field === ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL ? false : true,
         },
         { value: row.label, readOnly: true, disableEvents: true },
       ];
@@ -65,23 +60,19 @@ export default function WellVolume(props) {
   };
 
   const populateWellVolumeGrid = (index) => {
-    const newWellVolGrid = TableHeadersUtil.wellVolumeFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        return rows.concat(getWellVolumeGridRow(t));
-      },
-      []
-    );
+    const newWellVolGrid = TableHeadersUtil.wellVolumeFormTableData.grid.reduce((rows, t, rowIdx) => {
+      return rows.concat(getWellVolumeGridRow(t));
+    }, []);
     return newWellVolGrid;
   };
 
   const populateWellVolumeEstimationsGrid = (index) => {
-    const newWellVolEstimationsGrid =
-      TableHeadersUtil.wellVolumeEstimationsFormTableData.grid.reduce(
-        (rows, t, rowIdx) => {
-          return rows.concat(getWellVolumeEstimationsGridRow(t));
-        },
-        []
-      );
+    const newWellVolEstimationsGrid = TableHeadersUtil.wellVolumeEstimationsFormTableData.grid.reduce(
+      (rows, t, rowIdx) => {
+        return rows.concat(getWellVolumeEstimationsGridRow(t));
+      },
+      [],
+    );
     return newWellVolEstimationsGrid;
   };
 
@@ -94,66 +85,44 @@ export default function WellVolume(props) {
   };
 
   const calculateHValue = (gridDetail, index) => {
-    const depthThisRow =
-      gridDetail[index].find((g) => g.field === "depth_md").value || 0;
-    const tolThisRow =
-      gridDetail[index].find((g) => g.field === "tol").value || 0;
-    const idThisRow =
-      gridDetail[index].find((g) => g.field === "id").value || 0;
+    const depthThisRow = gridDetail[index].find((g) => g.field === "depth_md").value || 0;
+    const tolThisRow = gridDetail[index].find((g) => g.field === "tol").value || 0;
+    const idThisRow = gridDetail[index].find((g) => g.field === "id").value || 0;
     if (depthThisRow) {
       if (index === 2) {
-        const tolPreviousRow =
-          gridDetail[index - 1].find((g) => g.field === "tol").value || 0;
+        const tolPreviousRow = gridDetail[index - 1].find((g) => g.field === "tol").value || 0;
         const diff = formatNumber(depthThisRow) - formatNumber(tolPreviousRow);
         return formatNumber(idThisRow) ** 2 * 0.0009714 * diff;
       } else {
-        const tolNextRow =
-          gridDetail[index + 1].find((g) => g.field === "tol").value || 0;
+        const tolNextRow = gridDetail[index + 1].find((g) => g.field === "tol").value || 0;
         if (tolNextRow) {
           return (
             formatNumber(idThisRow) ** 2 *
             0.0009714 *
-            (index === 0
-              ? formatNumber(tolNextRow)
-              : formatNumber(tolNextRow) - formatNumber(tolThisRow))
+            (index === 0 ? formatNumber(tolNextRow) : formatNumber(tolNextRow) - formatNumber(tolThisRow))
           );
         } else {
           return (
             formatNumber(idThisRow) ** 2 *
             0.0009714 *
-            (index === 0
-              ? formatNumber(depthThisRow)
-              : formatNumber(depthThisRow) - formatNumber(tolThisRow))
+            (index === 0 ? formatNumber(depthThisRow) : formatNumber(depthThisRow) - formatNumber(tolThisRow))
           );
         }
       }
     }
   };
 
-  const calculateWellVolumeEstimations = (
-    wellVolGridData,
-    wellVolEstGridData,
-    index
-  ) => {
+  const calculateWellVolumeEstimations = (wellVolGridData, wellVolEstGridData, index) => {
     const hvalueCasing = calculateHValue(wellVolGridData, 0);
     const hvalueLinear1 = calculateHValue(wellVolGridData, 1);
     const hvalueLinear2 = calculateHValue(wellVolGridData, 2);
-    const totalHValue =
-      (hvalueCasing || 0) + (hvalueLinear1 || 0) + (hvalueLinear2 || 0);
-    const newWellVolEstimationsGrid = _.cloneDeep(
-      wellVolEstGridData ? wellVolEstGridData : wellVolumeEstimationsGrids
-    );
-    const surfaveVol =
-      newWellVolEstimationsGrid[index][0].find(
-        (wvG) => wvG.field === "surface_vol"
-      ).value || 0;
+    const totalHValue = (hvalueCasing || 0) + (hvalueLinear1 || 0) + (hvalueLinear2 || 0);
+    const newWellVolEstimationsGrid = _.cloneDeep(wellVolEstGridData ? wellVolEstGridData : wellVolumeEstimationsGrids);
+    const surfaveVol = newWellVolEstimationsGrid[index][0].find((wvG) => wvG.field === "surface_vol").value || 0;
     const bbls = formatNumber(totalHValue) + formatNumber(surfaveVol);
     const gallons = bbls * 42;
-    newWellVolEstimationsGrid[index][1].find((k) => k.field === "bbls").value =
-      bbls.toFixed();
-    newWellVolEstimationsGrid[index][2].find(
-      (k) => k.field === "gallons"
-    ).value = gallons.toFixed();
+    newWellVolEstimationsGrid[index][1].find((k) => k.field === "bbls").value = bbls.toFixed();
+    newWellVolEstimationsGrid[index][2].find((k) => k.field === "gallons").value = gallons.toFixed();
     props.setWellVolumeEstimationsFormValue(newWellVolEstimationsGrid);
     setWellVolumeEstimationsGrids(newWellVolEstimationsGrid);
   };
@@ -169,11 +138,7 @@ export default function WellVolume(props) {
   const handleWellVolumeEstimationsGridChanged = (updatedGridData, index) => {
     const newWellVolEstimationsGrid = _.cloneDeep(wellVolumeEstimationsGrids);
     newWellVolEstimationsGrid[index] = updatedGridData;
-    calculateWellVolumeEstimations(
-      wellVolumeGrids[index],
-      newWellVolEstimationsGrid,
-      index
-    );
+    calculateWellVolumeEstimations(wellVolumeGrids[index], newWellVolEstimationsGrid, index);
   };
 
   const gotoNextStep = () => {
@@ -220,25 +185,15 @@ export default function WellVolume(props) {
       let wellVolumeGridData = [];
       let wellVolumeEstimationsGridData = [];
       props.wellInfoValues.map((wellInfoValue, index) => {
-        if (
-          props.wellVolumeFormValues != null &&
-          props.wellVolumeFormValues[index]
-        ) {
+        if (props.wellVolumeFormValues != null && props.wellVolumeFormValues[index]) {
           wellVolumeGridData.push(props.wellVolumeFormValues[index]);
         } else {
           wellVolumeGridData.push(populateWellVolumeGrid(index));
         }
-        if (
-          props.wellVolumeEstimationsFormValues != null &&
-          props.wellVolumeEstimationsFormValues[index]
-        ) {
-          wellVolumeEstimationsGridData.push(
-            props.wellVolumeEstimationsFormValues[index]
-          );
+        if (props.wellVolumeEstimationsFormValues != null && props.wellVolumeEstimationsFormValues[index]) {
+          wellVolumeEstimationsGridData.push(props.wellVolumeEstimationsFormValues[index]);
         } else {
-          wellVolumeEstimationsGridData.push(
-            populateWellVolumeEstimationsGrid(index)
-          );
+          wellVolumeEstimationsGridData.push(populateWellVolumeEstimationsGrid(index));
         }
         return wellInfoValue;
       });
@@ -258,9 +213,7 @@ export default function WellVolume(props) {
                 key={index + 1}
                 extra={
                   wellVolumeGrids[index] &&
-                  wellVolumeGrids[index].find((row) =>
-                    row.find((cell) => cell.error) ? true : false
-                  ) ? (
+                  wellVolumeGrids[index].find((row) => (row.find((cell) => cell.error) ? true : false)) ? (
                     <Tooltip title="Please fill all the fields">
                       <i className="text-red-500 fas fa-exclamation-circle"></i>
                     </Tooltip>
@@ -281,9 +234,7 @@ export default function WellVolume(props) {
                   <div className="p-4"></div>
                   <div className="well-volume-estimation-grid">
                     <Grid
-                      columns={TableHeadersUtil.wellVolumeEstimationsFormTableData.columns(
-                        well[0].value
-                      )}
+                      columns={TableHeadersUtil.wellVolumeEstimationsFormTableData.columns(well[0].value)}
                       grid={wellVolumeEstimationsGrids[index]}
                       gridValueChanged={handleWellVolumeEstimationsGridChanged}
                       index={index}

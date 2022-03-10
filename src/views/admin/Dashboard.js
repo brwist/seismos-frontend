@@ -9,12 +9,9 @@ import React from "react";
 // import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 
 export default function Dashboard() {
-  
   return (
     <>
-      <div className="text-center p-5">
-        SEISMOS DATA TRACKING
-      </div>
+      <div className="p-5 text-center">SEISMOS DATA TRACKING</div>
     </>
   );
 }

@@ -17,10 +17,7 @@ export default function Footer() {
             x="0"
             y="0"
           >
-            <polygon
-              className="fill-current text-blueGray-200"
-              points="2560 0 2560 100 0 100"
-            ></polygon>
+            <polygon className="fill-current text-blueGray-200" points="2560 0 2560 100 0 100"></polygon>
           </svg>
         </div>
         <div className="container px-4 mx-auto">
@@ -60,9 +57,7 @@ export default function Footer() {
             <div className="w-full px-4 lg:w-6/12">
               <div className="flex flex-wrap mb-6 items-top">
                 <div className="w-full px-4 ml-auto lg:w-4/12">
-                  <span className="block mb-2 text-sm font-semibold uppercase text-blueGray-500">
-                    Useful Links
-                  </span>
+                  <span className="block mb-2 text-sm font-semibold uppercase text-blueGray-500">Useful Links</span>
                   <ul className="list-unstyled">
                     <li>
                       <a
@@ -99,9 +94,7 @@ export default function Footer() {
                   </ul>
                 </div>
                 <div className="w-full px-4 lg:w-4/12">
-                  <span className="block mb-2 text-sm font-semibold uppercase text-blueGray-500">
-                    Other Resources
-                  </span>
+                  <span className="block mb-2 text-sm font-semibold uppercase text-blueGray-500">Other Resources</span>
                   <ul className="list-unstyled">
                     <li>
                       <a

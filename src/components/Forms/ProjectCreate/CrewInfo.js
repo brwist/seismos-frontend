@@ -33,18 +33,14 @@ export default function CrewInfo(props) {
     setCrewInfoGrid(
       data.grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, data.grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, data.grid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
     setShowConfirmationModal(false);
     setModalData(null);
@@ -56,26 +52,14 @@ export default function CrewInfo(props) {
 
   const FillViewer = (props) => {
     const { value } = props;
-    const foundOption = APP_CONSTANTS.ROLE_OPTIONS.find(
-      (op) => op.value === value
-    );
-    return (
-      <div className="cell-text-view">
-        {foundOption ? foundOption.label : ""}
-      </div>
-    );
+    const foundOption = APP_CONSTANTS.ROLE_OPTIONS.find((op) => op.value === value);
+    return <div className="cell-text-view">{foundOption ? foundOption.label : ""}</div>;
   };
 
   const FillViewerShift = (props) => {
     const { value } = props;
-    const foundOption = APP_CONSTANTS.SHIFT_OPTIONS.find(
-      (op) => op.value === value
-    );
-    return (
-      <div className="cell-text-view">
-        {foundOption ? foundOption.label : ""}
-      </div>
-    );
+    const foundOption = APP_CONSTANTS.SHIFT_OPTIONS.find((op) => op.value === value);
+    return <div className="cell-text-view">{foundOption ? foundOption.label : ""}</div>;
   };
 
   const getCrewInfoGridRow = (t) => {
@@ -87,6 +71,7 @@ export default function CrewInfo(props) {
           col = {
             value: row.label,
             field: column.field,
+            required: column.required,
             dataEditor: SelectEditor,
             valueViewer: FillViewer,
             className: "select-cell",
@@ -95,6 +80,7 @@ export default function CrewInfo(props) {
           col = {
             value: row.label,
             field: column.field,
+            required: column.required,
             dataEditor: SelectShiftEditor,
             valueViewer: FillViewerShift,
             className: "select-cell",
@@ -115,27 +101,20 @@ export default function CrewInfo(props) {
   };
 
   const populateCrewInfoGrid = () => {
-    const grid = TableHeadersUtil.crewInfoFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        return rows.concat(getCrewInfoGridRow(t));
-      },
-      []
-    );
+    const grid = TableHeadersUtil.crewInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+      return rows.concat(getCrewInfoGridRow(t));
+    }, []);
     setCrewInfoGrid(
       grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, grid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -168,17 +147,14 @@ export default function CrewInfo(props) {
       newCrewInfoGrid.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, newCrewInfoGrid)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, newCrewInfoGrid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -201,17 +177,14 @@ export default function CrewInfo(props) {
       updatedGridData.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, updatedGridData)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, updatedGridData) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -220,7 +193,7 @@ export default function CrewInfo(props) {
     const validatedCrewGrid = _.cloneDeep(crewInfoGrid);
     validatedCrewGrid.map((row) => {
       row.map((cell) => {
-        if (cell.required && cell.value === "") {
+        if (cell.required && !cell.value) {
           isCrewInfoValid = false;
           cell.className = "cell-error";
         }
@@ -243,17 +216,14 @@ export default function CrewInfo(props) {
           props.formValues.map((x, index) => {
             return x.map((y) => {
               const componentData =
-                y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-                  ? component(index, props.formValues)
-                  : null;
+                y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, props.formValues) : null;
               return {
                 ...y,
                 component: componentData,
-                forceComponent:
-                  y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+                forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
               };
             });
-          })
+          }),
         );
     } else {
       populateCrewInfoGrid();
@@ -262,19 +232,13 @@ export default function CrewInfo(props) {
 
   return (
     <>
-      <div
-        className="mb-8"
-        style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="mb-8" style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}>
         <Grid
           columns={TableHeadersUtil.crewInfoFormTableData.columns}
           grid={crewInfoGrid}
           gridValueChanged={handleCrewInfoGridChanged}
         ></Grid>
-        <div
-          className="text-lightBlue-600 mt-2 cursor-pointer inline-block"
-          onClick={(e) => addNewCrewInfo(e)}
-        >
+        <div className="inline-block mt-2 cursor-pointer text-lightBlue-600" onClick={(e) => addNewCrewInfo(e)}>
           + Add a new crew member
         </div>
       </div>

@@ -14,12 +14,7 @@ export default function CardTable({ color }) {
         <div className="px-4 py-3 mb-0 border-0 rounded-t">
           <div className="flex flex-wrap items-center">
             <div className="relative flex-1 flex-grow w-full max-w-full px-4">
-              <h3
-                className={
-                  "font-semibold text-lg " +
-                  (color === "light" ? "text-blueGray-700" : "text-white")
-                }
-              >
+              <h3 className={"font-semibold text-lg " + (color === "light" ? "text-blueGray-700" : "text-white")}>
                 Card Tables
               </h3>
             </div>
@@ -98,12 +93,7 @@ export default function CardTable({ color }) {
                     className="w-12 h-12 bg-white border rounded-full"
                     alt="..."
                   ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
+                  <span className={"ml-3 font-bold " + +(color === "light" ? "text-blueGray-600" : "text-white")}>
                     Argon Design System
                   </span>
                 </th>
@@ -161,12 +151,7 @@ export default function CardTable({ color }) {
                     className="w-12 h-12 bg-white border rounded-full"
                     alt="..."
                   ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
+                  <span className={"ml-3 font-bold " + +(color === "light" ? "text-blueGray-600" : "text-white")}>
                     Angular Now UI Kit PRO
                   </span>
                 </th>
@@ -174,8 +159,7 @@ export default function CardTable({ color }) {
                   $1,800 USD
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
-                  <i className="mr-2 fas fa-circle text-emerald-500"></i>{" "}
-                  completed
+                  <i className="mr-2 fas fa-circle text-emerald-500"></i> completed
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                   <div className="flex">
@@ -225,12 +209,7 @@ export default function CardTable({ color }) {
                     className="w-12 h-12 bg-white border rounded-full"
                     alt="..."
                   ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
+                  <span className={"ml-3 font-bold " + +(color === "light" ? "text-blueGray-600" : "text-white")}>
                     Black Dashboard Sketch
                   </span>
                 </th>
@@ -288,12 +267,7 @@ export default function CardTable({ color }) {
                     className="w-12 h-12 bg-white border rounded-full"
                     alt="..."
                   ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
+                  <span className={"ml-3 font-bold " + +(color === "light" ? "text-blueGray-600" : "text-white")}>
                     React Material Dashboard
                   </span>
                 </th>
@@ -301,8 +275,7 @@ export default function CardTable({ color }) {
                   $4,400 USD
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
-                  <i className="mr-2 text-teal-500 fas fa-circle"></i> on
-                  schedule
+                  <i className="mr-2 text-teal-500 fas fa-circle"></i> on schedule
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                   <div className="flex">
@@ -352,12 +325,7 @@ export default function CardTable({ color }) {
                     className="w-12 h-12 bg-white border rounded-full"
                     alt="..."
                   ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
+                  <span className={"ml-3 font-bold " + +(color === "light" ? "text-blueGray-600" : "text-white")}>
                     React Material Dashboard
                   </span>
                 </th>
@@ -365,8 +333,7 @@ export default function CardTable({ color }) {
                   $2,200 USD
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
-                  <i className="mr-2 fas fa-circle text-emerald-500"></i>{" "}
-                  completed
+                  <i className="mr-2 fas fa-circle text-emerald-500"></i> completed
                 </td>
                 <td className="p-4 px-6 text-xs align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
                   <div className="flex">
