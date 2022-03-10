@@ -1,186 +1,162 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import TableHeadersUtil from "util/TableHeaderUtil";
-import Grid from "components/Grid/Grid";
-import SelectEditor from "components/Grid/DataEditor/SelectEditor";
-import _ from "lodash";
-import APP_CONSTANTS from "constants/appConstants";
-import ENUMS from "constants/appEnums";
-import { MinusCircleOutlined } from "@ant-design/icons";
-import ConfirmationModal from "components/Modal/ConfirmationModal";
-import SelectShiftEditor from "components/Grid/DataEditor/SelectShiftEditor";
+import React, { useState } from 'react'
+import { Button } from 'antd'
+import TableHeadersUtil from 'util/TableHeaderUtil'
+import Grid from 'components/Grid/Grid'
+import SelectEditor from 'components/Grid/DataEditor/SelectEditor'
+import _ from 'lodash'
+import APP_CONSTANTS from 'constants/appConstants'
+import ENUMS from 'constants/appEnums'
+import { MinusCircleOutlined } from '@ant-design/icons'
+import ConfirmationModal from 'components/Modal/ConfirmationModal'
+import SelectShiftEditor from 'components/Grid/DataEditor/SelectShiftEditor'
 
 export default function CrewInfo(props) {
-  const [crewInfoGrid, setCrewInfoGrid] = useState([]);
-  const [showConfirmationModal, setShowConfirmationModal] = useState();
-  const [modalData, setModalData] = useState();
+  const [crewInfoGrid, setCrewInfoGrid] = useState([])
+  const [showConfirmationModal, setShowConfirmationModal] = useState()
+  const [modalData, setModalData] = useState()
 
   const remove = (rowIdx, grid) => {
-    setShowConfirmationModal(true);
+    setShowConfirmationModal(true)
     setModalData({
       rowIdx,
       grid,
-    });
-  };
+    })
+  }
 
   const handleCancel = () => {
-    setShowConfirmationModal(false);
-    setModalData(null);
-  };
+    setShowConfirmationModal(false)
+    setModalData(null)
+  }
 
   const handleRemoveConfirmed = (data) => {
-    data.grid.splice(data.rowIdx, 1);
+    data.grid.splice(data.rowIdx, 1)
     setCrewInfoGrid(
       data.grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, data.grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, data.grid) : null
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
-          };
-        });
-      })
-    );
-    setShowConfirmationModal(false);
-    setModalData(null);
-  };
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+          }
+        })
+      }),
+    )
+    setShowConfirmationModal(false)
+    setModalData(null)
+  }
 
   const component = (rowIdx, grid) => {
-    return <MinusCircleOutlined onClick={(event) => remove(rowIdx, grid)} />;
-  };
+    return <MinusCircleOutlined onClick={(event) => remove(rowIdx, grid)} />
+  }
 
   const FillViewer = (props) => {
-    const { value } = props;
-    const foundOption = APP_CONSTANTS.ROLE_OPTIONS.find(
-      (op) => op.value === value
-    );
-    return (
-      <div className="cell-text-view">
-        {foundOption ? foundOption.label : ""}
-      </div>
-    );
-  };
+    const { value } = props
+    const foundOption = APP_CONSTANTS.ROLE_OPTIONS.find((op) => op.value === value)
+    return <div className="cell-text-view">{foundOption ? foundOption.label : ''}</div>
+  }
 
   const FillViewerShift = (props) => {
-    const { value } = props;
-    const foundOption = APP_CONSTANTS.SHIFT_OPTIONS.find(
-      (op) => op.value === value
-    );
-    return (
-      <div className="cell-text-view">
-        {foundOption ? foundOption.label : ""}
-      </div>
-    );
-  };
+    const { value } = props
+    const foundOption = APP_CONSTANTS.SHIFT_OPTIONS.find((op) => op.value === value)
+    return <div className="cell-text-view">{foundOption ? foundOption.label : ''}</div>
+  }
 
   const getCrewInfoGridRow = (t) => {
     return t.rows.map((row) => {
-      const columns = [];
+      const columns = []
       TableHeadersUtil.crewInfoFormTableData.columns.map((column) => {
-        let col = {};
-        if (column.field === "role") {
+        let col = {}
+        if (column.field === 'role') {
           col = {
             value: row.label,
             field: column.field,
+            required: column.required,
             dataEditor: SelectEditor,
             valueViewer: FillViewer,
-            className: "select-cell",
-          };
-        } else if (column.field === "shift") {
+            className: 'select-cell',
+          }
+        } else if (column.field === 'shift') {
           col = {
             value: row.label,
             field: column.field,
+            required: column.required,
             dataEditor: SelectShiftEditor,
             valueViewer: FillViewerShift,
-            className: "select-cell",
-          };
+            className: 'select-cell',
+          }
         } else {
           col = {
-            value: "",
+            value: '',
             field: column.field,
             required: column.required,
             className: column.className,
-          };
+          }
         }
-        columns.push(col);
-        return column;
-      });
-      return columns;
-    });
-  };
+        columns.push(col)
+        return column
+      })
+      return columns
+    })
+  }
 
   const populateCrewInfoGrid = () => {
-    const grid = TableHeadersUtil.crewInfoFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        return rows.concat(getCrewInfoGridRow(t));
-      },
-      []
-    );
+    const grid = TableHeadersUtil.crewInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+      return rows.concat(getCrewInfoGridRow(t))
+    }, [])
     setCrewInfoGrid(
       grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, grid) : null
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
-          };
-        });
-      })
-    );
-  };
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+          }
+        })
+      }),
+    )
+  }
 
   const addNewCrewInfo = (e) => {
-    e.preventDefault();
-    const columns = [];
+    e.preventDefault()
+    const columns = []
     TableHeadersUtil.crewInfoFormTableData.columns.map((column) => {
-      let col = {};
-      if (column.field === "role") {
+      let col = {}
+      if (column.field === 'role') {
         col = {
-          value: "",
+          value: '',
           field: column.field,
           dataEditor: SelectEditor,
           valueViewer: FillViewer,
-          className: "select-cell",
-        };
+          className: 'select-cell',
+        }
       } else {
         col = {
-          value: "",
+          value: '',
           field: column.field,
           required: column.required,
           className: column.className,
-        };
+        }
       }
-      columns.push(col);
-      return column;
-    });
-    const newCrewInfoGrid = [...crewInfoGrid, columns];
+      columns.push(col)
+      return column
+    })
+    const newCrewInfoGrid = [...crewInfoGrid, columns]
     setCrewInfoGrid(
       newCrewInfoGrid.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, newCrewInfoGrid)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, newCrewInfoGrid) : null
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
-          };
-        });
-      })
-    );
-  };
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+          }
+        })
+      }),
+    )
+  }
 
   // const addNewCrew = (e) => {
   //     e.preventDefault();
@@ -196,45 +172,42 @@ export default function CrewInfo(props) {
   // }
 
   const handleCrewInfoGridChanged = (updatedGridData) => {
-    props.setFormValue(updatedGridData);
+    props.setFormValue(updatedGridData)
     setCrewInfoGrid(
       updatedGridData.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-              ? component(index, updatedGridData)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, updatedGridData) : null
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
-          };
-        });
-      })
-    );
-  };
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+          }
+        })
+      }),
+    )
+  }
 
   const gotoNextStep = () => {
-    let isCrewInfoValid = true;
-    const validatedCrewGrid = _.cloneDeep(crewInfoGrid);
+    let isCrewInfoValid = true
+    const validatedCrewGrid = _.cloneDeep(crewInfoGrid)
     validatedCrewGrid.map((row) => {
       row.map((cell) => {
-        if (cell.required && cell.value === "") {
-          isCrewInfoValid = false;
-          cell.className = "cell-error";
+        if (cell.required && !cell.value) {
+          isCrewInfoValid = false
+          cell.className = 'cell-error'
         }
-        return cell;
-      });
-      return row;
-    });
+        return cell
+      })
+      return row
+    })
 
     if (!isCrewInfoValid) {
-      handleCrewInfoGridChanged(validatedCrewGrid);
+      handleCrewInfoGridChanged(validatedCrewGrid)
     } else {
-      props.next();
+      props.next()
     }
-  };
+  }
 
   useState(() => {
     if (props.formValues != null) {
@@ -243,38 +216,29 @@ export default function CrewInfo(props) {
           props.formValues.map((x, index) => {
             return x.map((y) => {
               const componentData =
-                y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION
-                  ? component(index, props.formValues)
-                  : null;
+                y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? component(index, props.formValues) : null
               return {
                 ...y,
                 component: componentData,
-                forceComponent:
-                  y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
-              };
-            });
-          })
-        );
+                forceComponent: y.field === ENUMS.FORM_FIELDS.CREW_INFO.ACTION ? true : false,
+              }
+            })
+          }),
+        )
     } else {
-      populateCrewInfoGrid();
+      populateCrewInfoGrid()
     }
-  }, props);
+  }, props)
 
   return (
     <>
-      <div
-        className="mb-8"
-        style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="mb-8" style={{ width: '70%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Grid
           columns={TableHeadersUtil.crewInfoFormTableData.columns}
           grid={crewInfoGrid}
           gridValueChanged={handleCrewInfoGridChanged}
         ></Grid>
-        <div
-          className="text-lightBlue-600 mt-2 cursor-pointer inline-block"
-          onClick={(e) => addNewCrewInfo(e)}
-        >
+        <div className="inline-block mt-2 cursor-pointer text-lightBlue-600" onClick={(e) => addNewCrewInfo(e)}>
           + Add a new crew member
         </div>
       </div>
@@ -283,7 +247,7 @@ export default function CrewInfo(props) {
         <Button
           type="primary"
           onClick={(e) => {
-            gotoNextStep();
+            gotoNextStep()
           }}
         >
           Next
@@ -294,12 +258,12 @@ export default function CrewInfo(props) {
           isModalVisible={showConfirmationModal}
           handleCancel={handleCancel}
           handleOk={handleRemoveConfirmed}
-          modalTitle={"Delete Row"}
-          modalText={"Are you sure you want to delete this row?"}
-          footerButtons={{ cancel_text: "Cancel", confirm_text: "Yes" }}
+          modalTitle={'Delete Row'}
+          modalText={'Are you sure you want to delete this row?'}
+          footerButtons={{ cancel_text: 'Cancel', confirm_text: 'Yes' }}
           data={modalData}
         ></ConfirmationModal>
       )}
     </>
-  );
+  )
 }
