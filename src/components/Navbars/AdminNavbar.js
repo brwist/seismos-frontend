@@ -48,21 +48,14 @@ export default function Navbar(props) {
           <div className="logo-wo-sidebar">
             <img
               alt="seismos logo"
-              src={
-                require("assets/img/seismos/seismos_logo_animated.gif").default
-              }
+              src={require("assets/img/seismos/seismos_logo_animated.gif").default}
               onClick={() => handleLogoClick()}
             ></img>
           </div>
         ) : (
           ""
         )}
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          className="justify-end"
-          onClick={(e) => handleMenuClick(e)}
-        >
+        <Menu theme="dark" mode="horizontal" className="justify-end" onClick={(e) => handleMenuClick(e)}>
           <Menu.Item key={"project"}>{`Projects`}</Menu.Item>
           <Menu.Item key={"account_settings"}>{`Account Settings`}</Menu.Item>
           <Menu.Item key={"logout"}>{`Log out`}</Menu.Item>

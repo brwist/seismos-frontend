@@ -30,7 +30,7 @@ export default function Equipment(props) {
     setEquipmentGrid(
       TableHeadersUtil.equipmentFormTableData.grid.reduce((rows, t, rowIdx) => {
         return rows.concat(getEquipmentGridRow(t));
-      }, [])
+      }, []),
     );
   };
 
@@ -69,10 +69,7 @@ export default function Equipment(props) {
 
   return (
     <>
-      <div
-        className="mb-8"
-        style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="mb-8" style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}>
         <Grid
           columns={TableHeadersUtil.equipmentFormTableData.columns}
           grid={equipmentGrid}

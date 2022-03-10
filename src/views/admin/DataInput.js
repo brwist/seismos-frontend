@@ -25,8 +25,7 @@ export default function DataInput() {
         <RedoOutlined className="reupload-button" />
       </div>
     );
-    cards.find((card) => card.section === selectedSection).grid[2].className =
-      "di-card-success";
+    cards.find((card) => card.section === selectedSection).grid[2].className = "di-card-success";
     setIsModalVisible(false);
   };
 
@@ -37,12 +36,8 @@ export default function DataInput() {
   const handleAction = (action, index, selectedSection) => {
     switch (action) {
       case "upload":
-        cards.find((card) => card.section === selectedSection).grid[
-          index
-        ].label = "Upload File";
-        cards.find(
-          (card) => card.section === selectedSection
-        ).grid[2].className = "";
+        cards.find((card) => card.section === selectedSection).grid[index].label = "Upload File";
+        cards.find((card) => card.section === selectedSection).grid[2].className = "";
         setSection(selectedSection);
         showModal();
         break;
@@ -78,9 +73,7 @@ export default function DataInput() {
                 handleAction,
                 section: card.section,
               };
-              return (
-                <ButtonDataInputWrapper key={cardGridIndex} {...options} />
-              );
+              return <ButtonDataInputWrapper key={cardGridIndex} {...options} />;
             })}
             {/* <Row gutter={16}>
                             {

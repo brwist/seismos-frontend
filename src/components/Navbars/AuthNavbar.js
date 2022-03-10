@@ -17,13 +17,7 @@ export default function Navbar(props) {
               className="inline-block py-2 pb-0 mr-4 text-sm font-bold leading-relaxed text-white uppercase whitespace-nowrap"
               to="/"
             >
-              <img
-                src={
-                  require("assets/img/seismos/seismos_logo_animated.gif")
-                    .default
-                }
-                className="logo-width"
-              ></img>
+              <img src={require("assets/img/seismos/seismos_logo_animated.gif").default} className="logo-width"></img>
             </Link>
             <button
               className="block px-3 py-1 text-xl leading-none bg-transparent border border-transparent border-solid rounded outline-none cursor-pointer lg:hidden focus:outline-none"

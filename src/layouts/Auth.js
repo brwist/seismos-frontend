@@ -9,21 +9,12 @@ import Navbar from "components/Navbars/AuthNavbar.js";
 
 export default function Auth(props) {
   const getRoutes = (routes) => {
-    if (
-      props.isAuthenticated &&
-      APP_CONSTANTS.LOGIN_TO_APP_ROUTES.indexOf(props.location.pathname) > -1
-    ) {
+    if (props.isAuthenticated && APP_CONSTANTS.LOGIN_TO_APP_ROUTES.indexOf(props.location.pathname) > -1) {
       return <Redirect to="/admin/project" />;
     }
     return routes.map((prop, key) => {
       if (prop.layout === ENUMS.ROUTES.AUTH) {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return <Route path={prop.layout + prop.path} component={prop.component} key={key} />;
       } else {
         return null;
       }

@@ -39,8 +39,7 @@ export default function Navbar(props) {
                   className="flex items-center px-3 py-4 text-xs font-bold uppercase hover:text-blueGray-500 text-blueGray-700 lg:py-2"
                   href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index-navbar"
                 >
-                  <i className="mr-2 text-lg text-blueGray-400 far fa-file-alt leading-lg" />{" "}
-                  Docs
+                  <i className="mr-2 text-lg text-blueGray-400 far fa-file-alt leading-lg" /> Docs
                 </a>
               </li>
             </ul>

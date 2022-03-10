@@ -16,10 +16,7 @@ export default function Profile() {
                 "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')",
             }}
           >
-            <span
-              id="blackOverlay"
-              className="absolute w-full h-full bg-black opacity-50"
-            ></span>
+            <span id="blackOverlay" className="absolute w-full h-full bg-black opacity-50"></span>
           </div>
           <div
             className="absolute bottom-0 left-0 right-0 top-auto w-full overflow-hidden pointer-events-none h-70-px"
@@ -34,10 +31,7 @@ export default function Profile() {
               x="0"
               y="0"
             >
-              <polygon
-                className="fill-current text-blueGray-200"
-                points="2560 0 2560 100 0 100"
-              ></polygon>
+              <polygon className="fill-current text-blueGray-200" points="2560 0 2560 100 0 100"></polygon>
             </svg>
           </div>
         </section>
@@ -68,39 +62,24 @@ export default function Profile() {
                   <div className="w-full px-4 lg:w-4/12 lg:order-1">
                     <div className="flex justify-center py-4 pt-8 lg:pt-4">
                       <div className="p-3 mr-4 text-center">
-                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">
-                          22
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Friends
-                        </span>
+                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">22</span>
+                        <span className="text-sm text-blueGray-400">Friends</span>
                       </div>
                       <div className="p-3 mr-4 text-center">
-                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">
-                          10
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Photos
-                        </span>
+                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">10</span>
+                        <span className="text-sm text-blueGray-400">Photos</span>
                       </div>
                       <div className="p-3 text-center lg:mr-4">
-                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">
-                          89
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Comments
-                        </span>
+                        <span className="block text-xl font-bold tracking-wide uppercase text-blueGray-600">89</span>
+                        <span className="text-sm text-blueGray-400">Comments</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="mt-12 text-center">
-                  <h3 className="mb-2 text-4xl font-semibold leading-normal text-blueGray-700">
-                    Jenna Stones
-                  </h3>
+                  <h3 className="mb-2 text-4xl font-semibold leading-normal text-blueGray-700">Jenna Stones</h3>
                   <div className="mt-0 mb-2 text-sm font-bold leading-normal uppercase text-blueGray-400">
-                    <i className="mr-2 text-lg fas fa-map-marker-alt text-blueGray-400"></i>{" "}
-                    Los Angeles, California
+                    <i className="mr-2 text-lg fas fa-map-marker-alt text-blueGray-400"></i> Los Angeles, California
                   </div>
                   <div className="mt-10 mb-2 text-blueGray-600">
                     <i className="mr-2 text-lg fas fa-briefcase text-blueGray-400"></i>
@@ -115,17 +94,11 @@ export default function Profile() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4 lg:w-9/12">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        An artist of considerable range, Jenna the name taken by Melbourne-raised, Brooklyn-based Nick
+                        Murphy writes, performs and records all of his own music, giving it a warm, intimate feel with a
+                        solid groove structure. An artist of considerable range.
                       </p>
-                      <a
-                        href="#pablo"
-                        className="font-normal text-lightBlue-500"
-                        onClick={(e) => e.preventDefault()}
-                      >
+                      <a href="#pablo" className="font-normal text-lightBlue-500" onClick={(e) => e.preventDefault()}>
                         Show more
                       </a>
                     </div>

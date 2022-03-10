@@ -17,8 +17,7 @@ export default function JobInfo(props) {
       newDate = date.format("x");
     }
     const newJobInfoGrid = _.cloneDeep(grid);
-    newJobInfoGrid[index].find((r) => r.field === field).value =
-      Number(newDate);
+    newJobInfoGrid[index].find((r) => r.field === field).value = Number(newDate);
     handleJobInfoGridChanged(newJobInfoGrid);
   };
 
@@ -43,57 +42,38 @@ export default function JobInfo(props) {
   };
 
   const startDatecomponent = (rowIdx, grid) => {
-    const currentVal = grid[rowIdx].find(
-      (r) => r.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE
-    ).value;
+    const currentVal = grid[rowIdx].find((r) => r.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE).value;
     const momentDate = currentVal ? moment(Number(currentVal)) : null;
     return (
       <DatePicker
         className="w-100"
         value={momentDate}
         onChange={(date, dateString) =>
-          onDateChange(
-            date,
-            dateString,
-            grid,
-            rowIdx,
-            ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE
-          )
+          onDateChange(date, dateString, grid, rowIdx, ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE)
         }
       />
     );
   };
 
   const endDatecomponent = (rowIdx, grid) => {
-    const currentVal = grid[rowIdx].find(
-      (r) => r.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE
-    ).value;
+    const currentVal = grid[rowIdx].find((r) => r.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE).value;
     const momentDate = currentVal ? moment(Number(currentVal)) : null;
     return (
       <DatePicker
         className="w-100"
         value={momentDate}
         onChange={(date, dateString) =>
-          onDateChange(
-            date,
-            dateString,
-            grid,
-            rowIdx,
-            ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE
-          )
+          onDateChange(date, dateString, grid, rowIdx, ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE)
         }
       />
     );
   };
 
   const populateJobInfoGrid = () => {
-    const jobgrid = TableHeadersUtil.jobInfoFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        const row = getRow(t);
-        return rows.concat(row);
-      },
-      []
-    );
+    const jobgrid = TableHeadersUtil.jobInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+      const row = getRow(t);
+      return rows.concat(row);
+    }, []);
     setJobInfoGrid(
       jobgrid.map((x, index) => {
         return x.map((y) => {
@@ -113,7 +93,7 @@ export default function JobInfo(props) {
                 : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -122,7 +102,7 @@ export default function JobInfo(props) {
       TableHeadersUtil.padInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
         const row = getRow(t);
         return rows.concat(row);
-      }, [])
+      }, []),
     );
   };
 
@@ -139,8 +119,7 @@ export default function JobInfo(props) {
           ...y,
           component: componentData,
           forceComponent:
-            y.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE ||
-            y.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE
+            y.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_START_DATE || y.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_END_DATE
               ? true
               : false,
         };
@@ -211,7 +190,7 @@ export default function JobInfo(props) {
                     : false,
               };
             });
-          })
+          }),
         );
     } else {
       populateJobInfoGrid();
@@ -225,10 +204,7 @@ export default function JobInfo(props) {
 
   return (
     <>
-      <div
-        className="flex"
-        style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="flex" style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}>
         <Space size="large">
           <Grid
             columns={TableHeadersUtil.jobInfoFormTableData.columns}

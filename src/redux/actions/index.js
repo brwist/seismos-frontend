@@ -1,7 +1,7 @@
 import authActions from "./authActions";
 
 const allActions = {
-    authActions
+  authActions,
 };
 
 export default allActions;
