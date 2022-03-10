@@ -6,15 +6,7 @@ export default function CardBarChart() {
     let config = {
       type: "bar",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
           {
             label: new Date().getFullYear(),
@@ -104,12 +96,8 @@ export default function CardBarChart() {
         <div className="px-4 py-3 mb-0 bg-transparent rounded-t">
           <div className="flex flex-wrap items-center">
             <div className="relative flex-1 flex-grow w-full max-w-full">
-              <h6 className="mb-1 text-xs font-semibold uppercase text-blueGray-400">
-                Performance
-              </h6>
-              <h2 className="text-xl font-semibold text-blueGray-700">
-                Total orders
-              </h2>
+              <h6 className="mb-1 text-xs font-semibold uppercase text-blueGray-400">Performance</h6>
+              <h2 className="text-xl font-semibold text-blueGray-700">Total orders</h2>
             </div>
           </div>
         </div>

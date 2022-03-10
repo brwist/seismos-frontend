@@ -7,9 +7,7 @@ export default function CardPageVisits() {
         <div className="px-4 py-3 mb-0 border-0 rounded-t">
           <div className="flex flex-wrap items-center">
             <div className="relative flex-1 flex-grow w-full max-w-full px-4">
-              <h3 className="text-base font-semibold text-blueGray-700">
-                Page visits
-              </h3>
+              <h3 className="text-base font-semibold text-blueGray-700">Page visits</h3>
             </div>
             <div className="relative flex-1 flex-grow w-full max-w-full px-4 text-right">
               <button

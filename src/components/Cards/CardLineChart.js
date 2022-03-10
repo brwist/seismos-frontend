@@ -6,15 +6,7 @@ export default function CardLineChart() {
     var config = {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
           {
             label: new Date().getFullYear(),
@@ -112,9 +104,7 @@ export default function CardLineChart() {
         <div className="px-4 py-3 mb-0 bg-transparent rounded-t">
           <div className="flex flex-wrap items-center">
             <div className="relative flex-1 flex-grow w-full max-w-full">
-              <h6 className="mb-1 text-xs font-semibold uppercase text-blueGray-100">
-                Overview
-              </h6>
+              <h6 className="mb-1 text-xs font-semibold uppercase text-blueGray-100">Overview</h6>
               <h2 className="text-xl font-semibold text-white">Sales value</h2>
             </div>
           </div>

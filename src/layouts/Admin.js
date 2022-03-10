@@ -3,13 +3,7 @@ import { useSelector } from "react-redux";
 import { Layout, Menu, Breadcrumb, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Switch,
-  Route,
-  Redirect,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
 import { projectApi } from "./../api/projectApi";
 
@@ -50,13 +44,7 @@ export default function Admin(props) {
     }
     return routes.map((prop, key) => {
       if (prop.layout === ENUMS.ROUTES.ADMIN) {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return <Route path={prop.layout + prop.path} component={prop.component} key={key} />;
       } else {
         return null;
       }
@@ -89,11 +77,7 @@ export default function Admin(props) {
                 <Menu.Item
                   key={"data-input/" + well.uuid}
                   onClick={() => {
-                    menuChange(
-                      ENUMS.ROUTES.DATA_INPUT,
-                      well.uuid,
-                      project.uuid
-                    );
+                    menuChange(ENUMS.ROUTES.DATA_INPUT, well.uuid, project.uuid);
                   }}
                 >
                   Data input
@@ -109,11 +93,7 @@ export default function Admin(props) {
                 <Menu.Item
                   key={"default-values/" + well.uuid}
                   onClick={() => {
-                    menuChange(
-                      ENUMS.ROUTES.DEFAULT_VALUES,
-                      well.uuid,
-                      project.uuid
-                    );
+                    menuChange(ENUMS.ROUTES.DEFAULT_VALUES, well.uuid, project.uuid);
                   }}
                 >
                   Default values
@@ -121,11 +101,7 @@ export default function Admin(props) {
                 <Menu.Item
                   key={"tracking-sheet/" + well.uuid}
                   onClick={() => {
-                    menuChange(
-                      ENUMS.ROUTES.TRACKING_SHEET,
-                      well.uuid,
-                      project.uuid
-                    );
+                    menuChange(ENUMS.ROUTES.TRACKING_SHEET, well.uuid, project.uuid);
                   }}
                 >
                   Tracking sheet
@@ -156,11 +132,7 @@ export default function Admin(props) {
 
   useEffect(() => {
     if (props.isAuthenticated) {
-      if (
-        APP_CONSTANTS.ROUTES_WITHOUT_SIDEBAR.indexOf(
-          history.location.pathname
-        ) > -1
-      ) {
+      if (APP_CONSTANTS.ROUTES_WITHOUT_SIDEBAR.indexOf(history.location.pathname) > -1) {
         setNoSidebarLayout(true);
         setSidebarMenu([]);
         // setPages(history.location.pathname.split("/admin/")[1].split("/")[0].split("-"));
@@ -169,10 +141,7 @@ export default function Admin(props) {
           if (location.state && location.state.projectId) {
             fetchProjectById(location.state.projectId);
 
-            const subMenu =
-              location.pathname.split("/admin/")[1] +
-              "/" +
-              location.state.wellId;
+            const subMenu = location.pathname.split("/admin/")[1] + "/" + location.state.wellId;
             const mainMenu = "menu" + location.state.wellId;
             setDefaultSelectedMenuKey(subMenu); // sub - inside
             setDefaultOpenMenu(mainMenu); // main
@@ -182,8 +151,7 @@ export default function Admin(props) {
             const wellIdSearch = params.get("wellId");
             fetchProjectById(projectIdSearch);
 
-            const subMenu =
-              location.pathname.split("/admin/")[1] + "/" + wellIdSearch;
+            const subMenu = location.pathname.split("/admin/")[1] + "/" + wellIdSearch;
             const mainMenu = "menu" + wellIdSearch;
             setDefaultSelectedMenuKey(subMenu); // sub - inside
             setDefaultOpenMenu(mainMenu); // main
@@ -228,11 +196,7 @@ export default function Admin(props) {
   useEffect(() => {
     return history.listen((location) => {
       if (props.isAuthenticated) {
-        if (
-          APP_CONSTANTS.ROUTES_WITHOUT_SIDEBAR.indexOf(
-            history.location.pathname
-          ) > -1
-        ) {
+        if (APP_CONSTANTS.ROUTES_WITHOUT_SIDEBAR.indexOf(history.location.pathname) > -1) {
           setNoSidebarLayout(true);
           setSidebarMenu([]);
           // setPages(history.location.pathname.split("/admin/")[1].split("/")[0].split("-"));
@@ -290,13 +254,7 @@ export default function Admin(props) {
             className="site-layout-background"
           >
             <div className="logo">
-              <img
-                alt="seismos logo"
-                src={
-                  require("assets/img/seismos/seismos_logo_animated.gif")
-                    .default
-                }
-              ></img>
+              <img alt="seismos logo" src={require("assets/img/seismos/seismos_logo_animated.gif").default}></img>
             </div>
             <Menu
               theme=""
@@ -308,10 +266,7 @@ export default function Admin(props) {
               {sidebarMenu}
             </Menu>
           </Sider>
-          <Layout
-            className="site-layout with-sedebar"
-            style={{ marginLeft: 250 }}
-          >
+          <Layout className="site-layout with-sedebar" style={{ marginLeft: 250 }}>
             <AdminNavbar withLogo={false} />
             <Content style={{ margin: "88px 16px 0", overflow: "initial" }}>
               <Switch>

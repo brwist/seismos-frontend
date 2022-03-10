@@ -27,8 +27,7 @@ export default function NewProject() {
   const [padInfoValues, setPadInfoValues] = useState(null);
   const [wellInfoValues, setWellInfoValues] = useState(null);
   const [wellVolumeValues, setWellVolumeValues] = useState(null);
-  const [wellVolumeEstimationsValues, setWellVolumeEstimationsValues] =
-    useState(null);
+  const [wellVolumeEstimationsValues, setWellVolumeEstimationsValues] = useState(null);
   const [clientInfoValues, setClientInfoValues] = useState(null);
   const [crewInfoValues, setCrewInfoValues] = useState(null);
   const [equipmentValues, setEquipmentValues] = useState(null);
@@ -58,25 +57,17 @@ export default function NewProject() {
       : [];
 
     const projectData = {
-      projectValues:
-        ProjectUtil.formatFormValuesFromRowGridData(projectInfoValues),
-      jobInfoValues: ProjectUtil.formatFormValuesFromRowGridData(
-        _.cloneDeep(jobInfoValues)
-      ),
+      projectValues: ProjectUtil.formatFormValuesFromRowGridData(projectInfoValues),
+      jobInfoValues: ProjectUtil.formatFormValuesFromRowGridData(_.cloneDeep(jobInfoValues)),
       padInfoValues: ProjectUtil.formatFormValuesFromRowGridData(padInfoValues),
-      wellInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(
-        wellInfoValues
-      ).map((x, index) => {
+      wellInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(wellInfoValues).map((x, index) => {
         return { ...x };
       }),
       wellVolumeValues: wellVolumeData,
       wellVolumeEstimationsValues: wellVolumeEstimationsData,
-      clientInfoValues:
-        ProjectUtil.formatFormValuesFromColumnGridData(clientInfoValues),
-      crewInfoValues:
-        ProjectUtil.formatFormValuesFromColumnGridData(crewInfoValues),
-      equipmentValues:
-        ProjectUtil.formatFormValuesFromRowGridData(equipmentValues),
+      clientInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(clientInfoValues),
+      crewInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(crewInfoValues),
+      equipmentValues: ProjectUtil.formatFormValuesFromRowGridData(equipmentValues),
     };
 
     try {
@@ -102,11 +93,7 @@ export default function NewProject() {
     {
       title: "Project Info",
       content: (
-        <ProjectInfo
-          next={next}
-          setFormValue={setProjectInfoValues}
-          formValues={projectInfoValues}
-        ></ProjectInfo>
+        <ProjectInfo next={next} setFormValue={setProjectInfoValues} formValues={projectInfoValues}></ProjectInfo>
       ),
     },
     {
@@ -123,13 +110,7 @@ export default function NewProject() {
     },
     {
       title: "Well Info",
-      content: (
-        <WellInfo
-          next={next}
-          setFormValue={setWellInfoValues}
-          formValues={wellInfoValues}
-        ></WellInfo>
-      ),
+      content: <WellInfo next={next} setFormValue={setWellInfoValues} formValues={wellInfoValues}></WellInfo>,
     },
     {
       title: "Well Volume",
@@ -146,23 +127,11 @@ export default function NewProject() {
     },
     {
       title: "Client Info",
-      content: (
-        <ClientInfo
-          next={next}
-          setFormValue={setClientInfoValues}
-          formValues={clientInfoValues}
-        ></ClientInfo>
-      ),
+      content: <ClientInfo next={next} setFormValue={setClientInfoValues} formValues={clientInfoValues}></ClientInfo>,
     },
     {
       title: "Crew Info",
-      content: (
-        <CrewInfo
-          next={next}
-          setFormValue={setCrewInfoValues}
-          formValues={crewInfoValues}
-        ></CrewInfo>
-      ),
+      content: <CrewInfo next={next} setFormValue={setCrewInfoValues} formValues={crewInfoValues}></CrewInfo>,
     },
     {
       title: "Equipment",
@@ -180,9 +149,7 @@ export default function NewProject() {
 
   return (
     <>
-      <div
-        className={`flex justify-center items-center bg-white ${classes.container}`}
-      >
+      <div className={`flex justify-center items-center bg-white ${classes.container}`}>
         <div className={classes.progress_container}>
           <PageHeader
             ghost={false}
@@ -196,16 +163,9 @@ export default function NewProject() {
               ))}
             </Steps>
             <div className="mb-6 steps-content">{steps[current].content}</div>
-            <div
-              className="flex justify-between steps-action"
-              style={{ position: "absolute", bottom: "48px" }}
-            >
+            <div className="flex justify-between steps-action" style={{ position: "absolute", bottom: "48px" }}>
               {
-                <Button
-                  style={{ margin: "0 8px" }}
-                  disabled={current < 1}
-                  onClick={() => prev()}
-                >
+                <Button style={{ margin: "0 8px" }} disabled={current < 1} onClick={() => prev()}>
                   Previous
                 </Button>
               }

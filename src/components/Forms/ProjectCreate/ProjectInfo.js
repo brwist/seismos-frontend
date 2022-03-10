@@ -18,12 +18,9 @@ export default function ProjectInfo(props) {
 
   const populateProjectInfoGrid = () => {
     setProjectInfoGrid(
-      TableHeadersUtil.projectInfoFormTableData.grid.reduce(
-        (rows, t, rowIdx) => {
-          return rows.concat(getProjectInfoGridRow(t));
-        },
-        []
-      )
+      TableHeadersUtil.projectInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+        return rows.concat(getProjectInfoGridRow(t));
+      }, []),
     );
   };
 
@@ -62,10 +59,7 @@ export default function ProjectInfo(props) {
 
   return (
     <>
-      <div
-        className="mb-8"
-        style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="mb-8" style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}>
         <Grid
           columns={TableHeadersUtil.projectInfoFormTableData.columns}
           grid={projectInfoGrid}

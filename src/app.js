@@ -7,13 +7,7 @@ import { AppContext } from "util/ContextUtil";
 import React, { useState, useEffect } from "react";
 import NotFound from "components/NotFound/NotFound";
 import { useToasts } from "react-toast-notifications";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { authApi } from "api/authApi";
 
 export default function Application() {
@@ -70,15 +64,11 @@ export default function Application() {
             <Switch>
               <Route
                 path={ENUMS.ROUTES.ADMIN}
-                render={(props) => (
-                  <Admin {...props} isAuthenticated={isAuthenticated} />
-                )}
+                render={(props) => <Admin {...props} isAuthenticated={isAuthenticated} />}
               />
               <Route
                 path={ENUMS.ROUTES.AUTH}
-                render={(props) => (
-                  <Auth {...props} isAuthenticated={isAuthenticated} />
-                )}
+                render={(props) => <Auth {...props} isAuthenticated={isAuthenticated} />}
               />
               {/* 
                         // TODO: remove the comments

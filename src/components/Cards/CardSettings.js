@@ -17,16 +17,11 @@ export default function CardSettings() {
         </div>
         <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
           <form>
-            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">
-              User Information
-            </h6>
+            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">User Information</h6>
             <div className="flex flex-wrap">
               <div className="w-full px-4 lg:w-6/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     Username
                   </label>
                   <input
@@ -38,10 +33,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-6/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     Email address
                   </label>
                   <input
@@ -53,10 +45,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-6/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     First Name
                   </label>
                   <input
@@ -68,10 +57,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-6/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     Last Name
                   </label>
                   <input
@@ -85,16 +71,11 @@ export default function CardSettings() {
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
 
-            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">
-              Contact Information
-            </h6>
+            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">Contact Information</h6>
             <div className="flex flex-wrap">
               <div className="w-full px-4 lg:w-12/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     Address
                   </label>
                   <input
@@ -106,10 +87,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-4/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     City
                   </label>
                   <input
@@ -121,10 +99,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-4/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     County
                   </label>
                   <input
@@ -136,10 +111,7 @@ export default function CardSettings() {
               </div>
               <div className="w-full px-4 lg:w-4/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     Postal Code
                   </label>
                   <input
@@ -153,16 +125,11 @@ export default function CardSettings() {
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
 
-            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">
-              About Me
-            </h6>
+            <h6 className="mt-3 mb-6 text-sm font-bold uppercase text-blueGray-400">About Me</h6>
             <div className="flex flex-wrap">
               <div className="w-full px-4 lg:w-12/12">
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                    htmlFor="grid-password"
-                  >
+                  <label className="block mb-2 text-xs font-bold uppercase text-blueGray-600" htmlFor="grid-password">
                     About me
                   </label>
                   <textarea

@@ -5,9 +5,7 @@ const authHttpHeaders = {
 };
 
 const adminHttpHeaders = () => {
-  const accessString = localStorage.getItem("JWT")
-    ? localStorage.getItem("JWT")
-    : "";
+  const accessString = localStorage.getItem("JWT") ? localStorage.getItem("JWT") : "";
   return {
     headers: {
       "Access-Control-Allow-Origin": "http://localhost:3000",
