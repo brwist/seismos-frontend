@@ -31,18 +31,14 @@ export default function ClientInfo(props) {
     setClientInfoGrid(
       data.grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-              ? component(index, data.grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? component(index, data.grid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
     setShowConfirmationModal(false);
     setModalData(null);
@@ -60,14 +56,8 @@ export default function ClientInfo(props) {
           value: "",
           field: column.field,
           required: column.required,
-          dataEditor:
-            column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD
-              ? PasswordInput
-              : null,
-          className:
-            column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD
-              ? "password-cell"
-              : column.className,
+          dataEditor: column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD ? PasswordInput : null,
+          className: column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD ? "password-cell" : column.className,
         });
         return column;
       });
@@ -76,27 +66,20 @@ export default function ClientInfo(props) {
   };
 
   const populateClientInfoGrid = () => {
-    const grid = TableHeadersUtil.clientInfoFormTableData.grid.reduce(
-      (rows, t, rowIdx) => {
-        return rows.concat(getClientInfoGridRow(t));
-      },
-      []
-    );
+    const grid = TableHeadersUtil.clientInfoFormTableData.grid.reduce((rows, t, rowIdx) => {
+      return rows.concat(getClientInfoGridRow(t));
+    }, []);
     setClientInfoGrid(
       grid.map((x, index) => {
         return x.map((y) => {
-          const componentData =
-            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-              ? component(index, grid)
-              : null;
+          const componentData = y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? component(index, grid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -108,14 +91,8 @@ export default function ClientInfo(props) {
         value: "",
         field: column.field,
         required: column.required,
-        dataEditor:
-          column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD
-            ? PasswordInput
-            : null,
-        className:
-          column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD
-            ? "password-cell"
-            : column.className,
+        dataEditor: column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD ? PasswordInput : null,
+        className: column.field === ENUMS.FORM_FIELDS.CLIENT_INFO.PASSWORD ? "password-cell" : column.className,
       });
       return column;
     });
@@ -124,17 +101,14 @@ export default function ClientInfo(props) {
       newClientInfoGrid.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-              ? component(index, newClientInfoGrid)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? component(index, newClientInfoGrid) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -144,17 +118,14 @@ export default function ClientInfo(props) {
       updatedGridData.map((x, index) => {
         return x.map((y) => {
           const componentData =
-            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-              ? component(index, updatedGridData)
-              : null;
+            y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? component(index, updatedGridData) : null;
           return {
             ...y,
             component: componentData,
-            forceComponent:
-              y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
+            forceComponent: y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
           };
         });
-      })
+      }),
     );
   };
 
@@ -186,19 +157,14 @@ export default function ClientInfo(props) {
           props.formValues.map((x, index) => {
             return x.map((y) => {
               const componentData =
-                y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-                  ? component(index, props.formValues)
-                  : null;
+                y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? component(index, props.formValues) : null;
               return {
                 ...y,
                 component: componentData,
-                forceComponent:
-                  y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION
-                    ? true
-                    : false,
+                forceComponent: y.field === ENUMS.FORM_FIELDS.CLIENT_INFO.ACTION ? true : false,
               };
             });
-          })
+          }),
         );
     } else {
       populateClientInfoGrid();
@@ -207,19 +173,13 @@ export default function ClientInfo(props) {
 
   return (
     <>
-      <div
-        className="mb-8"
-        style={{ width: "60%", marginLeft: "auto", marginRight: "auto" }}
-      >
+      <div className="mb-8" style={{ width: "60%", marginLeft: "auto", marginRight: "auto" }}>
         <Grid
           columns={TableHeadersUtil.clientInfoFormTableData.columns}
           grid={clientInfoGrid}
           gridValueChanged={handleClientInfoGridChanged}
         ></Grid>
-        <div
-          className="inline-block mt-2 cursor-pointer text-lightBlue-600"
-          onClick={(e) => addNewClient(e)}
-        >
+        <div className="inline-block mt-2 cursor-pointer text-lightBlue-600" onClick={(e) => addNewClient(e)}>
           + Add a new client
         </div>
       </div>

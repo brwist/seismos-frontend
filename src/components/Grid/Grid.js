@@ -81,9 +81,7 @@ export default function Grid(props) {
                 error = true;
                 className = className + "cell-error";
               } else {
-                className = className
-                  ? className.replace("cell-error", "")
-                  : "null";
+                className = className ? className.replace("cell-error", "") : "null";
               }
               gridData[row][col] = {
                 ...gridData[row][col],
@@ -93,8 +91,7 @@ export default function Grid(props) {
               };
             });
             setGrid(gridData);
-            props.hasOwnProperty("gridValueChanged") &&
-              props.gridValueChanged(gridData, props.index);
+            props.hasOwnProperty("gridValueChanged") && props.gridValueChanged(gridData, props.index);
           }}
         />
       )}

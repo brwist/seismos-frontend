@@ -9,10 +9,7 @@ export default function Account() {
   useEffect(() => {});
   return (
     <>
-      <div
-        style={{ minHeight: "80vh" }}
-        className="flex items-center justify-center bg-white"
-      >
+      <div style={{ minHeight: "80vh" }} className="flex items-center justify-center bg-white">
         <div>
           <Card title="User Account" style={{ width: "500px" }}>
             <div>Name: {user.username}</div>

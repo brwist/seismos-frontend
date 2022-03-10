@@ -12,11 +12,7 @@ export default function ConfirmationModal(props) {
         <Button key="back" onClick={(e) => props.handleCancel(e)}>
           {props.footerButtons.cancel_text}
         </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          onClick={(e) => props.handleOk(props.data)}
-        >
+        <Button key="submit" type="primary" onClick={(e) => props.handleOk(props.data)}>
           {props.footerButtons.confirm_text}
         </Button>,
       ]}
