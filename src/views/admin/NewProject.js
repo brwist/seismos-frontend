@@ -34,12 +34,10 @@ export default function NewProject() {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
   const next = () => {
-    console.log("next", _.cloneDeep(jobInfoValues));
     setCurrent(current + 1);
   };
 
   const prev = () => {
-    console.log("prev", _.cloneDeep(jobInfoValues));
     setCurrent(current - 1);
   };
 

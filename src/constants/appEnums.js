@@ -63,8 +63,8 @@ const FORM_FIELDS = {
   PAD_INFO: {
     PAD_NAME: "pad_name",
     // PAD_ID: 'pad_uuid',
-    CLIENT_NAME: "client_name",
-    CUSTOMER_FIELD_REP: "customer_field_rep",
+    CUSTOMER_NAME: "customer_name",
+    CUSTOMER_EMAIL: "customer_email",
     REP_CONTACT_NUMBER: "rep_contact_number",
     OPERATOR: "operator_name",
     SERVICE_COMPANY: "service_company_name",
