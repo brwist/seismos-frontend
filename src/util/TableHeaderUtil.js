@@ -60,8 +60,8 @@ const padInfoFormTableData = {
       rows: [
         { label: "Pad name", field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_NAME, required: true },
         // { label: 'Pad Id', field: ENUMS.FORM_FIELDS.PAD_INFO.PAD_ID, required: true },
-        { label: "Client name", field: ENUMS.FORM_FIELDS.PAD_INFO.CLIENT_NAME, required: true },
-        { label: "Customer field rep", field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_FIELD_REP, required: true },
+        { label: "Customer name", field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_NAME, required: true },
+        { label: "Customer email", field: ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_EMAIL, required: false },
         {
           label: "Rep contact #",
           field: ENUMS.FORM_FIELDS.PAD_INFO.REP_CONTACT_NUMBER,
