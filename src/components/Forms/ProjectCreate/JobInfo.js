@@ -5,6 +5,7 @@ import Grid from "components/Grid/Grid";
 import _ from "lodash";
 import ENUMS from "constants/appEnums";
 import moment from "moment";
+import EmailInput from "components/Grid/DataEditor/EmailInput";
 import NumberInput from "components/Grid/DataEditor/NumberInput";
 
 export default function JobInfo(props) {
@@ -35,6 +36,8 @@ export default function JobInfo(props) {
             row.field === ENUMS.FORM_FIELDS.JOB_INFO.AFE_ID ||
             row.field === ENUMS.FORM_FIELDS.JOB_INFO.JOB_ID
               ? NumberInput
+              : row.field === ENUMS.FORM_FIELDS.PAD_INFO.CUSTOMER_EMAIL
+              ? EmailInput
               : null,
         },
       ];
