@@ -190,8 +190,6 @@ export default function WellVolume(props) {
       });
       props.setWellVolumeFormValue(newWellVolGrid);
       setWellVolumeGrids(newWellVolGrid);
-      console.log(newWellVolGrid);
-      console.log(validatedwellVoulumeEstimationGrid);
       setWellVolumeEstimationsGrids(validatedwellVoulumeEstimationGrid);
     }
   };
