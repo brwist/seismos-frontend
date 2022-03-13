@@ -31,18 +31,17 @@ const getNumberValue = (val) => {
 };
 
 const formatFormValuesFromRowGridData = (gridValues) => {
-  let fieldVlaues = {};
-  if (!gridValues) return fieldVlaues;
+  let fieldValues = {};
+  if (!gridValues) return fieldValues;
   gridValues.map((gridRow) => {
     const obj = gridRow.find((val) => val.field);
     const fieldValuePair = { [obj.field]: obj.datatype === "integer" ? getNumberValue(obj.value) : obj.value };
-    if (obj.field !== "action") {
-      fieldVlaues = extend(fieldVlaues, fieldValuePair);
+    if (obj.field !== "action" && obj.value !== "") {
+      fieldValues = extend(fieldValues, fieldValuePair);
     }
     return fieldValuePair;
   });
-
-  return fieldVlaues;
+  return fieldValues;
 };
 
 const formatFormValuesFromColumnGridData = (gridValues) => {
