@@ -52,6 +52,7 @@ export default function WellVolume(props) {
           field: row.field,
           datatype: row.datatype,
           dataEditor: NumberInput,
+          required: row.required,
           readOnly: row.field === ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL ? false : true,
         },
         { value: row.label, readOnly: true, disableEvents: true },
@@ -167,6 +168,18 @@ export default function WellVolume(props) {
       return grid;
     });
 
+    const validatedwellVoulumeEstimationGrid = _.cloneDeep(wellVolumeEstimationsGrids);
+    validatedwellVoulumeEstimationGrid.map((row) => {
+      row.map((cell) => {
+        if (cell[0].required && cell[0].value === "") {
+          formValid = false;
+          cell[0].className = "cell-error";
+        }
+        return cell;
+      });
+      return row;
+    });
+
     if (formValid) {
       props.next();
     } else {
@@ -177,6 +190,9 @@ export default function WellVolume(props) {
       });
       props.setWellVolumeFormValue(newWellVolGrid);
       setWellVolumeGrids(newWellVolGrid);
+      console.log(newWellVolGrid);
+      console.log(validatedwellVoulumeEstimationGrid);
+      setWellVolumeEstimationsGrids(validatedwellVoulumeEstimationGrid);
     }
   };
 
