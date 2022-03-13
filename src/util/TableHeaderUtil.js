@@ -199,6 +199,7 @@ const wellVolumeEstimationsFormTableData = {
         {
           label: "Surface Vol. [bbls]",
           field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.SURFACE_VOL,
+          required: true,
           datatype: "integer",
         },
         { label: "bbls", field: ENUMS.FORM_FIELDS.WELL_VOLUME_ESTIMATIONS.BBLS, datatype: "integer" },
