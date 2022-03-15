@@ -181,4 +181,15 @@ export const projectApi = {
       throw new Error(error.message);
     }
   },
+  syncCloud: (project_id) => {
+    try {
+      const res = axios.get(config.API_URL + ENUMS.API_ROUTES.SYNC_CLOUD + "/" + project_id, {
+        ...HttpUtil.adminHttpHeaders(),
+      });
+      if (res.status === 200) return res.data;
+    } catch (e) {
+      console.log(e);
+      throw new Error(e.message);
+    }
+  },
 };
