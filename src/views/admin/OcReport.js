@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { Card, Space, Table, Button, Row, Col } from "antd";
 import FAKE_DATA from "constants/fakeData";
 import _ from "lodash";
@@ -7,6 +8,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { projectApi } from "./../../api/projectApi";
 
 export default function OcReport() {
+  const history = useHistory();
   const [data, setData] = useState(FAKE_DATA.STAGE_REPORT);
 
   const csvData = [
@@ -118,30 +120,29 @@ export default function OcReport() {
   ];
 
   const renderBody = (props, columns) => {
-    return (
-      <tr className={props.className}>
-        {columns.map((item, idx) => {
-          // console.log(item)
-          if (!item.hidden) {
-            return props.children[idx];
-          }
-        })}
-      </tr>
-    );
+    return <tr className={props.className}>{columns.map((item, idx) => !item.hidden && props.children[idx])}</tr>;
   };
 
-  const fetchQcReport = async () => {
+  const fetchQcReport = useCallback(async () => {
     try {
-      const data = await projectApi.getQcReport(3);
+      const { wellId } = history.location.state;
+      const data = await projectApi.getQcReport(wellId);
       console.log(data);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [history.location.state]);
 
   useEffect(() => {
     fetchQcReport();
-  }, []);
+  }, [fetchQcReport, history]);
+
+  const syncCloud = async () => {
+    const { projectId } = history.location.state;
+    const data = await projectApi.syncCloud(projectId);
+    console.log(data);
+  };
+
   return (
     <>
       <Card bordered={false} style={{ width: "100%", marginBottom: "5px" }}>
@@ -181,7 +182,7 @@ export default function OcReport() {
             </Col>
             <Col span={3}>
               <div>
-                <Button type="primary" disabled={data.filter((d) => d.approved).length < 1}>
+                <Button type="primary" onClick={syncCloud}>
                   Sync to cloud
                 </Button>
               </div>
