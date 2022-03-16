@@ -53,7 +53,11 @@ export default function NewProject() {
           return ProjectUtil.formatFormValuesFromRowGridData(wellVolEst);
         })
       : [];
-
+    const equipmentData = equipmentValues
+      ? equipmentValues.map((equipment) => {
+          return ProjectUtil.formatFormValuesFromRowGridData(equipment);
+        })
+      : [];
     const projectData = {
       projectValues: ProjectUtil.formatFormValuesFromRowGridData(projectInfoValues),
       jobInfoValues: ProjectUtil.formatFormValuesFromRowGridData(_.cloneDeep(jobInfoValues)),
@@ -65,7 +69,7 @@ export default function NewProject() {
       wellVolumeEstimationsValues: wellVolumeEstimationsData,
       clientInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(clientInfoValues),
       crewInfoValues: ProjectUtil.formatFormValuesFromColumnGridData(crewInfoValues),
-      equipmentValues: ProjectUtil.formatFormValuesFromRowGridData(equipmentValues),
+      equipmentValues: equipmentData,
     };
 
     try {
@@ -90,9 +94,7 @@ export default function NewProject() {
   const steps = [
     {
       title: "Project Info",
-      content: (
-        <ProjectInfo next={next} setFormValue={setProjectInfoValues} formValues={projectInfoValues}></ProjectInfo>
-      ),
+      content: <ProjectInfo next={next} setFormValue={setProjectInfoValues} formValues={projectInfoValues} />,
     },
     {
       title: "Job Info",
@@ -103,12 +105,12 @@ export default function NewProject() {
           setPadInfoFormValue={setPadInfoValues}
           jobInfoFormValues={jobInfoValues}
           padInfoFormValues={padInfoValues}
-        ></JobInfo>
+        />
       ),
     },
     {
       title: "Well Info",
-      content: <WellInfo next={next} setFormValue={setWellInfoValues} formValues={wellInfoValues}></WellInfo>,
+      content: <WellInfo next={next} setFormValue={setWellInfoValues} formValues={wellInfoValues} />,
     },
     {
       title: "Well Volume",
@@ -120,27 +122,28 @@ export default function NewProject() {
           wellInfoValues={wellInfoValues}
           wellVolumeFormValues={wellVolumeValues}
           wellVolumeEstimationsFormValues={wellVolumeEstimationsValues}
-        ></WellVolume>
+        />
       ),
     },
     {
       title: "Client Info",
-      content: <ClientInfo next={next} setFormValue={setClientInfoValues} formValues={clientInfoValues}></ClientInfo>,
+      content: <ClientInfo next={next} setFormValue={setClientInfoValues} formValues={clientInfoValues} />,
     },
     {
       title: "Crew Info",
-      content: <CrewInfo next={next} setFormValue={setCrewInfoValues} formValues={crewInfoValues}></CrewInfo>,
+      content: <CrewInfo next={next} setFormValue={setCrewInfoValues} formValues={crewInfoValues} />,
     },
     {
       title: "Equipment",
       content: (
         <Equipment
           next={next}
+          wellInfoValues={wellInfoValues}
           setFormValue={setEquipmentValues}
           formValues={equipmentValues}
           isFormSubmitting={isFormSubmitting}
           createProjectSubmit={handleCreateProjectFormSubmit}
-        ></Equipment>
+        />
       ),
     },
   ];
@@ -153,7 +156,7 @@ export default function NewProject() {
             ghost={false}
             onBack={() => window.history.back()}
             title="Fill in the information below to create a new project"
-          ></PageHeader>
+          />
           <Card>
             <Steps responsive progressDot current={current}>
               {steps.map((item) => (
@@ -163,7 +166,7 @@ export default function NewProject() {
             <div className="mb-6 steps-content">{steps[current].content}</div>
             <div className="flex justify-between steps-action" style={{ position: "absolute", bottom: "48px" }}>
               {
-                <Button style={{ margin: "0 8px" }} disabled={current < 1} onClick={() => prev()}>
+                <Button style={{ margin: "0 8px" }} disabled={current < 1} onClick={prev}>
                   Previous
                 </Button>
               }
