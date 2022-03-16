@@ -152,8 +152,10 @@ const trackingSheetSubmitSerializer = (
           design: stageDataValues.total_clean_fluid_volume_bbls_design,
           actual: stageDataValues.total_clean_fluid_volume_bbls_actual,
         },
-        total_proppant: { design: stageDataValues.total_proppant_lbs_design },
-        // total_proppant: { design: stageDataValues.total_proppant_lbs_design, actual: stageDataValues.total_proppant_lbs_actual },
+        total_proppant: {
+          design: stageDataValues.total_proppant_lbs_design,
+          actual: stageDataValues.total_proppant_lbs_actual,
+        },
         acid_volume: {
           design: stageDataValues.acid_volume_gals_design,
           actual: stageDataValues.acid_volume_gals_actual,

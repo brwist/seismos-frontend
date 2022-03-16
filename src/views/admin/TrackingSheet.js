@@ -3,7 +3,7 @@ import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import ConfirmationModal from "components/Modal/ConfirmationModal";
 import ENUMS from "constants/appEnums";
 import FormInitialValues from "constants/formInitialValues";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { useToasts } from "react-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +37,13 @@ export default function TrackingSheet() {
   const history = useHistory();
   const locationData = useLocation();
   const { addToast } = useToasts();
+  const stageFormRef = useRef(null);
+  const dynamicFormRef = useRef(null);
+  const perforationIntervalInformationFormRef = useRef(null);
+  const fluidFormRef = useRef(null);
+  const proppantFormRef = useRef(null);
+  const activeFormRef = useRef(null);
+  const notesFormRef = useRef(null);
   const [dynamicFormNestItemForm] = Form.useForm(null);
   const [perforationIntervalInformationForm] = Form.useForm(null);
   const [stageDataForm] = Form.useForm(null);
@@ -59,19 +66,6 @@ export default function TrackingSheet() {
   const [modalData, setModalData] = useState();
 
   const [isUpdating, setIsUpdating] = useState(false);
-  // const [resetDynamicFormNestItemValues, setResetDynamicFormNestItemValues] =
-  //   useState(false);
-  // const [
-  //   resetPerforationIntervalInformationValues,
-  //   setResetPerforationIntervalInformationValues,
-  // ] = useState(false);
-  // const [resetStageDataValues, setResetStageDataValues] = useState(false);
-  // const [resetProppantFormValues, setResetProppantFormValues] = useState(false);
-  // const [resetFluidFormValues, setResetFluidFormValues] = useState(false);
-  // const [resetActiveDataFormValues, setResetActiveDataFormValues] =
-  //   useState(false);
-  // const [resetNotesFataFormValues, setResetNotesFataFormValues] =
-  //   useState(false);
   const [dynamicFormNestItemValues, setDynamicFormNestItemValues] = useState({
     bottomhole_bht: null,
     bottomhole_bhp: null,
@@ -113,7 +107,7 @@ export default function TrackingSheet() {
     total_clean_fluid_volume_bbls_design: null,
     total_clean_fluid_volume_bbls_actual: null,
     total_proppant_lbs_design: null,
-    // total_proppant_lbs_actual: null,
+    total_proppant_lbs_actual: null,
     acid_volume_gals_design: null,
     acid_volume_gals_actual: null,
     flush_volume_bbls_design: null,
@@ -198,37 +192,45 @@ export default function TrackingSheet() {
     setShowConfirmationModal(true);
   };
 
-  const handleAddStageConfirmed = (data) => {
+  const handleAddStageConfirmed = () => {
     addItem();
     setShowConfirmationModal(false);
     setModalData(null);
   };
 
-  const dynamicFormNestItemChange = (changedValue, newFormValues) => {
+  const dynamicFormNestItemChange = (_, newFormValues) => {
     setDynamicFormNestItemValues(newFormValues);
   };
 
-  const perforationIntervalInformationChange = (changedValue, newFormValues) => {
+  const perforationIntervalInformationChange = (_, newFormValues) => {
     setPerforationIntervalInformationValues(newFormValues);
   };
 
-  const stageDataChange = (changedValue, newFormValues) => {
+  const stageDataChange = (_, newFormValues) => {
     setStageDataValues(newFormValues);
   };
 
-  const proppantFormChange = (changedValue, newFormValues) => {
+  const proppantFormChange = (_, newFormValues) => {
+    const { proppantData } = newFormValues;
+    let total_proppant_lbs_actual = 0;
+    proppantData.forEach((row) => {
+      if (row?.amount_pumped) {
+        total_proppant_lbs_actual += row.amount_pumped;
+      }
+    });
     setProppantFormValues(newFormValues);
+    stageFormRef.current.setFieldsValue({ total_proppant_lbs_actual });
   };
 
-  const fluidFormChange = (changedValue, newFormValues) => {
+  const fluidFormChange = (_, newFormValues) => {
     setFluidFormValues(newFormValues);
   };
 
-  const activeDataFormChange = (changedValue, newFormValues) => {
+  const activeDataFormChange = (_, newFormValues) => {
     setActiveDataFormValues(newFormValues);
   };
 
-  const notesDataFormChange = (changedValue, newFormValues) => {
+  const notesDataFormChange = (_, newFormValues) => {
     setNotesFataFormValues(newFormValues);
   };
 
@@ -500,6 +502,7 @@ export default function TrackingSheet() {
                 autoComplete="off"
                 initialValues={dynamicFormNestItemValues}
                 form={dynamicFormNestItemForm}
+                ref={dynamicFormRef}
               >
                 <Row gutter={24} className="mb-6">
                   <Col span={8}>
@@ -551,6 +554,7 @@ export default function TrackingSheet() {
                 autoComplete="off"
                 initialValues={perforationIntervalInformationValues}
                 form={perforationIntervalInformationForm}
+                ref={perforationIntervalInformationFormRef}
               >
                 <Row gutter={24}>
                   <Col span={10}>
@@ -643,6 +647,7 @@ export default function TrackingSheet() {
                 autoComplete="off"
                 initialValues={stageDataValues}
                 form={stageDataForm}
+                ref={stageFormRef}
               >
                 <Row gutter={24}>
                   <Col span={10}>
@@ -715,6 +720,7 @@ export default function TrackingSheet() {
                   autoComplete="off"
                   initialValues={fluidFormValues}
                   form={fluidFormForm}
+                  ref={fluidFormRef}
                 >
                   <Form.List name="fluidData">
                     {(fields, { add, remove }) => (
@@ -780,7 +786,7 @@ export default function TrackingSheet() {
                         ))}
                         <Col span={8}>
                           <Form.Item>
-                            <StyledIconButton block type="dashed" onClick={add} icon={<PlusOutlined />}>
+                            <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                               Add fluid
                             </StyledIconButton>
                           </Form.Item>
@@ -798,6 +804,7 @@ export default function TrackingSheet() {
                   autoComplete="off"
                   initialValues={proppantFormValues}
                   form={proppantFormForm}
+                  ref={proppantFormRef}
                 >
                   <Form.List name="proppantData">
                     {(fields, { add, remove }) => (
@@ -889,7 +896,7 @@ export default function TrackingSheet() {
                         })}
                         <Col span={8}>
                           <Form.Item>
-                            <StyledIconButton block type="dashed" onClick={add} icon={<PlusOutlined />}>
+                            <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                               Add proppant
                             </StyledIconButton>
                           </Form.Item>
@@ -1011,6 +1018,7 @@ export default function TrackingSheet() {
                 autoComplete="off"
                 initialValues={activeDataFormValues}
                 form={activeDataFormForm}
+                ref={activeFormRef}
               >
                 <Divider orientation="left" plain>
                   <strong>Pulsing parameters</strong>
@@ -1093,6 +1101,7 @@ export default function TrackingSheet() {
                 autoComplete="off"
                 initialValues={notesDataFormValues}
                 form={notesDataFormForm}
+                ref={notesFormRef}
               >
                 <Row gutter={[24, 24]}>
                   <Col span={24}>
