@@ -22,10 +22,10 @@ const StyledFlexColumn = styled(Col)`
 `;
 const StyledFormItem = styled(Form.Item)`
   margin-bottom: 0;
-  flex-flow: ${(props) => (props.isVertical ? "column" : "row wrap")};
+  flex-flow: ${(props) => (props.vertical = "true" ? "column" : "row wrap")};
   .ant-form-item-control-input-content {
     > div {
-      width: ${(props) => (props.isVertical ? "100%" : "auto")};
+      width: ${(props) => (props.vertical = "true" ? "100%" : "auto")};
     }
   }
 `;
@@ -820,7 +820,7 @@ export default function TrackingSheet() {
                                   rules={[{ required: true, message: "Description" }]}
                                   label="Description"
                                   labelAlign="left"
-                                  isVertical
+                                  vertical="true"
                                 >
                                   <Input />
                                 </StyledFormItem>
@@ -838,7 +838,7 @@ export default function TrackingSheet() {
                                   ]}
                                   label="Specific gravity"
                                   labelAlign="left"
-                                  isVertical
+                                  vertical="true"
                                 >
                                   <InputNumber />
                                 </StyledFormItem>
@@ -851,7 +851,7 @@ export default function TrackingSheet() {
                                   rules={[{ required: true, message: "Bulk density" }]}
                                   label="Bulk density"
                                   labelAlign="left"
-                                  isVertical
+                                  vertical="true"
                                 >
                                   <InputNumber />
                                 </StyledFormItem>
@@ -869,7 +869,7 @@ export default function TrackingSheet() {
                                   ]}
                                   label="Amount pumped"
                                   labelAlign="left"
-                                  isVertical
+                                  vertical="true"
                                 >
                                   <InputNumber />
                                 </StyledFormItem>
@@ -1109,7 +1109,7 @@ export default function TrackingSheet() {
                       name={"pre_frac_pulse_note"}
                       label="Pre-frac pulse notes"
                       labelAlign="left"
-                      isVertical
+                      vertical="true"
                     >
                       <TextArea rows={4} />
                     </StyledFormItem>
@@ -1119,13 +1119,13 @@ export default function TrackingSheet() {
                       name={"post_frac_pulse_note"}
                       label="Post-frac pulse notes"
                       labelAlign="left"
-                      isVertical
+                      vertical="true"
                     >
                       <TextArea rows={4} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
-                    <StyledFormItem name={"additional_note"} label="Other notes" labelAlign="left" isVertical>
+                    <StyledFormItem name={"additional_note"} label="Other notes" labelAlign="left" vertical="true">
                       <TextArea rows={4} />
                     </StyledFormItem>
                   </Col>
