@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import TableHeadersUtil from "util/TableHeaderUtil";
-import Grid from "components/Grid/Grid";
-import _ from "lodash";
-import NumberInput from "components/Grid/DataEditor/NumberInput";
-import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import _ from "lodash";
+import React, { useState } from "react";
+import { Button, Collapse, Spin, Tooltip } from "antd";
+import Grid from "components/Grid/Grid";
+import NumberInput from "components/Grid/DataEditor/NumberInput";
+import TableHeadersUtil from "util/TableHeaderUtil";
 
 export default function Equipment(props) {
-  const [equipmentGrid, setEquipmentGrid] = useState([]);
+  const [equipmentGrids, setEquipmentGrids] = useState([]);
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  const { Panel } = Collapse;
 
   const getEquipmentGridRow = (t) => {
     return t.rows.map((row) => {
@@ -27,56 +27,87 @@ export default function Equipment(props) {
   };
 
   const populateEquipmentGrid = () => {
-    setEquipmentGrid(
-      TableHeadersUtil.equipmentFormTableData.grid.reduce((rows, t, rowIdx) => {
-        return rows.concat(getEquipmentGridRow(t));
-      }, []),
-    );
+    const newEquipmentGrid = TableHeadersUtil.equipmentFormTableData.grid.reduce((rows, t) => {
+      return rows.concat(getEquipmentGridRow(t));
+    }, []);
+    return newEquipmentGrid;
   };
 
-  const handleEquipmentGridChanged = (updatedGridData) => {
-    props.setFormValue(updatedGridData);
-    setEquipmentGrid(updatedGridData);
+  const handleEquipmentGridChanged = (updatedGridData, idx) => {
+    const newEquipmentGrids = _.cloneDeep(equipmentGrids);
+    newEquipmentGrids[idx] = updatedGridData;
+    props.setFormValue(newEquipmentGrids);
+    setEquipmentGrids(newEquipmentGrids);
   };
 
   const createProject = () => {
     let isEquipmentInfoValid = true;
-    const validatedEquipmentGrid = _.cloneDeep(equipmentGrid);
-    validatedEquipmentGrid.map((row) => {
-      row.map((cell) => {
-        if (cell.required && cell.value === "") {
-          isEquipmentInfoValid = false;
-          cell.className = "cell-error";
-        }
-        return cell;
+    const validatedEquipmentGrids = _.cloneDeep(equipmentGrids);
+    validatedEquipmentGrids.forEach((grid) => {
+      grid.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell.required && cell.value === "") {
+            isEquipmentInfoValid = false;
+            cell.className = "cell-error";
+          }
+        });
       });
-      return row;
     });
     if (!isEquipmentInfoValid) {
-      handleEquipmentGridChanged(validatedEquipmentGrid);
+      props.setFormValue(validatedEquipmentGrids);
+      setEquipmentGrids(validatedEquipmentGrids);
     } else {
       props.createProjectSubmit();
     }
   };
 
   useState(() => {
-    if (props.formValues != null) {
-      props.formValues && setEquipmentGrid(props.formValues);
-    } else {
-      populateEquipmentGrid();
+    if (props.wellInfoValues) {
+      let equipmentGrids = [];
+      props.wellInfoValues.forEach((_, idx) => {
+        if (props.formValues != null && props.formValues[idx]) {
+          equipmentGrids.push(props.formValues[idx]);
+        } else {
+          equipmentGrids.push(populateEquipmentGrid(idx));
+        }
+      });
+      setEquipmentGrids(equipmentGrids);
     }
-  }, props);
+  }, [props]);
 
   return (
     <>
-      <div className="mb-8" style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}>
-        <Grid
-          columns={TableHeadersUtil.equipmentFormTableData.columns}
-          grid={equipmentGrid}
-          gridValueChanged={handleEquipmentGridChanged}
-        ></Grid>
-      </div>
-      <div className="text-right">
+      <Collapse defaultActiveKey={["1"]}>
+        {props.wellInfoValues &&
+          props.wellInfoValues.map((well, idx) => {
+            return (
+              <Panel
+                header={well[0].value}
+                key={idx + 1}
+                extra={
+                  equipmentGrids[idx] &&
+                  equipmentGrids[idx].find((row) => (row.find((cell) => cell.error) ? true : false)) ? (
+                    <Tooltip title="Please fill all the fields">
+                      <i className="text-red-500 fas fa-exclamation-circle"></i>
+                    </Tooltip>
+                  ) : (
+                    ""
+                  )
+                }
+              >
+                <div style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}>
+                  <Grid
+                    columns={TableHeadersUtil.equipmentFormTableData.columns}
+                    grid={equipmentGrids[idx]}
+                    gridValueChanged={handleEquipmentGridChanged}
+                    index={idx}
+                  />
+                </div>
+              </Panel>
+            );
+          })}
+      </Collapse>
+      <div className="mt-8 text-right">
         {props.isFormSubmitting ? (
           <Button type="primary">
             <span>
@@ -84,12 +115,7 @@ export default function Equipment(props) {
             </span>
           </Button>
         ) : (
-          <Button
-            type="primary"
-            onClick={(e) => {
-              createProject();
-            }}
-          >
+          <Button type="primary" onClick={createProject}>
             Create Project
           </Button>
         )}
