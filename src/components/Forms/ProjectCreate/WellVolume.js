@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Button } from "antd";
-import TableHeadersUtil from "util/TableHeaderUtil";
+import { Button, Collapse, Tooltip } from "antd";
 import Grid from "components/Grid/Grid";
 import _ from "lodash";
-import { Collapse } from "antd";
-import { Tooltip } from "antd";
 import NumberInput from "components/Grid/DataEditor/NumberInput";
 import ENUMS from "constants/appEnums";
+import TableHeadersUtil from "util/TableHeaderUtil";
 
 export default function WellVolume(props) {
   const { Panel } = Collapse;
@@ -214,7 +212,7 @@ export default function WellVolume(props) {
       setWellVolumeGrids(wellVolumeGridData);
       setWellVolumeEstimationsGrids(wellVolumeEstimationsGridData);
     }
-  }, props);
+  }, [props]);
 
   return (
     <>
@@ -243,7 +241,7 @@ export default function WellVolume(props) {
                       grid={wellVolumeGrids[index]}
                       gridValueChanged={handleWellVolumeGridChanged}
                       index={index}
-                    ></Grid>
+                    />
                   </div>
                   <div className="p-4"></div>
                   <div className="well-volume-estimation-grid">
@@ -252,7 +250,7 @@ export default function WellVolume(props) {
                       grid={wellVolumeEstimationsGrids[index]}
                       gridValueChanged={handleWellVolumeEstimationsGridChanged}
                       index={index}
-                    ></Grid>
+                    />
                   </div>
                 </div>
               </Panel>
@@ -260,12 +258,7 @@ export default function WellVolume(props) {
           })}
       </Collapse>
       <div className="mt-8 text-right">
-        <Button
-          type="primary"
-          onClick={(e) => {
-            gotoNextStep();
-          }}
-        >
+        <Button type="primary" onClick={gotoNextStep}>
           Next
         </Button>
       </div>

@@ -780,7 +780,7 @@ export default function TrackingSheet() {
                         ))}
                         <Col span={8}>
                           <Form.Item>
-                            <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                            <StyledIconButton block type="dashed" onClick={add} icon={<PlusOutlined />}>
                               Add fluid
                             </StyledIconButton>
                           </Form.Item>
@@ -889,14 +889,7 @@ export default function TrackingSheet() {
                         })}
                         <Col span={8}>
                           <Form.Item>
-                            <StyledIconButton
-                              block
-                              type="dashed"
-                              onClick={() => {
-                                add();
-                              }}
-                              icon={<PlusOutlined />}
-                            >
+                            <StyledIconButton block type="dashed" onClick={add} icon={<PlusOutlined />}>
                               Add proppant
                             </StyledIconButton>
                           </Form.Item>
