@@ -37,6 +37,7 @@ const API_ROUTES = {
   TRACKING_SHEET_CREATE: "/api/tracking-sheet/create",
   TRACKING_SHEET_UPDATE: "/api/tracking-sheet",
   QC_REPORT: "/api/qc-report",
+  SYNC_CLOUD: "/api/sync-cloud",
   NEW_USER: "/api/user",
 };
 
