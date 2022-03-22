@@ -22,10 +22,10 @@ const StyledFlexColumn = styled(Col)`
 `;
 const StyledFormItem = styled(Form.Item)`
   margin-bottom: 0;
-  flex-flow: ${(props) => (props.layout = "vertical" ? "column" : "row wrap")};
+  flex-flow: ${(props) => (props.layout === "vertical" ? "column" : "row wrap")};
   .ant-form-item-control-input-content {
     > div {
-      width: ${(props) => (props.layout = "vertical" ? "100%" : "auto")};
+      width: ${(props) => (props.layout === "vertical" ? "100%" : "auto")};
     }
   }
 `;
@@ -489,13 +489,14 @@ export default function TrackingSheet() {
                 </Row>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item
+                    <StyledFormItem
                       name={["perforation_interval_information", "n_clusters"]}
                       label="# of clusters"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Number of clusters" }]}
                     >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                   <Col span={10}>
                     <Form.Item
@@ -546,13 +547,13 @@ export default function TrackingSheet() {
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <StyledFormItem
+                    <Form.Item
                       name={["perforation_interval_information", "displacement_volume", "plug"]}
                       label="Plug [bbls]"
                       labelAlign="left"
                     >
                       <InputNumber />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                 </Row>
               </Card>
@@ -637,6 +638,7 @@ export default function TrackingSheet() {
                               rules={[{ required: true, message: "Description" }]}
                               label="Description"
                               labelAlign="left"
+                              layout="vertical"
                             >
                               <Input />
                             </StyledFormItem>
@@ -649,6 +651,7 @@ export default function TrackingSheet() {
                               rules={[{ required: true, message: "bbls" }]}
                               label="bbls"
                               labelAlign="left"
+                              layout="vertical"
                             >
                               <InputNumber />
                             </StyledFormItem>
@@ -661,6 +664,7 @@ export default function TrackingSheet() {
                               rules={[{ required: true, message: "ppg" }]}
                               label="ppg"
                               labelAlign="left"
+                              layout="vertical"
                             >
                               <InputNumber />
                             </StyledFormItem>
