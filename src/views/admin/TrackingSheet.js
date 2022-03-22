@@ -1073,7 +1073,7 @@ export default function TrackingSheet() {
                       name={["notes", "post_frac_pulse_note"]}
                       label="Post-frac pulse notes"
                       labelAlign="left"
-                      vertical
+                      layout="vertical"
                     >
                       <TextArea rows={4} />
                     </StyledFormItem>
