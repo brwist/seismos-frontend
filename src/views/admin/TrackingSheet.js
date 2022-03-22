@@ -431,129 +431,141 @@ export default function TrackingSheet() {
             </Panel>
             <Panel header={<strong>Perforation interval information</strong>}>
               <Card>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item
+                <Row gutter={[24, 24]}>
+                  <Col span={12}>
+                    <StyledFormItem
                       name={["perforation_interval_information", "top_measured_depth"]}
                       label="Top perf [MD]"
                       labelAlign="left"
-                    >
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item
-                      name={["perforation_interval_information", "perf_daiameter"]}
-                      label="Perf daiameter [in]"
-                      labelAlign="left"
-                    >
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item
-                      name={["perforation_interval_information", "bottom_measured_depth"]}
-                      label="Bottom perf [MD]"
-                      labelAlign="left"
-                    >
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={["perforation_interval_information", "spf"]} label="SPF" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item
-                      name={["perforation_interval_information", "plug_depth"]}
-                      label="Plug depth [MD]"
-                      labelAlign="left"
-                    >
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item
-                      name={["perforation_interval_information", "pumped_diverter"]}
-                      label="Pumped diverter"
-                      labelAlign="left"
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <StyledFormItem
-                      name={["perforation_interval_information", "n_clusters"]}
-                      label="# of clusters"
-                      labelAlign="left"
-                      rules={[{ required: true, message: "Number of clusters" }]}
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
-                  <Col span={10}>
-                    <Form.Item
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "perf_daiameter"]}
+                      label="Perf daiameter [in]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "bottom_measured_depth"]}
+                      label="Bottom perf [MD]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "spf"]}
+                      label="SPF"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "plug_depth"]}
+                      label="Plug depth [MD]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "pumped_diverter"]}
+                      label="Pumped diverter"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <Input />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "n_clusters"]}
+                      label="# of clusters"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
                       name={["perforation_interval_information", "diverter_type"]}
                       label="Diverter type"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <Input />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item
+                  <Col span={12}>
+                    <StyledFormItem
                       name={["perforation_interval_information", "perf_gun_description"]}
                       label="Perf gun description"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <Input />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
-                  <Col span={10}>
-                    <Form.Item name={["perforation_interval_information", "acid"]} label="Acid" labelAlign="left">
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "acid"]}
+                      label="Acid"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <Input />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                 </Row>
                 <Divider orientation="left" plain>
                   <strong>Displacement Volume</strong>
                 </Divider>
-                <Row gutter={24}>
+                <Row gutter={[24, 24]}>
                   <Col span={10}>
-                    <Form.Item
+                    <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "top_perf"]}
                       label="Top perf [bbls]"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                   <Col span={10}>
-                    <Form.Item
+                    <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "bottom_perf"]}
                       label="Bottom perf [bbls]"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                   <Col span={10}>
-                    <Form.Item
+                    <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "plug"]}
                       label="Plug [bbls]"
                       labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
                     >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                 </Row>
               </Card>
@@ -622,8 +634,19 @@ export default function TrackingSheet() {
                 <Divider orientation="left" plain>
                   <strong>Fluids injected into formation</strong>
                 </Divider>
-                <Form.List name={["stage_data", "fluids_injected_into_formation"]}>
-                  {(fields, { add, remove }) => (
+                <Form.List
+                  name={["stage_data", "fluids_injected_into_formation"]}
+                  rules={[
+                    {
+                      validator: async (_, value) => {
+                        if (!value || value.length < 1) {
+                          return Promise.reject(new Error("At least 1 fluids formation"));
+                        }
+                      },
+                    },
+                  ]}
+                >
+                  {(fields, { add, remove }, { errors }) => (
                     <Row gutter={[16, 24]} align="middle">
                       {fields.map(({ key, name, fieldKey, ...restField }, index) => (
                         <Fragment key={key}>
@@ -635,7 +658,7 @@ export default function TrackingSheet() {
                               {...restField}
                               name={[name, "description"]}
                               fieldKey={[fieldKey, "description"]}
-                              rules={[{ required: true, message: "Description" }]}
+                              rules={[{ required: true, message: "Required field." }]}
                               label="Description"
                               labelAlign="left"
                               layout="vertical"
@@ -648,7 +671,7 @@ export default function TrackingSheet() {
                               {...restField}
                               name={[name, "bbls"]}
                               fieldKey={[fieldKey, "bbls"]}
-                              rules={[{ required: true, message: "bbls" }]}
+                              rules={[{ required: true, message: "Required field." }]}
                               label="bbls"
                               labelAlign="left"
                               layout="vertical"
@@ -661,7 +684,7 @@ export default function TrackingSheet() {
                               {...restField}
                               name={[name, "ppg"]}
                               fieldKey={[fieldKey, "ppg"]}
-                              rules={[{ required: true, message: "ppg" }]}
+                              rules={[{ required: true, message: "Required field." }]}
                               label="ppg"
                               labelAlign="left"
                               layout="vertical"
@@ -678,11 +701,12 @@ export default function TrackingSheet() {
                         </Fragment>
                       ))}
                       <Col span={8}>
-                        <Form.Item>
+                        <StyledFormItem>
                           <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                             Add fluid
                           </StyledIconButton>
-                        </Form.Item>
+                        </StyledFormItem>
+                        <Form.ErrorList errors={errors} />
                       </Col>
                     </Row>
                   )}
@@ -690,8 +714,19 @@ export default function TrackingSheet() {
                 <Divider orientation="left" plain>
                   <strong>Proppant data</strong>
                 </Divider>
-                <Form.List name={["stage_data", "proppant_data"]}>
-                  {(fields, { add, remove }) => (
+                <Form.List
+                  name={["stage_data", "proppant_data"]}
+                  rules={[
+                    {
+                      validator: async (_, value) => {
+                        if (!value || value.length < 1) {
+                          return Promise.reject(new Error("At least 1 proppant data"));
+                        }
+                      },
+                    },
+                  ]}
+                >
+                  {(fields, { add, remove }, { errors }) => (
                     <Row gutter={[16, 24]} align="middle">
                       {fields.map(({ key, name, fieldKey, ...restField }) => {
                         return (
@@ -701,7 +736,7 @@ export default function TrackingSheet() {
                                 {...restField}
                                 name={[name, "description"]}
                                 fieldKey={[fieldKey, "description"]}
-                                rules={[{ required: true, message: "Description" }]}
+                                rules={[{ required: true, message: "Required field." }]}
                                 label="Description"
                                 labelAlign="left"
                                 layout="vertical"
@@ -717,7 +752,7 @@ export default function TrackingSheet() {
                                 rules={[
                                   {
                                     required: true,
-                                    message: "Specific gravity",
+                                    message: "Required field.",
                                   },
                                 ]}
                                 label="Specific gravity"
@@ -732,7 +767,7 @@ export default function TrackingSheet() {
                                 {...restField}
                                 name={[name, "bulk_density"]}
                                 fieldKey={[fieldKey, "bulk_density"]}
-                                rules={[{ required: true, message: "Bulk density" }]}
+                                rules={[{ required: true, message: "Required field." }]}
                                 label="Bulk density"
                                 labelAlign="left"
                                 layout="vertical"
@@ -748,7 +783,7 @@ export default function TrackingSheet() {
                                 rules={[
                                   {
                                     required: true,
-                                    message: "Amount Pumped",
+                                    message: "Required field.",
                                   },
                                 ]}
                                 label="Amount pumped"
@@ -765,11 +800,12 @@ export default function TrackingSheet() {
                         );
                       })}
                       <Col span={8}>
-                        <Form.Item>
+                        <StyledFormItem>
                           <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                             Add proppant
                           </StyledIconButton>
-                        </Form.Item>
+                        </StyledFormItem>
+                        <Form.ErrorList errors={errors} />
                       </Col>
                     </Row>
                   )}
