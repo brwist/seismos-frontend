@@ -1,97 +1,113 @@
-const dynamicFormNestItemValues = {
-  bottomhole_bht: null,
-  bottomhole_bhp: null,
-  did_an_event_occur: null,
-  frac_design: null,
-  plug_seat_technique: null,
-  plug_type: null,
-  seismos_data_collection: null,
-};
-
-const perforationIntervalInformationValues = {
-  acid: null,
-  bottom_measured_depth: null,
-  n_clusters: null,
-  displacement_vol_bottom: null,
-  displacement_vol_plug: null,
-  displacement_vol_top: null,
-  diverter_type: null,
-  perf_daiameter: null,
-  perf_gun_description: null,
-  plug_depth: null,
-  pumped_diverter: null,
-  spf: null,
-  top_measured_depth: null,
-};
-
-const stageDataValues = {
-  stage_start_time: null,
-  stage_end_time: null,
-  opening_well: null,
-  // isip: null,
-  base_fluid_type: null,
-  base_fluid_density: null,
-  max_conc_density: null,
-  max_prop_conc_ppa_design: null,
-  max_prop_conc_ppa_actual: null,
-  total_pad_volume_bbls_design: null,
-  total_pad_volume_bbls_actual: null,
-  total_clean_fluid_volume_bbls_design: null,
-  total_clean_fluid_volume_bbls_actual: null,
-  total_proppant_lbs_design: null,
-  total_proppant_lbs_actual: null,
-  total_sand_lbs_design: null,
-  total_sand_lbs_actual: null,
-  acid_volume_gals_design: null,
-  acid_volume_gals_actual: null,
-  flush_volume_bbls_design: null,
-  flush_volume_bbls_actual: null,
-  slurry_volume_bbls_design: null,
-  slurry_volume_bbls_actual: null,
-};
-
-const proppantFormValues = {
-  proppantData: [
-    {
-      bulk_density: null,
-      description: null,
-      specific_gravity: null,
-      amount_pumped: null,
+export const trackingSheetForm = {
+  stage_tracking: {
+    bottomhole_bht: null,
+    bottomhole_bhp: null,
+    did_an_event_occur: null,
+    frac_design: null,
+    plug_seat_technique: null,
+    plug_type: null,
+    seismos_data_collection: null,
+  },
+  perforation_interval_information: {
+    acid: null,
+    bottom_measured_depth: null,
+    n_clusters: null,
+    displacement_volume: {
+      bottom_perf: null,
+      plug: null,
+      top_perf: null,
     },
-  ],
-};
-
-const fluidFormValues = {
-  fluidData: [
-    {
-      description: null,
-      bbls: null,
-      ppg: null,
+    diverter_type: null,
+    perf_daiameter: null,
+    perf_gun_description: null,
+    plug_depth: null,
+    pumped_diverter: null,
+    spf: null,
+    top_measured_depth: null,
+  },
+  stage_data: {
+    stage_start_time: null,
+    stage_end_time: null,
+    opening_well: null,
+    // isip: null,
+    pumping_summary: {
+      max_prop_conc: {
+        design: null,
+        actual: null,
+      },
+      total_pad_volume: {
+        design: null,
+        actual: null,
+      },
+      total_clean_fluid_volume: {
+        design: null,
+        actual: null,
+      },
+      total_proppant: {
+        design: null,
+        actual: null,
+      },
+      acid_volume: {
+        design: null,
+        actual: null,
+      },
+      flush_volume: {
+        design: null,
+        actual: null,
+      },
+      slurry_volume: {
+        design: null,
+        actual: null,
+      },
     },
-  ],
+    fluid_parameters: {
+      base_fluid_type: null,
+      base_fluid_density: null,
+      max_conc_density: null,
+    },
+    fluids_injected_into_formation: [
+      {
+        description: null,
+        bbls: null,
+        ppg: null,
+      },
+    ],
+    proppant_data: [
+      {
+        bulk_density: null,
+        description: null,
+        specific_gravity: null,
+        amount_pumped: null,
+      },
+    ],
+  },
+  active_data: {
+    pulsing_parameteres: {
+      wave_type: null,
+      period: null,
+      frequency: null,
+      offset: null,
+      amplitude: null,
+    },
+    pre_frac_pulses: {
+      pre_frac_start_time: null,
+      pre_frac_end_time: null,
+      pre_frac_num_pulse: null,
+    },
+    post_frac_pulses: {
+      post_frac_start_time: null,
+      post_frac_end_time: null,
+      post_frac_num_pulse: null,
+    },
+  },
+  notes: {
+    additional_note: null,
+    pre_frac_pulse_note: null,
+    post_frac_pulse_note: null,
+  },
 };
 
-const activeDataFormValues = {
-  wave_type: null,
-  amplitude: null,
-  frequency: null,
-  pre_frac_num_pulse: null,
-  post_frac_num_pulse: null,
-  offset: null,
-  period: null,
-  post_frac_end_time: null,
-  post_frac_start_time: null,
-  pre_frac_end_time: null,
-  pre_frac_start_time: null,
-};
-
-const notesFataFormValues = {
-  additional_note: null,
-  pre_frac_pulse_note: null,
-  post_frac_pulse_note: null,
-};
-
-const defaultValueForm = {
+export const defaultValueForm = {
   c1_min: 1350,
   c1_max: 1650,
   c2_min: 1350,
@@ -157,15 +173,3 @@ const defaultValueForm = {
   use_wncuts_YN: "N",
   fit_iteration: 50,
 };
-const FormInitialValues = {
-  dynamicFormNestItemValues,
-  perforationIntervalInformationValues,
-  stageDataValues,
-  proppantFormValues,
-  fluidFormValues,
-  activeDataFormValues,
-  notesFataFormValues,
-  defaultValueForm,
-};
-
-export default FormInitialValues;
