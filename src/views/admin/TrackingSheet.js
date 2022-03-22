@@ -115,10 +115,10 @@ export default function TrackingSheet() {
   };
 
   const handleTrackingSheetSubmit = async (values) => {
-    console.log(values);
     const formValues = {
       ...initialFormValues,
       ...values,
+      stage: Number(selectedStage),
       stage_data: values.stage_data
         ? {
             ...values.stage_data,
@@ -256,10 +256,12 @@ export default function TrackingSheet() {
           } else {
             setIsUpdating(false);
             form.setFieldsValue(trackingSheetForm);
+            setInitialFormValues(trackingSheetForm);
           }
         } else {
           setIsUpdating(false);
           form.setFieldsValue(trackingSheetForm);
+          setInitialFormValues(trackingSheetForm);
         }
       } catch (error) {
         console.log(error);
