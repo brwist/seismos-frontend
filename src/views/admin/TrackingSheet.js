@@ -2,14 +2,14 @@ import { Select, Divider, Collapse, Form, Button, Row, Col, Card, Input, DatePic
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import ConfirmationModal from "components/Modal/ConfirmationModal";
 import ENUMS from "constants/appEnums";
-import FormInitialValues from "constants/formInitialValues";
+import { trackingSheetForm } from "constants/formInitialValues";
+import moment from "moment";
 import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { useToasts } from "react-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "redux/actions";
 import styled from "styled-components";
-import FormDataSerializer from "util/FormDataSerializer";
 import { projectApi } from "./../../api/projectApi";
 
 const StyledIconButton = styled(Button)`
@@ -22,10 +22,10 @@ const StyledFlexColumn = styled(Col)`
 `;
 const StyledFormItem = styled(Form.Item)`
   margin-bottom: 0;
-  flex-flow: ${(props) => (props.vertical = "true" ? "column" : "row wrap")};
+  flex-flow: ${(props) => (props.layout === "vertical" ? "column" : "row wrap")};
   .ant-form-item-control-input-content {
     > div {
-      width: ${(props) => (props.vertical = "true" ? "100%" : "auto")};
+      width: ${(props) => (props.layout === "vertical" ? "100%" : "auto")};
     }
   }
 `;
@@ -37,26 +37,13 @@ export default function TrackingSheet() {
   const history = useHistory();
   const locationData = useLocation();
   const { addToast } = useToasts();
-  const stageFormRef = useRef(null);
-  const dynamicFormRef = useRef(null);
-  const perforationIntervalInformationFormRef = useRef(null);
-  const fluidFormRef = useRef(null);
-  const proppantFormRef = useRef(null);
-  const activeFormRef = useRef(null);
-  const notesFormRef = useRef(null);
-  const [dynamicFormNestItemForm] = Form.useForm(null);
-  const [perforationIntervalInformationForm] = Form.useForm(null);
-  const [stageDataForm] = Form.useForm(null);
-  const [fluidFormForm] = Form.useForm(null);
-  const [proppantFormForm] = Form.useForm(null);
-  const [activeDataFormForm] = Form.useForm(null);
-  const [notesDataFormForm] = Form.useForm(null);
-
-  const [isLoadingFormData, setIsLoadingFormData] = useState(true);
+  const formRef = useRef(null);
+  const [form] = Form.useForm(null);
 
   const dispatch = useDispatch();
   const project = useSelector((state) => state.authReducer.project);
 
+  const [isLoadingFormData, setIsLoadingFormData] = useState(true);
   const [wellId, setWellId] = useState(null);
   const [projectId, setProjectId] = useState(null);
   const [items, setItems] = useState([{ value: 1, label: "Stage 1" }]);
@@ -64,107 +51,8 @@ export default function TrackingSheet() {
   const [selectedStage, setSelectedStage] = useState(1);
   const [showConfirmationModal, setShowConfirmationModal] = useState();
   const [modalData, setModalData] = useState();
-
   const [isUpdating, setIsUpdating] = useState(false);
-  const [dynamicFormNestItemValues, setDynamicFormNestItemValues] = useState({
-    bottomhole_bht: null,
-    bottomhole_bhp: null,
-    did_an_event_occur: null,
-    frac_design: null,
-    plug_seat_technique: null,
-    plug_type: null,
-    seismos_data_collection: null,
-  });
-
-  const [perforationIntervalInformationValues, setPerforationIntervalInformationValues] = useState({
-    acid: null,
-    bottom_measured_depth: null,
-    n_clusters: null,
-    displacement_vol_bottom: null,
-    displacement_vol_plug: null,
-    displacement_vol_top: null,
-    diverter_type: null,
-    perf_daiameter: null,
-    perf_gun_description: null,
-    plug_depth: null,
-    pumped_diverter: null,
-    spf: null,
-    top_measured_depth: null,
-  });
-
-  const [stageDataValues, setStageDataValues] = useState({
-    stage_start_time: null,
-    stage_end_time: null,
-    opening_well: null,
-    // isip: null,
-    base_fluid_type: null,
-    base_fluid_density: null,
-    max_conc_density: null,
-    max_prop_conc_ppa_design: null,
-    max_prop_conc_ppa_actual: null,
-    total_pad_volume_bbls_design: null,
-    total_pad_volume_bbls_actual: null,
-    total_clean_fluid_volume_bbls_design: null,
-    total_clean_fluid_volume_bbls_actual: null,
-    total_proppant_lbs_design: null,
-    total_proppant_lbs_actual: null,
-    acid_volume_gals_design: null,
-    acid_volume_gals_actual: null,
-    flush_volume_bbls_design: null,
-    flush_volume_bbls_actual: null,
-    slurry_volume_bbls_design: null,
-    slurry_volume_bbls_actual: null,
-  });
-
-  const [proppantFormValues, setProppantFormValues] = useState({
-    proppantData: [
-      {
-        bulk_density: null,
-        description: null,
-        specific_gravity: null,
-        amount_pumped: null,
-      },
-    ],
-  });
-
-  const [fluidFormValues, setFluidFormValues] = useState({
-    fluidData: [
-      {
-        description: null,
-        bbls: null,
-        ppg: null,
-      },
-    ],
-  });
-
-  const [activeDataFormValues, setActiveDataFormValues] = useState({
-    wave_type: null,
-    amplitude: null,
-    frequency: null,
-    pre_frac_num_pulse: null,
-    post_frac_num_pulse: null,
-    offset: null,
-    period: null,
-    post_frac_end_time: null,
-    post_frac_start_time: null,
-    pre_frac_end_time: null,
-    pre_frac_start_time: null,
-  });
-
-  const [notesDataFormValues, setNotesFataFormValues] = useState({
-    additional_note: null,
-    pre_frac_pulse_note: null,
-    post_frac_pulse_note: null,
-  });
-
-  // const [addedFluidsAndProppant, setAddedFluidsAndProppant] = useState({
-  //   fluids_injected_into_formation: [],
-  //   proppant: [],
-  // });
-  const [removedFluidsAndProppant, setRemovedFluidsAndProppant] = useState({
-    fluids_injected_into_formation_ids: [],
-    proppant_data_ids: [],
-  });
+  const [initialFormValues, setInitialFormValues] = useState(trackingSheetForm);
 
   const handleSelectStage = (e) => {
     setSelectedStage(e);
@@ -198,87 +86,102 @@ export default function TrackingSheet() {
     setModalData(null);
   };
 
-  const dynamicFormNestItemChange = (_, newFormValues) => {
-    setDynamicFormNestItemValues(newFormValues);
-  };
-
-  const perforationIntervalInformationChange = (_, newFormValues) => {
-    setPerforationIntervalInformationValues(newFormValues);
-  };
-
-  const stageDataChange = (_, newFormValues) => {
-    setStageDataValues(newFormValues);
-  };
-
-  const proppantFormChange = (_, newFormValues) => {
-    const { proppantData } = newFormValues;
-    let total_proppant_lbs_actual = 0;
-    proppantData.forEach((row) => {
-      if (row?.amount_pumped) {
-        total_proppant_lbs_actual += row.amount_pumped;
+  const handleFormChange = (_, newFormValues) => {
+    const { stage_data } = newFormValues;
+    if (stage_data) {
+      const { proppant_data } = stage_data;
+      if (proppant_data) {
+        let total_proppant_lbs_actual = 0;
+        proppant_data.forEach((row) => {
+          if (row?.amount_pumped) {
+            total_proppant_lbs_actual += row.amount_pumped;
+          }
+        });
+        formRef.current.setFieldsValue({
+          ...newFormValues,
+          stage_data: {
+            ...stage_data,
+            pumping_summary: {
+              ...stage_data.pumping_summary,
+              total_proppant: {
+                ...stage_data.pumping_summary.total_proppant,
+                actual: total_proppant_lbs_actual,
+              },
+            },
+          },
+        });
       }
-    });
-    setProppantFormValues(newFormValues);
-    stageFormRef.current.setFieldsValue({ total_proppant_lbs_actual });
+    }
   };
 
-  const fluidFormChange = (_, newFormValues) => {
-    setFluidFormValues(newFormValues);
-  };
+  const handleTrackingSheetSubmit = async (values) => {
+    const formValues = {
+      ...initialFormValues,
+      ...values,
+      stage: Number(selectedStage),
+      stage_data: values.stage_data
+        ? {
+            ...values.stage_data,
+            stage_start_time: values.stage_data.stage_start_time
+              ? Number(values.stage_data.stage_start_time.format("x"))
+              : null,
+            stage_end_time: values.stage_data.stage_end_time
+              ? Number(values.stage_data.stage_end_time.format("x"))
+              : null,
+          }
+        : {
+            ...initialFormValues.stage_data,
+            stage_start_time: initialFormValues.stage_data.stage_start_time
+              ? Number(initialFormValues.stage_data.stage_start_time.format("x"))
+              : null,
+            stage_end_time: initialFormValues.stage_data.stage_end_time
+              ? Number(initialFormValues.stage_data.stage_end_time.format("x"))
+              : null,
+          },
+      active_data: values.active_data
+        ? {
+            ...values.active_data,
+            pre_frac_pulses: {
+              ...values.active_data.pre_frac_pulses,
+              pre_frac_start_time: values.active_data.pre_frac_pulses.pre_frac_start_time
+                ? Number(values.active_data.pre_frac_pulses.pre_frac_start_time.format("x"))
+                : null,
+              pre_frac_end_time: values.active_data.pre_frac_pulses.pre_frac_end_time
+                ? Number(values.active_data.pre_frac_pulses.pre_frac_end_time.format("x"))
+                : null,
+            },
+            post_frac_pulses: {
+              ...values.active_data.post_frac_pulses,
+              post_frac_start_time: values.active_data.post_frac_pulses.post_frac_start_time
+                ? Number(values.active_data.post_frac_pulses.post_frac_start_time.format("x"))
+                : null,
+              post_frac_end_time: values.active_data.post_frac_pulses.post_frac_end_time
+                ? Number(values.active_data.post_frac_pulses.post_frac_end_time.format("x"))
+                : null,
+            },
+          }
+        : {
+            ...initialFormValues.active_data,
+            stage_start_time: initialFormValues.active_data.stage_start_time
+              ? Number(initialFormValues.active_data.stage_start_time.format("x"))
+              : null,
+            stage_end_time: initialFormValues.active_data.stage_end_time
+              ? Number(initialFormValues.active_data.stage_end_time.format("x"))
+              : null,
+          },
+    };
 
-  const activeDataFormChange = (_, newFormValues) => {
-    setActiveDataFormValues(newFormValues);
-  };
-
-  const notesDataFormChange = (_, newFormValues) => {
-    setNotesFataFormValues(newFormValues);
-  };
-
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
-
-  const handleTrackingSheetSubmit = async () => {
-    const trackingSheet = FormDataSerializer.trackingSheetSubmitSerializer(
-      selectedStage,
-      dynamicFormNestItemValues,
-      perforationIntervalInformationValues,
-      stageDataValues,
-      proppantFormValues,
-      fluidFormValues,
-      activeDataFormValues,
-      notesDataFormValues,
-    );
-
-    console.log(trackingSheet);
     try {
       if (isUpdating) {
         const stageTrackingPresent = stageSheetList.find((s) => s.stage_n === Number(selectedStage));
-        const addedProppantData = proppantFormValues.proppantData.filter((item) => {
-          if (!item) return false;
-          return !item.id;
-        });
-        const addedFluidData = fluidFormValues.fluidData.filter((item) => {
-          if (!item) return false;
-          return !item.id;
-        });
-        const updatedTrackingSheet = {
-          ...trackingSheet,
-          remove: removedFluidsAndProppant,
-          add: {
-            fluids_injected_into_formation: addedFluidData,
-            proppant: addedProppantData,
-          },
-        };
-        console.log("updatedTrackingSheet", updatedTrackingSheet);
-        await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, updatedTrackingSheet);
+        await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, formValues);
 
         addToast("Tracking sheet data updated successfully.", {
           appearance: "success",
           autoDismiss: true,
         });
       } else {
-        await projectApi.postCreateTrackingSheet(wellId, trackingSheet);
+        await projectApi.postCreateTrackingSheet(wellId, formValues);
         setIsUpdating(true);
         addToast("Tracking sheet data added successfully.", {
           appearance: "success",
@@ -298,43 +201,6 @@ export default function TrackingSheet() {
     }
   };
 
-  const populateFormData = useCallback(
-    (trackingSheetData) => {
-      const {
-        dynamicFormNestItemValuesData,
-        perforationIntervalInformationValuesData,
-        stageDataValuesData,
-        proppantFormValuesData,
-        fluidFormValuesData,
-        activeDataFormValuesData,
-        notesDataFormValuesData,
-      } = FormDataSerializer.trackingSheetPopulateDataSerializer(trackingSheetData);
-      dynamicFormNestItemForm.setFieldsValue(dynamicFormNestItemValuesData);
-      perforationIntervalInformationForm.setFieldsValue(perforationIntervalInformationValuesData);
-      stageDataForm.setFieldsValue(stageDataValuesData);
-      fluidFormForm.setFieldsValue(fluidFormValuesData);
-      proppantFormForm.setFieldsValue(proppantFormValuesData);
-      activeDataFormForm.setFieldsValue(activeDataFormValuesData);
-      notesDataFormForm.setFieldsValue(notesDataFormValuesData);
-      setDynamicFormNestItemValues(dynamicFormNestItemValuesData);
-      setPerforationIntervalInformationValues(perforationIntervalInformationValuesData);
-      setStageDataValues(stageDataValuesData);
-      setFluidFormValues(fluidFormValuesData);
-      setProppantFormValues(proppantFormValuesData);
-      setActiveDataFormValues(activeDataFormValuesData);
-      setNotesFataFormValues(notesDataFormValuesData);
-    },
-    [
-      activeDataFormForm,
-      dynamicFormNestItemForm,
-      fluidFormForm,
-      notesDataFormForm,
-      perforationIntervalInformationForm,
-      proppantFormForm,
-      stageDataForm,
-    ],
-  );
-
   const fetchTrackingSheet = useCallback(
     async (sheet_id) => {
       setIsLoadingFormData(true);
@@ -342,14 +208,45 @@ export default function TrackingSheet() {
       try {
         const data = await projectApi.getTrackingSheet(sheet_id);
         console.log("fetchTrackingSheet", data);
-        populateFormData(data);
+
+        const formValues = {
+          ...data,
+          stage_data: {
+            ...data.stage_data,
+            stage_start_time: data.stage_data.stage_start_time ? moment(data.stage_data.stage_start_time) : null,
+            stage_end_time: data.stage_data.stage_end_time ? moment(data.stage_data.stage_end_time) : null,
+          },
+          active_data: {
+            ...data.active_data,
+            pre_frac_pulses: {
+              ...data.active_data.pre_frac_pulses,
+              pre_frac_start_time: data.active_data.pre_frac_pulses.pre_frac_start_time
+                ? moment(data.active_data.pre_frac_pulses.pre_frac_start_time)
+                : null,
+              pre_frac_end_time: data.active_data.pre_frac_pulses.pre_frac_end_time
+                ? moment(data.active_data.pre_frac_pulses.pre_frac_end_time)
+                : null,
+            },
+            post_frac_pulses: {
+              ...data.active_data.post_frac_pulses,
+              post_frac_start_time: data.active_data.post_frac_pulses.post_frac_start_time
+                ? moment(data.active_data.post_frac_pulses.post_frac_start_time)
+                : null,
+              post_frac_end_time: data.active_data.post_frac_pulses.post_frac_end_time
+                ? moment(data.active_data.post_frac_pulses.post_frac_end_time)
+                : null,
+            },
+          },
+        };
+        form.setFieldsValue(formValues);
+        setInitialFormValues(formValues);
         setIsUpdating(true);
         setIsLoadingFormData(false);
       } catch (error) {
         console.log(error);
       }
     },
-    [populateFormData],
+    [form],
   );
 
   const getStages = (numOfStages) => {
@@ -374,34 +271,24 @@ export default function TrackingSheet() {
             fetchTrackingSheet(stageTrackingPresent.uuid);
           } else {
             setIsUpdating(false);
+            form.setFieldsValue(trackingSheetForm);
+            setInitialFormValues(trackingSheetForm);
           }
         } else {
           setIsUpdating(false);
+          form.setFieldsValue(trackingSheetForm);
+          setInitialFormValues(trackingSheetForm);
         }
       } catch (error) {
         console.log(error);
       }
     },
-    [fetchTrackingSheet, selectedStage],
+    [fetchTrackingSheet, form, selectedStage],
   );
 
   const resetForm = useCallback(() => {
-    dynamicFormNestItemForm.setFieldsValue(FormInitialValues.dynamicFormNestItemValues);
-    perforationIntervalInformationForm.setFieldsValue(FormInitialValues.perforationIntervalInformationValues);
-    stageDataForm.setFieldsValue(FormInitialValues.stageDataValues);
-    fluidFormForm.setFieldsValue(FormInitialValues.fluidFormValues);
-    proppantFormForm.setFieldsValue(FormInitialValues.proppantFormValues);
-    activeDataFormForm.setFieldsValue(FormInitialValues.activeDataFormValues);
-    notesDataFormForm.setFieldsValue(FormInitialValues.notesFataFormValues);
-  }, [
-    activeDataFormForm,
-    dynamicFormNestItemForm,
-    fluidFormForm,
-    notesDataFormForm,
-    perforationIntervalInformationForm,
-    proppantFormForm,
-    stageDataForm,
-  ]);
+    form.resetFields();
+  }, [form]);
 
   useState(() => {
     if (project && locationData.pathname === ENUMS.ROUTES.ADMIN + ENUMS.ROUTES.TRACKING_SHEET) {
@@ -493,190 +380,237 @@ export default function TrackingSheet() {
         </Row>
       </Card>
       <Card>
-        <Collapse>
-          <Panel header={<strong>Stage Tracking</strong>}>
-            <Card>
-              <Form
-                name="dynamic_form_nest_item"
-                onValuesChange={dynamicFormNestItemChange}
-                autoComplete="off"
-                initialValues={dynamicFormNestItemValues}
-                form={dynamicFormNestItemForm}
-                ref={dynamicFormRef}
-              >
-                <Row gutter={24} className="mb-6">
+        <Form
+          name="tracking-sheet--form"
+          onValuesChange={handleFormChange}
+          autoComplete="off"
+          initialValues={initialFormValues}
+          form={form}
+          ref={formRef}
+          onFinish={handleTrackingSheetSubmit}
+        >
+          <Collapse>
+            <Panel header={<strong>Stage Tracking</strong>}>
+              <Card>
+                <Row gutter={24}>
                   <Col span={8}>
-                    <StyledFormItem name={"plug_type"} label="Plug type" labelAlign="left">
+                    <Form.Item name={["stage_tracking", "plug_type"]} label="Plug type" labelAlign="left">
                       <Input />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                 </Row>
                 <Row gutter={[24, 24]}>
                   <Col span={8}>
-                    <StyledFormItem name={"bottomhole_bht"} label="BHT [F]" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "bottomhole_bht"]}
+                      label="BHT [F]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <StyledFormItem name={"plug_seat_technique"} label="Plug seat technique" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "plug_seat_technique"]}
+                      label="Plug seat technique"
+                      labelAlign="left"
+                    >
                       <Input />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"bottomhole_bhp"} label="BHP" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "bottomhole_bhp"]}
+                      label="BHP"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <StyledFormItem name={"did_an_event_occur"} label="Did an event occur" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "did_an_event_occur"]}
+                      label="Did an event occur"
+                      labelAlign="left"
+                    >
                       <Input />
-                    </StyledFormItem>
+                    </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"frac_design"} label="Frac design" labelAlign="left">
+                    <Form.Item name={["stage_tracking", "frac_design"]} label="Frac design" labelAlign="left">
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      name={["stage_tracking", "seismos_data_collection"]}
+                      label="Seismos data collection"
+                      labelAlign="left"
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Card>
+            </Panel>
+            <Panel header={<strong>Perforation interval information</strong>}>
+              <Card>
+                <Row gutter={[24, 24]}>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "top_measured_depth"]}
+                      label="Top perf [MD]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "perf_daiameter"]}
+                      label="Perf daiameter [in]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "bottom_measured_depth"]}
+                      label="Bottom perf [MD]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "spf"]}
+                      label="SPF"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "plug_depth"]}
+                      label="Plug depth [MD]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "pumped_diverter"]}
+                      label="Pumped diverter"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <Input />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
-                    <StyledFormItem name={"seismos_data_collection"} label="Seismos data collection" labelAlign="left">
+                    <StyledFormItem
+                      name={["perforation_interval_information", "n_clusters"]}
+                      label="# of clusters"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
+                      <InputNumber />
+                    </StyledFormItem>
+                  </Col>
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "diverter_type"]}
+                      label="Diverter type"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <Input />
                     </StyledFormItem>
                   </Col>
-                </Row>
-              </Form>
-            </Card>
-          </Panel>
-          <Panel header={<strong>Perforation interval information</strong>}>
-            <Card>
-              <Form
-                name="perforation_interval_information"
-                onValuesChange={perforationIntervalInformationChange}
-                autoComplete="off"
-                initialValues={perforationIntervalInformationValues}
-                form={perforationIntervalInformationForm}
-                ref={perforationIntervalInformationFormRef}
-              >
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item name={"top_measured_depth"} label="Top perf [MD]" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={"perf_daiameter"} label="Perf daiameter [in]" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item name={"bottom_measured_depth"} label="Bottom perf [MD]" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={"spf"} label="SPF" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item name={"plug_depth"} label="Plug depth [MD]" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={"pumped_diverter"} label="Pumped diverter" labelAlign="left">
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "perf_gun_description"]}
+                      label="Perf gun description"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <Input />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item name={"n_clusters"} label="# of clusters" labelAlign="left">
-                      <InputNumber />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={"diverter_type"} label="Diverter type" labelAlign="left">
+                  <Col span={12}>
+                    <StyledFormItem
+                      name={["perforation_interval_information", "acid"]}
+                      label="Acid"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={10}>
-                    <Form.Item name={"perf_gun_description"} label="Perf gun description" labelAlign="left">
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={10}>
-                    <Form.Item name={"acid"} label="Acid" labelAlign="left">
-                      <Input />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                 </Row>
                 <Divider orientation="left" plain>
                   <strong>Displacement Volume</strong>
                 </Divider>
-                <Row gutter={24}>
+                <Row gutter={[24, 24]}>
                   <Col span={10}>
-                    <Form.Item name={"displacement_vol_top"} label="Top perf [bbls]" labelAlign="left">
+                    <StyledFormItem
+                      name={["perforation_interval_information", "displacement_volume", "top_perf"]}
+                      label="Top perf [bbls]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={"displacement_vol_bottom"} label="Bottom perf [bbls]" labelAlign="left">
+                    <StyledFormItem
+                      name={["perforation_interval_information", "displacement_volume", "bottom_perf"]}
+                      label="Bottom perf [bbls]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
-                    </Form.Item>
+                    </StyledFormItem>
                   </Col>
                   <Col span={10}>
-                    <StyledFormItem name={"displacement_vol_plug"} label="Plug [bbls]" labelAlign="left">
+                    <StyledFormItem
+                      name={["perforation_interval_information", "displacement_volume", "plug"]}
+                      label="Plug [bbls]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                 </Row>
-              </Form>
-            </Card>
-          </Panel>
-          <Panel header={<strong>Stage Data</strong>}>
-            <Card>
-              <Form
-                name="stage_data"
-                onValuesChange={stageDataChange}
-                autoComplete="off"
-                initialValues={stageDataValues}
-                form={stageDataForm}
-                ref={stageFormRef}
-              >
+              </Card>
+            </Panel>
+            <Panel header={<strong>Stage Data</strong>}>
+              <Card>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item
-                      name={"stage_start_time"}
-                      label="Stage start time"
-                      labelCol={{ span: 9, offset: 0 }}
-                      labelAlign="left"
-                    >
-                      <DatePicker onChange={onChange} showTime tabIndex={21} />
+                    <Form.Item name={["stage_data", "stage_start_time"]} label="Stage start time" labelAlign="left">
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item
-                      name={"stage_end_time"}
-                      label="Stage end time"
-                      labelCol={{ span: 9, offset: 0 }}
-                      labelAlign="left"
-                    >
-                      <DatePicker onChange={onChange} tabIndex={22} showTime />
+                    <Form.Item name={["stage_data", "stage_end_time"]} label="Stage end time" labelAlign="left">
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item
-                      name={"opening_well"}
-                      label="Opening well"
-                      labelCol={{ span: 9, offset: 0 }}
-                      labelAlign="left"
-                    >
+                    <Form.Item name={["stage_data", "opening_well"]} label="Opening well" labelAlign="left">
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -696,17 +630,29 @@ export default function TrackingSheet() {
                 </Divider>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item name={"base_fluid_type"} label="Base fluid type" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "fluid_parameters", "base_fluid_type"]}
+                      label="Base fluid type"
+                      labelAlign="left"
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={"base_fluid_density"} label="Base fluid density [ppg]" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "fluid_parameters", "base_fluid_density"]}
+                      label="Base fluid density [ppg]"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={"max_conc_density"} label="Max conc density [ppg]" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "fluid_parameters", "max_conc_density"]}
+                      label="Max conc density [ppg]"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -714,28 +660,112 @@ export default function TrackingSheet() {
                 <Divider orientation="left" plain>
                   <strong>Fluids injected into formation</strong>
                 </Divider>
-                <Form
-                  name="fluid_form"
-                  onValuesChange={fluidFormChange}
-                  autoComplete="off"
-                  initialValues={fluidFormValues}
-                  form={fluidFormForm}
-                  ref={fluidFormRef}
+                <Form.List
+                  name={["stage_data", "fluids_injected_into_formation"]}
+                  rules={[
+                    {
+                      validator: async (_, value) => {
+                        if (!value || value.length < 1) {
+                          return Promise.reject(new Error("At least 1 fluids formation"));
+                        }
+                      },
+                    },
+                  ]}
                 >
-                  <Form.List name="fluidData">
-                    {(fields, { add, remove }) => (
-                      <Row gutter={[16, 24]} align="middle">
-                        {fields.map(({ key, name, fieldKey, ...restField }, index) => (
+                  {(fields, { add, remove }, { errors }) => (
+                    <Row gutter={[16, 24]} align="middle">
+                      {fields.map(({ key, name, fieldKey, ...restField }, index) => (
+                        <Fragment key={key}>
+                          <Col span={1} className="pt-8">
+                            #{index + 1}
+                          </Col>
+                          <Col span={9}>
+                            <StyledFormItem
+                              {...restField}
+                              name={[name, "description"]}
+                              fieldKey={[fieldKey, "description"]}
+                              rules={[{ required: true, message: "Required field." }]}
+                              label="Description"
+                              labelAlign="left"
+                              layout="vertical"
+                            >
+                              <Input />
+                            </StyledFormItem>
+                          </Col>
+                          <Col span={5}>
+                            <StyledFormItem
+                              {...restField}
+                              name={[name, "bbls"]}
+                              fieldKey={[fieldKey, "bbls"]}
+                              rules={[{ required: true, message: "Required field." }]}
+                              label="bbls"
+                              labelAlign="left"
+                              layout="vertical"
+                            >
+                              <InputNumber />
+                            </StyledFormItem>
+                          </Col>
+                          <Col span={5}>
+                            <StyledFormItem
+                              {...restField}
+                              name={[name, "ppg"]}
+                              fieldKey={[fieldKey, "ppg"]}
+                              rules={[{ required: true, message: "Required field." }]}
+                              label="ppg"
+                              labelAlign="left"
+                              layout="vertical"
+                            >
+                              <InputNumber />
+                            </StyledFormItem>
+                          </Col>
+                          <Col span={2} className="pt-8">
+                            lb/gal
+                          </Col>
+                          <StyledFlexColumn span={2} className="pt-8">
+                            <MinusCircleOutlined onClick={() => remove(name)} />
+                          </StyledFlexColumn>
+                        </Fragment>
+                      ))}
+                      <Col span={8}>
+                        <StyledFormItem>
+                          <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                            Add fluid
+                          </StyledIconButton>
+                        </StyledFormItem>
+                        <Form.ErrorList errors={errors} />
+                      </Col>
+                    </Row>
+                  )}
+                </Form.List>
+                <Divider orientation="left" plain>
+                  <strong>Proppant data</strong>
+                </Divider>
+                <Form.List
+                  name={["stage_data", "proppant_data"]}
+                  rules={[
+                    {
+                      validator: async (_, value) => {
+                        if (!value || value.length < 1) {
+                          return Promise.reject(new Error("At least 1 proppant data"));
+                        }
+                      },
+                    },
+                  ]}
+                >
+                  {(fields, { add, remove }, { errors }) => (
+                    <Row gutter={[16, 24]} align="middle">
+                      {fields.map(({ key, name, fieldKey, ...restField }) => {
+                        return (
                           <Fragment key={key}>
-                            <Col span={1}>#{index + 1}</Col>
-                            <Col span={9}>
+                            <Col span={6}>
                               <StyledFormItem
                                 {...restField}
                                 name={[name, "description"]}
                                 fieldKey={[fieldKey, "description"]}
-                                rules={[{ required: true, message: "Description" }]}
+                                rules={[{ required: true, message: "Required field." }]}
                                 label="Description"
                                 labelAlign="left"
+                                layout="vertical"
                               >
                                 <Input />
                               </StyledFormItem>
@@ -743,11 +773,17 @@ export default function TrackingSheet() {
                             <Col span={5}>
                               <StyledFormItem
                                 {...restField}
-                                name={[name, "bbls"]}
-                                fieldKey={[fieldKey, "bbls"]}
-                                rules={[{ required: true, message: "bbls" }]}
-                                label="bbls"
+                                name={[name, "specific_gravity"]}
+                                fieldKey={[fieldKey, "Specific_gravity"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Required field.",
+                                  },
+                                ]}
+                                label="Specific gravity"
                                 labelAlign="left"
+                                layout="vertical"
                               >
                                 <InputNumber />
                               </StyledFormItem>
@@ -755,156 +791,52 @@ export default function TrackingSheet() {
                             <Col span={5}>
                               <StyledFormItem
                                 {...restField}
-                                name={[name, "ppg"]}
-                                fieldKey={[fieldKey, "ppg"]}
-                                rules={[{ required: true, message: "ppg" }]}
-                                label="ppg"
+                                name={[name, "bulk_density"]}
+                                fieldKey={[fieldKey, "bulk_density"]}
+                                rules={[{ required: true, message: "Required field." }]}
+                                label="Bulk density"
                                 labelAlign="left"
+                                layout="vertical"
                               >
                                 <InputNumber />
                               </StyledFormItem>
                             </Col>
-                            <Col span={2}>lb/gal</Col>
-                            <StyledFlexColumn span={2}>
-                              <MinusCircleOutlined
-                                onClick={() => {
-                                  if (fluidFormValues.fluidData[name])
-                                    setRemovedFluidsAndProppant((prev) => {
-                                      return {
-                                        ...prev,
-                                        fluids_injected_into_formation_ids: [
-                                          ...prev.fluids_injected_into_formation_ids,
-                                          fluidFormValues.fluidData[name].id,
-                                        ],
-                                      };
-                                    });
-                                  remove(name);
-                                }}
-                              />
+                            <Col span={6}>
+                              <StyledFormItem
+                                {...restField}
+                                name={[name, "amount_pumped"]}
+                                fieldKey={[fieldKey, "amount_pumped"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Required field.",
+                                  },
+                                ]}
+                                label="Amount pumped"
+                                labelAlign="left"
+                                layout="vertical"
+                              >
+                                <InputNumber />
+                              </StyledFormItem>
+                            </Col>
+                            <StyledFlexColumn span={2} className="mt-8">
+                              <MinusCircleOutlined onClick={() => remove(name)} />
                             </StyledFlexColumn>
                           </Fragment>
-                        ))}
-                        <Col span={8}>
-                          <Form.Item>
-                            <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                              Add fluid
-                            </StyledIconButton>
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    )}
-                  </Form.List>
-                </Form>
-                <Divider orientation="left" plain>
-                  <strong>Proppant data</strong>
-                </Divider>
-                <Form
-                  name="proppant_form"
-                  onValuesChange={proppantFormChange}
-                  autoComplete="off"
-                  initialValues={proppantFormValues}
-                  form={proppantFormForm}
-                  ref={proppantFormRef}
-                >
-                  <Form.List name="proppantData">
-                    {(fields, { add, remove }) => (
-                      <Row gutter={[16, 24]} align="middle">
-                        {fields.map(({ key, name, fieldKey, ...restField }) => {
-                          return (
-                            <Fragment key={key}>
-                              <Col span={6}>
-                                <StyledFormItem
-                                  {...restField}
-                                  name={[name, "description"]}
-                                  fieldKey={[fieldKey, "description"]}
-                                  rules={[{ required: true, message: "Description" }]}
-                                  label="Description"
-                                  labelAlign="left"
-                                  vertical="true"
-                                >
-                                  <Input />
-                                </StyledFormItem>
-                              </Col>
-                              <Col span={5}>
-                                <StyledFormItem
-                                  {...restField}
-                                  name={[name, "specific_gravity"]}
-                                  fieldKey={[fieldKey, "Specific_gravity"]}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Specific gravity",
-                                    },
-                                  ]}
-                                  label="Specific gravity"
-                                  labelAlign="left"
-                                  vertical="true"
-                                >
-                                  <InputNumber />
-                                </StyledFormItem>
-                              </Col>
-                              <Col span={5}>
-                                <StyledFormItem
-                                  {...restField}
-                                  name={[name, "bulk_density"]}
-                                  fieldKey={[fieldKey, "bulk_density"]}
-                                  rules={[{ required: true, message: "Bulk density" }]}
-                                  label="Bulk density"
-                                  labelAlign="left"
-                                  vertical="true"
-                                >
-                                  <InputNumber />
-                                </StyledFormItem>
-                              </Col>
-                              <Col span={6}>
-                                <StyledFormItem
-                                  {...restField}
-                                  name={[name, "amount_pumped"]}
-                                  fieldKey={[fieldKey, "amount_pumped"]}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Amount Pumped",
-                                    },
-                                  ]}
-                                  label="Amount pumped"
-                                  labelAlign="left"
-                                  vertical="true"
-                                >
-                                  <InputNumber />
-                                </StyledFormItem>
-                              </Col>
-                              <StyledFlexColumn span={2} className="mt-8">
-                                <MinusCircleOutlined
-                                  onClick={() => {
-                                    if (proppantFormValues.proppantData[name])
-                                      setRemovedFluidsAndProppant((prev) => {
-                                        return {
-                                          ...prev,
-                                          proppant_data_ids: [
-                                            ...prev.proppant_data_ids,
-                                            proppantFormValues.proppantData[name].id,
-                                          ],
-                                        };
-                                      });
-                                    remove(name);
-                                  }}
-                                />
-                              </StyledFlexColumn>
-                            </Fragment>
-                          );
-                        })}
-                        <Col span={8}>
-                          <Form.Item>
-                            <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                              Add proppant
-                            </StyledIconButton>
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    )}
-                  </Form.List>
-                </Form>
+                        );
+                      })}
+                      <Col span={8}>
+                        <StyledFormItem>
+                          <StyledIconButton block type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                            Add proppant
+                          </StyledIconButton>
+                        </StyledFormItem>
+                        <Form.ErrorList errors={errors} />
+                      </Col>
+                    </Row>
+                  )}
+                </Form.List>
+
                 <Divider orientation="left" plain>
                   <strong>Pumping summary</strong>
                 </Divider>
@@ -920,34 +852,34 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>Max prop Conc[ppa]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"max_prop_conc_ppa_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"max_prop_conc_ppa_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>Total pad volume[bbls]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_pad_volume_bbls_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_pad_volume_bbls_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>Total clean fluid volume [bbls]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_clean_fluid_volume_bbls_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_clean_fluid_volume_bbls_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
@@ -964,88 +896,95 @@ export default function TrackingSheet() {
                   </Col> */}
                   <Col span={8}>Total proppant [lbs]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_proppant_lbs_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_proppant", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"total_proppant_lbs_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "total_proppant", "actual"]}>
                       <InputNumber disabled />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>Acid volume [gals]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"acid_volume_gals_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"acid_volume_gals_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>Flush volume [bbls]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"flush_volume_bbls_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"flush_volume_bbls_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>Slurry volume [bbls]</Col>
                   <Col span={8}>
-                    <StyledFormItem name={"slurry_volume_bbls_design"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "design"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
-                    <StyledFormItem name={"slurry_volume_bbls_actual"}>
+                    <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "actual"]}>
                       <InputNumber />
                     </StyledFormItem>
                   </Col>
                 </Row>
-              </Form>
-            </Card>
-          </Panel>
-          <Panel header={<strong>Active Data</strong>}>
-            <Card>
-              <Form
-                name="active_data_form"
-                onValuesChange={activeDataFormChange}
-                autoComplete="off"
-                initialValues={activeDataFormValues}
-                form={activeDataFormForm}
-                ref={activeFormRef}
-              >
+              </Card>
+            </Panel>
+            <Panel header={<strong>Active Data</strong>}>
+              <Card>
                 <Divider orientation="left" plain>
                   <strong>Pulsing parameters</strong>
                 </Divider>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item name={"wave_type"} label="Wave type" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pulsing_parameteres", "wave_type"]}
+                      label="Wave type"
+                      labelAlign="left"
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={"period"} label="Period" labelAlign="left">
+                    <Form.Item name={["active_data", "pulsing_parameteres", "period"]} label="Period" labelAlign="left">
                       <InputNumber />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item name={"frequency"} label="Freq [Hz]" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pulsing_parameteres", "frequency"]}
+                      label="Freq [Hz]"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item name={"offset"} label="Offset [V]" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pulsing_parameteres", "offset"]}
+                      label="Offset [V]"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item name={"amplitude"} label="Amplitude" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pulsing_parameteres", "amplitude"]}
+                      label="Amplitude"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -1055,17 +994,29 @@ export default function TrackingSheet() {
                 </Divider>
                 <Row gutter={24}>
                   <Col span={9}>
-                    <Form.Item name={"pre_frac_start_time"} label="Start time" labelAlign="left">
-                      <DatePicker onChange={onChange} showTime />
+                    <Form.Item
+                      name={["active_data", "pre_frac_pulses", "pre_frac_start_time"]}
+                      label="Start time"
+                      labelAlign="left"
+                    >
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={9}>
-                    <Form.Item name={"pre_frac_end_time"} label="End time" labelAlign="left">
-                      <DatePicker onChange={onChange} showTime />
+                    <Form.Item
+                      name={["active_data", "pre_frac_pulses", "pre_frac_end_time"]}
+                      label="End time"
+                      labelAlign="left"
+                    >
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={6}>
-                    <Form.Item name={"pre_frac_num_pulse"} label="# of pulses" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pre_frac_pulses", "pre_frac_num_pulse"]}
+                      label="# of pulses"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -1075,71 +1026,81 @@ export default function TrackingSheet() {
                 </Divider>
                 <Row gutter={24}>
                   <Col span={9}>
-                    <Form.Item name={"post_frac_start_time"} label="Start time" labelAlign="left">
-                      <DatePicker onChange={onChange} showTime />
+                    <Form.Item
+                      name={["active_data", "post_frac_pulses", "post_frac_start_time"]}
+                      label="Start time"
+                      labelAlign="left"
+                    >
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={9}>
-                    <Form.Item name={"post_frac_end_time"} label="End time" labelAlign="left">
-                      <DatePicker onChange={onChange} showTime />
+                    <Form.Item
+                      name={["active_data", "post_frac_pulses", "post_frac_end_time"]}
+                      label="End time"
+                      labelAlign="left"
+                    >
+                      <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={6}>
-                    <Form.Item name={"post_frac_num_pulse"} label="# of pulses" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "post_frac_pulses", "post_frac_num_pulse"]}
+                      label="# of pulses"
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
                 </Row>
-              </Form>
-            </Card>
-          </Panel>
-          <Panel header={<strong>Notes</strong>}>
-            <Card>
-              <Form
-                name="notes_data_form"
-                onValuesChange={notesDataFormChange}
-                autoComplete="off"
-                initialValues={notesDataFormValues}
-                form={notesDataFormForm}
-                ref={notesFormRef}
-              >
+              </Card>
+            </Panel>
+            <Panel header={<strong>Notes</strong>}>
+              <Card>
                 <Row gutter={[24, 24]}>
                   <Col span={24}>
                     <StyledFormItem
-                      name={"pre_frac_pulse_note"}
+                      name={["notes", "pre_frac_pulse_note"]}
                       label="Pre-frac pulse notes"
                       labelAlign="left"
-                      vertical="true"
+                      layout="vertical"
                     >
                       <TextArea rows={4} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
                     <StyledFormItem
-                      name={"post_frac_pulse_note"}
+                      name={["notes", "post_frac_pulse_note"]}
                       label="Post-frac pulse notes"
                       labelAlign="left"
-                      vertical="true"
+                      vertical
                     >
                       <TextArea rows={4} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
-                    <StyledFormItem name={"additional_note"} label="Other notes" labelAlign="left" vertical="true">
+                    <StyledFormItem
+                      name={["notes", "additional_note"]}
+                      label="Other notes"
+                      labelAlign="left"
+                      layout="vertical"
+                    >
                       <TextArea rows={4} />
                     </StyledFormItem>
                   </Col>
                 </Row>
-              </Form>
-            </Card>
-          </Panel>
-        </Collapse>
-        <div className="flex justify-end mt-4">
-          {/* <span className="mr-4">Last submitted date: 08/07/2021</span> */}
-          <Button type="primary" onClick={(e) => handleTrackingSheetSubmit()}>
-            {isUpdating ? "Update tracking sheet" : "Submit tracking sheet"}
-          </Button>
-        </div>
+              </Card>
+            </Panel>
+          </Collapse>
+          <div className="flex justify-end mt-4">
+            {/* <span className="mr-4">Last submitted date: 08/07/2021</span> */}
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                {isUpdating ? "Update tracking sheet" : "Submit tracking sheet"}
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
       </Card>
       {showConfirmationModal && (
         <ConfirmationModal

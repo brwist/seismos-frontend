@@ -93,12 +93,7 @@ const trackingSheetSubmitSerializer = (
     activeDataFormValues,
     notesDataFormValues,
   );
-  let proppantData = proppantFormValues.proppantData.filter((item) => {
-    if (!item) return false;
-    return item.id;
-  });
-  console.log("proppantFormValues", proppantFormValues.proppantData);
-  console.log("fluidFormValues", fluidFormValues.fluidData);
+
   const tsFormData = {
     stage: Number(selectedStage),
     stage_tracking: {
@@ -138,7 +133,7 @@ const trackingSheetSubmitSerializer = (
         max_conc_density: stageDataValues.max_conc_density,
       },
       fluids_injected_into_formation: fluidFormValues.fluidData,
-      proppant_data: proppantData,
+      proppant_data: proppantFormValues.proppantData,
       pumping_summary: {
         max_prop_conc: {
           design: stageDataValues.max_prop_conc_ppa_design,
@@ -251,17 +246,6 @@ const trackingSheetSubmitSerializer = (
   tsFormData.stage_data.pumping_summary.slurry_volume = Object.entries(
     tsFormData.stage_data.pumping_summary.slurry_volume,
   ).reduce((a, [k, v]) => (v === null ? a : ((a[k] = v), a)), {});
-  tsFormData.stage_data.fluids_injected_into_formation = tsFormData.stage_data.fluids_injected_into_formation
-    .map((obj) => {
-      Object.entries(obj).reduce((a, [k, v]) => (v === null ? a : ((a[k] = v), a)), {});
-    })
-    .filter((x) => x);
-  tsFormData.stage_data.proppant_data = tsFormData.stage_data.proppant_data
-    .map((obj) => {
-      if (!obj) return {};
-      return Object.entries(obj).reduce((a, [k, v]) => (v === null ? a : ((a[k] = v), a)), {});
-    })
-    .filter((x) => x);
   tsFormData.active_data = Object.entries(tsFormData.active_data).reduce(
     (a, [k, v]) => (v === null ? a : ((a[k] = v), a)),
     {},
