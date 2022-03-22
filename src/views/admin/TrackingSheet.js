@@ -129,7 +129,15 @@ export default function TrackingSheet() {
               ? Number(values.stage_data.stage_end_time.format("x"))
               : null,
           }
-        : initialFormValues.stage_data,
+        : {
+            ...initialFormValues.stage_data,
+            stage_start_time: initialFormValues.stage_data.stage_start_time
+              ? Number(initialFormValues.stage_data.stage_start_time.format("x"))
+              : null,
+            stage_end_time: initialFormValues.stage_data.stage_end_time
+              ? Number(initialFormValues.stage_data.stage_end_time.format("x"))
+              : null,
+          },
       active_data: values.active_data
         ? {
             ...values.active_data,
@@ -152,7 +160,15 @@ export default function TrackingSheet() {
                 : null,
             },
           }
-        : initialFormValues.active_data,
+        : {
+            ...initialFormValues.active_data,
+            stage_start_time: initialFormValues.active_data.stage_start_time
+              ? Number(initialFormValues.active_data.stage_start_time.format("x"))
+              : null,
+            stage_end_time: initialFormValues.active_data.stage_end_time
+              ? Number(initialFormValues.active_data.stage_end_time.format("x"))
+              : null,
+          },
     };
 
     try {
@@ -385,7 +401,12 @@ export default function TrackingSheet() {
                 </Row>
                 <Row gutter={[24, 24]}>
                   <Col span={8}>
-                    <Form.Item name={["stage_tracking", "bottomhole_bht"]} label="BHT [F]" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "bottomhole_bht"]}
+                      label="BHT [F]"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -399,7 +420,12 @@ export default function TrackingSheet() {
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item name={["stage_tracking", "bottomhole_bhp"]} label="BHP" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "bottomhole_bhp"]}
+                      label="BHP"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
