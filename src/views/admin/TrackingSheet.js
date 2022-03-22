@@ -52,6 +52,7 @@ export default function TrackingSheet() {
   const [showConfirmationModal, setShowConfirmationModal] = useState();
   const [modalData, setModalData] = useState();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [initialFormValues, setInitialFormValues] = useState(trackingSheetForm);
 
   const handleSelectStage = (e) => {
     setSelectedStage(e);
@@ -114,7 +115,9 @@ export default function TrackingSheet() {
   };
 
   const handleTrackingSheetSubmit = async (values) => {
+    console.log(values);
     const formValues = {
+      ...initialFormValues,
       ...values,
       stage_data: values.stage_data
         ? {
@@ -126,7 +129,7 @@ export default function TrackingSheet() {
               ? Number(values.stage_data.stage_end_time.format("x"))
               : null,
           }
-        : trackingSheetForm.stage_data,
+        : initialFormValues.stage_data,
       active_data: values.active_data
         ? {
             ...values.active_data,
@@ -149,7 +152,7 @@ export default function TrackingSheet() {
                 : null,
             },
           }
-        : trackingSheetForm.active_data,
+        : initialFormValues.active_data,
     };
 
     try {
@@ -189,7 +192,8 @@ export default function TrackingSheet() {
       try {
         const data = await projectApi.getTrackingSheet(sheet_id);
         console.log("fetchTrackingSheet", data);
-        form.setFieldsValue({
+
+        const formValues = {
           ...data,
           stage_data: {
             ...data.stage_data,
@@ -217,7 +221,9 @@ export default function TrackingSheet() {
                 : null,
             },
           },
-        });
+        };
+        form.setFieldsValue(formValues);
+        setInitialFormValues(formValues);
         setIsUpdating(true);
         setIsLoadingFormData(false);
       } catch (error) {
@@ -249,15 +255,17 @@ export default function TrackingSheet() {
             fetchTrackingSheet(stageTrackingPresent.uuid);
           } else {
             setIsUpdating(false);
+            form.setFieldsValue(trackingSheetForm);
           }
         } else {
           setIsUpdating(false);
+          form.setFieldsValue(trackingSheetForm);
         }
       } catch (error) {
         console.log(error);
       }
     },
-    [fetchTrackingSheet, selectedStage],
+    [fetchTrackingSheet, form, selectedStage],
   );
 
   const resetForm = useCallback(() => {
@@ -358,7 +366,7 @@ export default function TrackingSheet() {
           name="tracking-sheet--form"
           onValuesChange={handleFormChange}
           autoComplete="off"
-          initialValues={trackingSheetForm}
+          initialValues={initialFormValues}
           form={form}
           ref={formRef}
           onFinish={handleTrackingSheetSubmit}
