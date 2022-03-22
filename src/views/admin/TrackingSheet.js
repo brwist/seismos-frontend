@@ -52,6 +52,7 @@ export default function TrackingSheet() {
   const [showConfirmationModal, setShowConfirmationModal] = useState();
   const [modalData, setModalData] = useState();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState(trackingSheetForm);
 
   const handleSelectStage = (e) => {
@@ -115,6 +116,7 @@ export default function TrackingSheet() {
   };
 
   const handleTrackingSheetSubmit = async (values) => {
+    setIsSubmitLoading(true);
     const formValues = {
       ...initialFormValues,
       ...values,
@@ -122,20 +124,16 @@ export default function TrackingSheet() {
       stage_data: values.stage_data
         ? {
             ...values.stage_data,
-            stage_start_time: values.stage_data.stage_start_time
-              ? Number(values.stage_data.stage_start_time.format("x"))
-              : null,
-            stage_end_time: values.stage_data.stage_end_time
-              ? Number(values.stage_data.stage_end_time.format("x"))
-              : null,
+            stage_start_time: values.stage_data.stage_start_time ? values.stage_data.stage_start_time.unix() : null,
+            stage_end_time: values.stage_data.stage_end_time ? values.stage_data.stage_end_time.unix() : null,
           }
         : {
             ...initialFormValues.stage_data,
             stage_start_time: initialFormValues.stage_data.stage_start_time
-              ? Number(initialFormValues.stage_data.stage_start_time.format("x"))
+              ? initialFormValues.stage_data.stage_start_time.unix()
               : null,
             stage_end_time: initialFormValues.stage_data.stage_end_time
-              ? Number(initialFormValues.stage_data.stage_end_time.format("x"))
+              ? initialFormValues.stage_data.stage_end_time.unix()
               : null,
           },
       active_data: values.active_data
@@ -144,37 +142,70 @@ export default function TrackingSheet() {
             pre_frac_pulses: {
               ...values.active_data.pre_frac_pulses,
               pre_frac_start_time: values.active_data.pre_frac_pulses.pre_frac_start_time
-                ? Number(values.active_data.pre_frac_pulses.pre_frac_start_time.format("x"))
+                ? values.active_data.pre_frac_pulses.pre_frac_start_time.unix()
                 : null,
               pre_frac_end_time: values.active_data.pre_frac_pulses.pre_frac_end_time
-                ? Number(values.active_data.pre_frac_pulses.pre_frac_end_time.format("x"))
+                ? values.active_data.pre_frac_pulses.pre_frac_end_time.unix()
                 : null,
             },
             post_frac_pulses: {
               ...values.active_data.post_frac_pulses,
               post_frac_start_time: values.active_data.post_frac_pulses.post_frac_start_time
-                ? Number(values.active_data.post_frac_pulses.post_frac_start_time.format("x"))
+                ? values.active_data.post_frac_pulses.post_frac_start_time.unix()
                 : null,
               post_frac_end_time: values.active_data.post_frac_pulses.post_frac_end_time
-                ? Number(values.active_data.post_frac_pulses.post_frac_end_time.format("x"))
+                ? values.active_data.post_frac_pulses.post_frac_end_time.unix()
                 : null,
             },
           }
         : {
             ...initialFormValues.active_data,
-            stage_start_time: initialFormValues.active_data.stage_start_time
-              ? Number(initialFormValues.active_data.stage_start_time.format("x"))
-              : null,
-            stage_end_time: initialFormValues.active_data.stage_end_time
-              ? Number(initialFormValues.active_data.stage_end_time.format("x"))
-              : null,
+            pre_frac_pulses: {
+              ...initialFormValues.active_data.pre_frac_pulses,
+              pre_frac_start_time: initialFormValues.active_data.pre_frac_pulses.pre_frac_start_time
+                ? initialFormValues.active_data.pre_frac_pulses.pre_frac_start_time.unix()
+                : null,
+              pre_frac_end_time: initialFormValues.active_data.pre_frac_pulses.pre_frac_end_time
+                ? initialFormValues.active_data.pre_frac_pulses.pre_frac_end_time.unix()
+                : null,
+            },
+            post_frac_pulses: {
+              ...initialFormValues.active_data.post_frac_pulses,
+              post_frac_start_time: initialFormValues.active_data.post_frac_pulses.post_frac_start_time
+                ? initialFormValues.active_data.post_frac_pulses.post_frac_start_time.unix()
+                : null,
+              post_frac_end_time: initialFormValues.active_data.post_frac_pulses.post_frac_end_time
+                ? initialFormValues.active_data.post_frac_pulses.post_frac_end_time.unix()
+                : null,
+            },
           },
     };
-
     try {
       if (isUpdating) {
         const stageTrackingPresent = stageSheetList.find((s) => s.stage_n === Number(selectedStage));
-        await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, formValues);
+        let proppant_data_ids = [];
+        initialFormValues.stage_data.proppant_data.forEach((item) => {
+          const isExist = values.stage_data.proppant_data.find((updated) => updated.id === item.id);
+          if (!isExist) {
+            proppant_data_ids.push(item.id);
+          }
+        });
+        let fluids_injected_into_formation_ids = [];
+        initialFormValues.stage_data.fluids_injected_into_formation.forEach((item) => {
+          const isExist = values.stage_data.fluids_injected_into_formation.find((updated) => updated.id === item.id);
+          if (!isExist) {
+            fluids_injected_into_formation_ids.push(item.id);
+          }
+        });
+        const removedFluidsAndProppant = {
+          proppant_data_ids,
+          fluids_injected_into_formation_ids,
+        };
+
+        await projectApi.putUpdateTrackingSheet(stageTrackingPresent.uuid, {
+          ...formValues,
+          remove: removedFluidsAndProppant,
+        });
 
         addToast("Tracking sheet data updated successfully.", {
           appearance: "success",
@@ -182,18 +213,19 @@ export default function TrackingSheet() {
         });
       } else {
         await projectApi.postCreateTrackingSheet(wellId, formValues);
-        setIsUpdating(true);
         addToast("Tracking sheet data added successfully.", {
           appearance: "success",
           autoDismiss: true,
         });
       }
+      setIsSubmitLoading(false);
       const { data } = await projectApi.getProjectById(projectId);
       const projectData = data.project;
       dispatch(allActions.authActions.setCurrentProject(projectData));
       fetchStagesSubmitted(wellId, projectData);
     } catch (error) {
       console.log(error);
+      setIsSubmitLoading(false);
       addToast("Something went wrong. Please contact admin.", {
         appearance: "error",
         autoDismiss: true,
@@ -204,43 +236,39 @@ export default function TrackingSheet() {
   const fetchTrackingSheet = useCallback(
     async (sheet_id) => {
       setIsLoadingFormData(true);
-      setIsUpdating(false);
       try {
         const data = await projectApi.getTrackingSheet(sheet_id);
-        console.log("fetchTrackingSheet", data);
-
         const formValues = {
           ...data,
           stage_data: {
             ...data.stage_data,
-            stage_start_time: data.stage_data.stage_start_time ? moment(data.stage_data.stage_start_time) : null,
-            stage_end_time: data.stage_data.stage_end_time ? moment(data.stage_data.stage_end_time) : null,
+            stage_start_time: data.stage_data.stage_start_time ? moment.unix(data.stage_data.stage_start_time) : null,
+            stage_end_time: data.stage_data.stage_end_time ? moment.unix(data.stage_data.stage_end_time) : null,
           },
           active_data: {
             ...data.active_data,
             pre_frac_pulses: {
               ...data.active_data.pre_frac_pulses,
               pre_frac_start_time: data.active_data.pre_frac_pulses.pre_frac_start_time
-                ? moment(data.active_data.pre_frac_pulses.pre_frac_start_time)
+                ? moment.unix(data.active_data.pre_frac_pulses.pre_frac_start_time)
                 : null,
               pre_frac_end_time: data.active_data.pre_frac_pulses.pre_frac_end_time
-                ? moment(data.active_data.pre_frac_pulses.pre_frac_end_time)
+                ? moment.unix(data.active_data.pre_frac_pulses.pre_frac_end_time)
                 : null,
             },
             post_frac_pulses: {
               ...data.active_data.post_frac_pulses,
               post_frac_start_time: data.active_data.post_frac_pulses.post_frac_start_time
-                ? moment(data.active_data.post_frac_pulses.post_frac_start_time)
+                ? moment.unix(data.active_data.post_frac_pulses.post_frac_start_time)
                 : null,
               post_frac_end_time: data.active_data.post_frac_pulses.post_frac_end_time
-                ? moment(data.active_data.post_frac_pulses.post_frac_end_time)
+                ? moment.unix(data.active_data.post_frac_pulses.post_frac_end_time)
                 : null,
             },
           },
         };
         form.setFieldsValue(formValues);
         setInitialFormValues(formValues);
-        setIsUpdating(true);
         setIsLoadingFormData(false);
       } catch (error) {
         console.log(error);
@@ -268,6 +296,7 @@ export default function TrackingSheet() {
         if (data.stages.length > 0) {
           const stageTrackingPresent = data.stages.find((s) => s.stage_n === stages[Number(selectedStage) - 1].value);
           if (stageTrackingPresent) {
+            setIsUpdating(true);
             fetchTrackingSheet(stageTrackingPresent.uuid);
           } else {
             setIsUpdating(false);
@@ -1095,7 +1124,7 @@ export default function TrackingSheet() {
           <div className="flex justify-end mt-4">
             {/* <span className="mr-4">Last submitted date: 08/07/2021</span> */}
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={isSubmitLoading}>
                 {isUpdating ? "Update tracking sheet" : "Submit tracking sheet"}
               </Button>
             </Form.Item>
