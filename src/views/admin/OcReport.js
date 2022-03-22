@@ -200,7 +200,7 @@ export default function OcReport() {
                 <Button
                   type="primary"
                   loading={isSyncLoading}
-                  disabled={data.filter((d) => d.approved).length < 1}
+                  // disabled={data.filter((d) => d.approved).length < 1}
                   onClick={syncCloud}
                 >
                   Sync to cloud
