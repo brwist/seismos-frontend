@@ -44,13 +44,10 @@ export const projectApi = {
     }
   },
   putDefaultValue: async (wellId, data) => {
-    const x = { ...FormDataSerializer.defultValueFormSubmitSerializer(data) };
     try {
       const response = await axios.put(
         config.API_URL + ENUMS.API_ROUTES.DEFAULT_VALUE + "/" + wellId,
-        {
-          ...FormDataSerializer.defultValueFormSubmitSerializer(data),
-        },
+        FormDataSerializer.defultValueFormSubmitSerializer(data),
         { ...HttpUtil.adminHttpHeaders() },
       );
       console.log("putDefaultValue: ", response);
@@ -142,9 +139,7 @@ export const projectApi = {
     try {
       const response = await axios.put(
         config.API_URL + ENUMS.API_ROUTES.TRACKING_SHEET_UPDATE + "/" + stage_id,
-        {
-          ...trackingSheet,
-        },
+        trackingSheet,
         { ...HttpUtil.adminHttpHeaders() },
       );
       if (response.status === 200) return;
