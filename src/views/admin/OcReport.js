@@ -140,10 +140,10 @@ export default function OcReport() {
   }, [fetchQcReport, history]);
 
   const syncCloud = async () => {
-    const { projectId } = history.location.state;
+    const { projectId, wellId } = history.location.state;
     setIsSyncLoading(true);
     try {
-      await projectApi.syncCloud(projectId);
+      await projectApi.syncCloud(projectId, wellId);
       setIsSyncLoading(false);
       addToast("Project is synced to cloud!", {
         appearance: "success",
