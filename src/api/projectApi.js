@@ -176,8 +176,8 @@ export const projectApi = {
       throw new Error(error.message);
     }
   },
-  syncCloud: async (project_id) => {
-    return await axios.get(config.API_URL + ENUMS.API_ROUTES.SYNC_CLOUD + "/" + project_id, {
+  syncCloud: async (project_id, wellId) => {
+    return await axios.get(config.API_URL + ENUMS.API_ROUTES.SYNC_CLOUD + "/" + project_id + "/" + wellId, {
       ...HttpUtil.adminHttpHeaders(),
     });
   },
