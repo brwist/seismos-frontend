@@ -42,7 +42,7 @@ export default function TrackingSheet() {
 
   const dispatch = useDispatch();
   const project = useSelector((state) => state.authReducer.project);
-
+  const [possibleToCopy, setPossibleToCopy] = useState(false);
   const [isLoadingFormData, setIsLoadingFormData] = useState(true);
   const [wellId, setWellId] = useState(null);
   const [projectId, setProjectId] = useState(null);
@@ -55,6 +55,13 @@ export default function TrackingSheet() {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState(trackingSheetForm);
 
+  const onHandleCopyLastStage = () => {
+    if (possibleToCopy) {
+      fetchTrackingSheet(stageSheetList[0].uuid, true);
+      setPossibleToCopy(false);
+    }
+  };
+
   const handleSelectStage = (e) => {
     setSelectedStage(e);
     if (e) {
@@ -63,6 +70,7 @@ export default function TrackingSheet() {
         fetchTrackingSheet(sheetData.uuid);
       } else {
         resetForm();
+        setPossibleToCopy(true);
         setIsUpdating(false);
       }
     }
@@ -234,7 +242,7 @@ export default function TrackingSheet() {
   };
 
   const fetchTrackingSheet = useCallback(
-    async (sheet_id) => {
+    async (sheet_id, isCopied = false) => {
       setIsLoadingFormData(true);
       try {
         const data = await projectApi.getTrackingSheet(sheet_id);
@@ -267,6 +275,16 @@ export default function TrackingSheet() {
             },
           },
         };
+        if (isCopied) {
+          formValues.stage_data.fluids_injected_into_formation.filter((item) => {
+            delete item["id"];
+            return item;
+          });
+          formValues.stage_data.proppant_data.filter((item) => {
+            delete item["id"];
+            return item;
+          });
+        }
         form.setFieldsValue(formValues);
         setInitialFormValues(formValues);
         setIsLoadingFormData(false);
@@ -316,7 +334,11 @@ export default function TrackingSheet() {
   );
 
   const resetForm = useCallback(() => {
-    form.resetFields();
+    if (formRef?.current) {
+      formRef.current.resetFields();
+    } else {
+      form.resetFields();
+    }
   }, [form]);
 
   useState(() => {
@@ -364,9 +386,14 @@ export default function TrackingSheet() {
       {isLoadingFormData && <div></div>}
       <Card style={{ marginBottom: "1rem" }}>
         <Row align="middle">
-          <Col span={20}>
+          <Col span={stageSheetList.length > 0 ? 16 : 20}>
             <strong>Tracking sheet</strong>
           </Col>
+          {stageSheetList.length > 0 && (
+            <Col span={4}>
+              <Button onClick={onHandleCopyLastStage}>Copy last stage</Button>
+            </Col>
+          )}
           <Col span={4}>
             <Select
               style={{ width: "100%" }}
@@ -411,9 +438,9 @@ export default function TrackingSheet() {
       <Card>
         <Form
           name="tracking-sheet--form"
+          scrollToFirstError
           onValuesChange={handleFormChange}
           autoComplete="off"
-          initialValues={initialFormValues}
           form={form}
           ref={formRef}
           onFinish={handleTrackingSheetSubmit}
@@ -687,12 +714,22 @@ export default function TrackingSheet() {
               <Card>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item name={["stage_data", "stage_start_time"]} label="Stage start time" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "stage_start_time"]}
+                      label="Stage start time"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={["stage_data", "stage_end_time"]} label="Stage end time" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "stage_end_time"]}
+                      label="Stage end time"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <DatePicker showTime />
                     </Form.Item>
                   </Col>
