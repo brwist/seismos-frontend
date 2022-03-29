@@ -1,5 +1,5 @@
-import { Select, Divider, Collapse, Form, Button, Row, Col, Card, Input, DatePicker, InputNumber } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { Select, Divider, Collapse, Form, Button, Row, Col, Card, Input, DatePicker, InputNumber, Tooltip } from "antd";
+import { InfoCircleOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import ConfirmationModal from "components/Modal/ConfirmationModal";
 import ENUMS from "constants/appEnums";
 import { trackingSheetForm } from "constants/formInitialValues";
@@ -42,7 +42,7 @@ export default function TrackingSheet() {
 
   const dispatch = useDispatch();
   const project = useSelector((state) => state.authReducer.project);
-
+  const [possibleToCopy, setPossibleToCopy] = useState(false);
   const [isLoadingFormData, setIsLoadingFormData] = useState(true);
   const [wellId, setWellId] = useState(null);
   const [projectId, setProjectId] = useState(null);
@@ -55,6 +55,13 @@ export default function TrackingSheet() {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState(trackingSheetForm);
 
+  const onHandleCopyLastStage = () => {
+    if (possibleToCopy) {
+      fetchTrackingSheet(stageSheetList[0].uuid, true);
+      setPossibleToCopy(false);
+    }
+  };
+
   const handleSelectStage = (e) => {
     setSelectedStage(e);
     if (e) {
@@ -63,6 +70,7 @@ export default function TrackingSheet() {
         fetchTrackingSheet(sheetData.uuid);
       } else {
         resetForm();
+        setPossibleToCopy(true);
         setIsUpdating(false);
       }
     }
@@ -234,7 +242,7 @@ export default function TrackingSheet() {
   };
 
   const fetchTrackingSheet = useCallback(
-    async (sheet_id) => {
+    async (sheet_id, isCopied = false) => {
       setIsLoadingFormData(true);
       try {
         const data = await projectApi.getTrackingSheet(sheet_id);
@@ -267,6 +275,16 @@ export default function TrackingSheet() {
             },
           },
         };
+        if (isCopied) {
+          formValues.stage_data.fluids_injected_into_formation.filter((item) => {
+            delete item["id"];
+            return item;
+          });
+          formValues.stage_data.proppant_data.filter((item) => {
+            delete item["id"];
+            return item;
+          });
+        }
         form.setFieldsValue(formValues);
         setInitialFormValues(formValues);
         setIsLoadingFormData(false);
@@ -316,7 +334,11 @@ export default function TrackingSheet() {
   );
 
   const resetForm = useCallback(() => {
-    form.resetFields();
+    if (formRef?.current) {
+      formRef.current.resetFields();
+    } else {
+      form.resetFields();
+    }
   }, [form]);
 
   useState(() => {
@@ -364,9 +386,14 @@ export default function TrackingSheet() {
       {isLoadingFormData && <div></div>}
       <Card style={{ marginBottom: "1rem" }}>
         <Row align="middle">
-          <Col span={20}>
+          <Col span={stageSheetList.length > 0 ? 16 : 20}>
             <strong>Tracking sheet</strong>
           </Col>
+          {stageSheetList.length > 0 && (
+            <Col span={4}>
+              <Button onClick={onHandleCopyLastStage}>Copy last stage</Button>
+            </Col>
+          )}
           <Col span={4}>
             <Select
               style={{ width: "100%" }}
@@ -411,9 +438,9 @@ export default function TrackingSheet() {
       <Card>
         <Form
           name="tracking-sheet--form"
+          scrollToFirstError
           onValuesChange={handleFormChange}
           autoComplete="off"
-          initialValues={initialFormValues}
           form={form}
           ref={formRef}
           onFinish={handleTrackingSheetSubmit}
@@ -423,7 +450,12 @@ export default function TrackingSheet() {
               <Card>
                 <Row gutter={24}>
                   <Col span={8}>
-                    <Form.Item name={["stage_tracking", "plug_type"]} label="Plug type" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "plug_type"]}
+                      label="Plug type"
+                      tooltip={{ title: "Types of plugs", icon: <InfoCircleOutlined /> }}
+                      labelAlign="left"
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
@@ -433,42 +465,54 @@ export default function TrackingSheet() {
                     <Form.Item
                       name={["stage_tracking", "bottomhole_bht"]}
                       label="BHT [F]"
+                      tooltip={{ title: "Bottom hole temperature degrees fahrenheit", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={2} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item
                       name={["stage_tracking", "plug_seat_technique"]}
                       label="Plug seat technique"
+                      tooltip={{ title: "Plug seating technique", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                     >
-                      <Input />
+                      <Input tabindex={5} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
                     <Form.Item
                       name={["stage_tracking", "bottomhole_bhp"]}
                       label="BHP"
+                      tooltip={{ title: "Bottom hole pressure psi", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={3} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item
                       name={["stage_tracking", "did_an_event_occur"]}
                       label="Did an event occur"
+                      tooltip={{
+                        title: "Did an operational or downhole event occurring during the stage",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                     >
-                      <Input />
+                      <Input tabindex={6} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item name={["stage_tracking", "frac_design"]} label="Frac design" labelAlign="left">
+                    <Form.Item
+                      name={["stage_tracking", "frac_design"]}
+                      label="Frac design"
+                      tooltip={{ title: "Type of frac design", icon: <InfoCircleOutlined /> }}
+                      labelAlign="left"
+                    >
                       <Input />
                     </Form.Item>
                   </Col>
@@ -476,9 +520,13 @@ export default function TrackingSheet() {
                     <Form.Item
                       name={["stage_tracking", "seismos_data_collection"]}
                       label="Seismos data collection"
+                      tooltip={{
+                        title: "Did Seismos collect active data for this stage",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                     >
-                      <Input />
+                      <Input tabindex={7} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -491,100 +539,125 @@ export default function TrackingSheet() {
                     <StyledFormItem
                       name={["perforation_interval_information", "top_measured_depth"]}
                       label="Top perf [MD]"
+                      tooltip={{
+                        title: "Depth in feet at the top perforation for the stage",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={8} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "perf_daiameter"]}
                       label="Perf daiameter [in]"
+                      tooltip={{
+                        title: "Diameter of the perforation charge or hole size",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={13} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "bottom_measured_depth"]}
                       label="Bottom perf [MD]"
+                      tooltip={{
+                        title: "Depth in feet at the bottom perforation for the stage",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={9} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "spf"]}
                       label="SPF"
+                      tooltip={{ title: "Number of shots per foot per cluster or gun", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={14} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "plug_depth"]}
                       label="Plug depth [MD]"
+                      tooltip={{ title: "Depth in feet at where the plug is located", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={10} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "pumped_diverter"]}
                       label="Pumped diverter"
+                      tooltip={{ title: "Was diverter pumped during this stage", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <Input />
+                      <Input tabindex={15} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "n_clusters"]}
                       label="# of clusters"
+                      tooltip={{
+                        title: "# of clusters on the wireline perforating tool string",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={11} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "diverter_type"]}
                       label="Diverter type"
+                      tooltip={{ title: "Type of diverter use during this stage", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <Input />
+                      <Input tabindex={16} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "perf_gun_description"]}
                       label="Perf gun description"
+                      tooltip={{
+                        title: "Diameter of the perforation charge or hole size",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <Input />
+                      <Input tabindex={12} />
                     </StyledFormItem>
                   </Col>
                   <Col span={12}>
                     <StyledFormItem
                       name={["perforation_interval_information", "acid"]}
                       label="Acid"
+                      tooltip={{ title: "Did they pump acid on this stage", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <Input />
+                      <Input tabindex={17} />
                     </StyledFormItem>
                   </Col>
                 </Row>
@@ -596,30 +669,42 @@ export default function TrackingSheet() {
                     <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "top_perf"]}
                       label="Top perf [bbls]"
+                      tooltip={{
+                        title: "Volume of barrels pumped to reach top perf location",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={18} />
                     </StyledFormItem>
                   </Col>
                   <Col span={10}>
                     <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "bottom_perf"]}
                       label="Bottom perf [bbls]"
+                      tooltip={{
+                        title: "Volume of barrels pumped to reach bottom perf location",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={19} />
                     </StyledFormItem>
                   </Col>
                   <Col span={10}>
                     <StyledFormItem
                       name={["perforation_interval_information", "displacement_volume", "plug"]}
                       label="Plug [bbls]"
+                      tooltip={{
+                        title: "Volume of barrels pumped to reach plug location",
+                        icon: <InfoCircleOutlined />,
+                      }}
                       labelAlign="left"
                       rules={[{ required: true, message: "Required field." }]}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={20} />
                     </StyledFormItem>
                   </Col>
                 </Row>
@@ -629,17 +714,32 @@ export default function TrackingSheet() {
               <Card>
                 <Row gutter={24}>
                   <Col span={10}>
-                    <Form.Item name={["stage_data", "stage_start_time"]} label="Stage start time" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "stage_start_time"]}
+                      label="Stage start time"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={["stage_data", "stage_end_time"]} label="Stage end time" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "stage_end_time"]}
+                      label="Stage end time"
+                      labelAlign="left"
+                      rules={[{ required: true, message: "Required field." }]}
+                    >
                       <DatePicker showTime />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={["stage_data", "opening_well"]} label="Opening well" labelAlign="left">
+                    <Form.Item
+                      name={["stage_data", "opening_well"]}
+                      label="Opening well"
+                      tooltip={{ title: "Pressure of the well when it is opened", icon: <InfoCircleOutlined /> }}
+                      labelAlign="left"
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -663,8 +763,9 @@ export default function TrackingSheet() {
                       name={["stage_data", "fluid_parameters", "base_fluid_type"]}
                       label="Base fluid type"
                       labelAlign="left"
+                      tooltip={{ title: "Type of base fluid used in frac fluid system", icon: <InfoCircleOutlined /> }}
                     >
-                      <Input />
+                      <Input tabindex={22} />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
@@ -672,8 +773,9 @@ export default function TrackingSheet() {
                       name={["stage_data", "fluid_parameters", "base_fluid_density"]}
                       label="Base fluid density [ppg]"
                       labelAlign="left"
+                      tooltip={{ title: "Density of base fluid in pounds per gallon", icon: <InfoCircleOutlined /> }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={23} />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
@@ -681,8 +783,12 @@ export default function TrackingSheet() {
                       name={["stage_data", "fluid_parameters", "max_conc_density"]}
                       label="Max conc density [ppg]"
                       labelAlign="left"
+                      tooltip={{
+                        title: "Combined density of all fluids and sand in pounds per gallon",
+                        icon: <InfoCircleOutlined />,
+                      }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={24} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -717,8 +823,12 @@ export default function TrackingSheet() {
                               label="Description"
                               labelAlign="left"
                               layout="vertical"
+                              tooltip={{
+                                title: "Type of fluid last pumped into formation",
+                                icon: <InfoCircleOutlined />,
+                              }}
                             >
-                              <Input />
+                              <Input tabindex={25} />
                             </StyledFormItem>
                           </Col>
                           <Col span={5}>
@@ -730,8 +840,12 @@ export default function TrackingSheet() {
                               label="bbls"
                               labelAlign="left"
                               layout="vertical"
+                              tooltip={{
+                                title: "Amount of barrels last pumped into formation",
+                                icon: <InfoCircleOutlined />,
+                              }}
                             >
-                              <InputNumber />
+                              <InputNumber tabindex={25} />
                             </StyledFormItem>
                           </Col>
                           <Col span={5}>
@@ -743,8 +857,12 @@ export default function TrackingSheet() {
                               label="ppg"
                               labelAlign="left"
                               layout="vertical"
+                              tooltip={{
+                                title: "Pounds per gallon of last fluid pumped into formation",
+                                icon: <InfoCircleOutlined />,
+                              }}
                             >
-                              <InputNumber />
+                              <InputNumber tabindex={26} />
                             </StyledFormItem>
                           </Col>
                           <Col span={2} className="pt-8">
@@ -796,7 +914,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <Input />
+                                <Input tabindex={27} />
                               </StyledFormItem>
                             </Col>
                             <Col span={5}>
@@ -814,7 +932,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber />
+                                <InputNumber tabindex={28} />
                               </StyledFormItem>
                             </Col>
                             <Col span={5}>
@@ -827,7 +945,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber />
+                                <InputNumber tabindex={29} />
                               </StyledFormItem>
                             </Col>
                             <Col span={6}>
@@ -845,7 +963,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber />
+                                <InputNumber tabindex={30} />
                               </StyledFormItem>
                             </Col>
                             <StyledFlexColumn span={2} className="mt-8">
@@ -879,37 +997,58 @@ export default function TrackingSheet() {
                   <Col span={8}>
                     <strong>Actual</strong>
                   </Col>
-                  <Col span={8}>Max prop Conc[ppa]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Max prop Conc[ppa]
+                      <Tooltip title="Maximum pounds of proppant actual per gallon">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={31} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={38} />
                     </StyledFormItem>
                   </Col>
-                  <Col span={8}>Total pad volume[bbls]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Total pad volume[bbls]
+                      <Tooltip title="Total pad volume pumped in barrels">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={32} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={39} />
                     </StyledFormItem>
                   </Col>
-                  <Col span={8}>Total clean fluid volume [bbls]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Total clean fluid volume [bbls]
+                      <Tooltip title="Total clean fluid volume pumped during stage (fluid with no  additives)">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={33} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={40} />
                     </StyledFormItem>
                   </Col>
                   {/* <Col span={8}>Total 40/70 [lbs]</Col>
@@ -923,10 +1062,17 @@ export default function TrackingSheet() {
                       <InputNumber />
                     </StyledFormItem>
                   </Col> */}
-                  <Col span={8}>Total proppant [lbs]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Total proppant [lbs]
+                      <Tooltip title="Total amount of sand pumped during the stage">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_proppant", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={34} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -934,37 +1080,58 @@ export default function TrackingSheet() {
                       <InputNumber disabled />
                     </StyledFormItem>
                   </Col>
-                  <Col span={8}>Acid volume [gals]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Acid volume [gals]
+                      <Tooltip title="Total amount of sand pumped in gallons during the stage">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={35} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={41} />
                     </StyledFormItem>
                   </Col>
-                  <Col span={8}>Flush volume [bbls]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Flush volume [bbls]
+                      <Tooltip title="Total flush volume at the end of stage in barrels">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={36} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={42} />
                     </StyledFormItem>
                   </Col>
-                  <Col span={8}>Slurry volume [bbls]</Col>
+                  <Col span={8}>
+                    <span className="flex items-center">
+                      Slurry volume [bbls]
+                      <Tooltip title="Total amount of all fluid pumped during the stage in barrels">
+                        <InfoCircleOutlined className="icon-form-info" />
+                      </Tooltip>
+                    </span>
+                  </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "design"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={37} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "actual"]}>
-                      <InputNumber />
+                      <InputNumber tabindex={43} />
                     </StyledFormItem>
                   </Col>
                 </Row>
@@ -981,12 +1148,25 @@ export default function TrackingSheet() {
                       name={["active_data", "pulsing_parameteres", "wave_type"]}
                       label="Wave type"
                       labelAlign="left"
+                      tooltip={{
+                        title:
+                          "Types of pulsing options, manual means engineer is manually operating the powerpack to send a pulse",
+                        icon: <InfoCircleOutlined />,
+                      }}
                     >
-                      <Input />
+                      <Input tabindex={44} />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
-                    <Form.Item name={["active_data", "pulsing_parameteres", "period"]} label="Period" labelAlign="left">
+                    <Form.Item
+                      name={["active_data", "pulsing_parameteres", "period"]}
+                      label="Period"
+                      labelAlign="left"
+                      tooltip={{
+                        title: "Number of pulses to be pulsed during auto pulsing",
+                        icon: <InfoCircleOutlined />,
+                      }}
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -995,8 +1175,12 @@ export default function TrackingSheet() {
                       name={["active_data", "pulsing_parameteres", "frequency"]}
                       label="Freq [Hz]"
                       labelAlign="left"
+                      tooltip={{
+                        title: "Frequency of waveform current max is 100 hz but plans to make it 1Khz in the future",
+                        icon: <InfoCircleOutlined />,
+                      }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={46} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -1004,8 +1188,12 @@ export default function TrackingSheet() {
                       name={["active_data", "pulsing_parameteres", "offset"]}
                       label="Offset [V]"
                       labelAlign="left"
+                      tooltip={{
+                        title: "Voltage to pulse",
+                        icon: <InfoCircleOutlined />,
+                      }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={47} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -1013,8 +1201,13 @@ export default function TrackingSheet() {
                       name={["active_data", "pulsing_parameteres", "amplitude"]}
                       label="Amplitude"
                       labelAlign="left"
+                      tooltip={{
+                        title:
+                          "Size of waveform amplitude based on increasing or decreasing the percentage of the amplitude",
+                        icon: <InfoCircleOutlined />,
+                      }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={48} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1046,7 +1239,7 @@ export default function TrackingSheet() {
                       label="# of pulses"
                       labelAlign="left"
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={49} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1078,7 +1271,7 @@ export default function TrackingSheet() {
                       label="# of pulses"
                       labelAlign="left"
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={50} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1094,7 +1287,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} />
+                      <TextArea rows={4} tabindex={51} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
@@ -1104,7 +1297,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} />
+                      <TextArea rows={4} tabindex={52} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
@@ -1114,7 +1307,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} />
+                      <TextArea rows={4} tabindex={53} />
                     </StyledFormItem>
                   </Col>
                 </Row>
