@@ -456,7 +456,7 @@ export default function TrackingSheet() {
                       tooltip={{ title: "Types of plugs", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                     >
-                      <Input />
+                      <Input tabindex={1} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -513,7 +513,7 @@ export default function TrackingSheet() {
                       tooltip={{ title: "Type of frac design", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                     >
-                      <Input />
+                      <Input tabindex={4} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -740,7 +740,7 @@ export default function TrackingSheet() {
                       tooltip={{ title: "Pressure of the well when it is opened", icon: <InfoCircleOutlined /> }}
                       labelAlign="left"
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={21} />
                     </Form.Item>
                   </Col>
                   {/* <Col span={10}>
@@ -845,7 +845,7 @@ export default function TrackingSheet() {
                                 icon: <InfoCircleOutlined />,
                               }}
                             >
-                              <InputNumber tabindex={25} />
+                              <InputNumber tabindex={26} />
                             </StyledFormItem>
                           </Col>
                           <Col span={5}>
@@ -862,7 +862,7 @@ export default function TrackingSheet() {
                                 icon: <InfoCircleOutlined />,
                               }}
                             >
-                              <InputNumber tabindex={26} />
+                              <InputNumber tabindex={27} />
                             </StyledFormItem>
                           </Col>
                           <Col span={2} className="pt-8">
@@ -914,7 +914,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <Input tabindex={27} />
+                                <Input tabindex={28} />
                               </StyledFormItem>
                             </Col>
                             <Col span={5}>
@@ -932,7 +932,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber tabindex={28} />
+                                <InputNumber tabindex={29} />
                               </StyledFormItem>
                             </Col>
                             <Col span={5}>
@@ -945,7 +945,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber tabindex={29} />
+                                <InputNumber tabindex={30} />
                               </StyledFormItem>
                             </Col>
                             <Col span={6}>
@@ -963,7 +963,7 @@ export default function TrackingSheet() {
                                 labelAlign="left"
                                 layout="vertical"
                               >
-                                <InputNumber tabindex={30} />
+                                <InputNumber tabindex={31} />
                               </StyledFormItem>
                             </Col>
                             <StyledFlexColumn span={2} className="mt-8">
@@ -1007,12 +1007,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "design"]}>
-                      <InputNumber tabindex={31} />
+                      <InputNumber tabindex={32} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "max_prop_conc", "actual"]}>
-                      <InputNumber tabindex={38} />
+                      <InputNumber tabindex={39} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -1025,12 +1025,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "design"]}>
-                      <InputNumber tabindex={32} />
+                      <InputNumber tabindex={33} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_pad_volume", "actual"]}>
-                      <InputNumber tabindex={39} />
+                      <InputNumber tabindex={40} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -1043,12 +1043,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "design"]}>
-                      <InputNumber tabindex={33} />
+                      <InputNumber tabindex={34} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_clean_fluid_volume", "actual"]}>
-                      <InputNumber tabindex={40} />
+                      <InputNumber tabindex={41} />
                     </StyledFormItem>
                   </Col>
                   {/* <Col span={8}>Total 40/70 [lbs]</Col>
@@ -1072,7 +1072,7 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "total_proppant", "design"]}>
-                      <InputNumber tabindex={34} />
+                      <InputNumber tabindex={35} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -1090,12 +1090,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "design"]}>
-                      <InputNumber tabindex={35} />
+                      <InputNumber tabindex={36} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "acid_volume", "actual"]}>
-                      <InputNumber tabindex={41} />
+                      <InputNumber tabindex={42} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -1108,12 +1108,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "design"]}>
-                      <InputNumber tabindex={36} />
+                      <InputNumber tabindex={37} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "flush_volume", "actual"]}>
-                      <InputNumber tabindex={42} />
+                      <InputNumber tabindex={43} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
@@ -1126,12 +1126,12 @@ export default function TrackingSheet() {
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "design"]}>
-                      <InputNumber tabindex={37} />
+                      <InputNumber tabindex={38} />
                     </StyledFormItem>
                   </Col>
                   <Col span={8}>
                     <StyledFormItem name={["stage_data", "pumping_summary", "slurry_volume", "actual"]}>
-                      <InputNumber tabindex={43} />
+                      <InputNumber tabindex={44} />
                     </StyledFormItem>
                   </Col>
                 </Row>
@@ -1154,7 +1154,7 @@ export default function TrackingSheet() {
                         icon: <InfoCircleOutlined />,
                       }}
                     >
-                      <Input tabindex={44} />
+                      <Input tabindex={45} />
                     </Form.Item>
                   </Col>
                   <Col span={10}>
@@ -1167,7 +1167,7 @@ export default function TrackingSheet() {
                         icon: <InfoCircleOutlined />,
                       }}
                     >
-                      <InputNumber />
+                      <InputNumber tabindex={46} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -1180,7 +1180,7 @@ export default function TrackingSheet() {
                         icon: <InfoCircleOutlined />,
                       }}
                     >
-                      <InputNumber tabindex={46} />
+                      <InputNumber tabindex={47} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -1193,7 +1193,7 @@ export default function TrackingSheet() {
                         icon: <InfoCircleOutlined />,
                       }}
                     >
-                      <InputNumber tabindex={47} />
+                      <InputNumber tabindex={48} />
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -1207,7 +1207,7 @@ export default function TrackingSheet() {
                         icon: <InfoCircleOutlined />,
                       }}
                     >
-                      <InputNumber tabindex={48} />
+                      <InputNumber tabindex={49} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1239,7 +1239,7 @@ export default function TrackingSheet() {
                       label="# of pulses"
                       labelAlign="left"
                     >
-                      <InputNumber tabindex={49} />
+                      <InputNumber tabindex={50} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1271,7 +1271,7 @@ export default function TrackingSheet() {
                       label="# of pulses"
                       labelAlign="left"
                     >
-                      <InputNumber tabindex={50} />
+                      <InputNumber tabindex={51} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -1287,7 +1287,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} tabindex={51} />
+                      <TextArea rows={4} tabindex={52} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
@@ -1297,7 +1297,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} tabindex={52} />
+                      <TextArea rows={4} tabindex={53} />
                     </StyledFormItem>
                   </Col>
                   <Col span={24}>
@@ -1307,7 +1307,7 @@ export default function TrackingSheet() {
                       labelAlign="left"
                       layout="vertical"
                     >
-                      <TextArea rows={4} tabindex={53} />
+                      <TextArea rows={4} tabindex={54} />
                     </StyledFormItem>
                   </Col>
                 </Row>
