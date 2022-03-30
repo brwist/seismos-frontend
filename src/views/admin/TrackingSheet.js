@@ -386,10 +386,10 @@ export default function TrackingSheet() {
       {isLoadingFormData && <div></div>}
       <Card style={{ marginBottom: "1rem" }}>
         <Row align="middle">
-          <Col span={stageSheetList.length > 0 ? 16 : 20}>
+          <Col span={stageSheetList.length > 0 && possibleToCopy ? 16 : 20}>
             <strong>Tracking sheet</strong>
           </Col>
-          {stageSheetList.length > 0 && (
+          {stageSheetList.length > 0 && possibleToCopy && (
             <Col span={4}>
               <Button onClick={onHandleCopyLastStage}>Copy last stage</Button>
             </Col>
