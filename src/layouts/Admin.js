@@ -1,10 +1,13 @@
 import routes from "routes/routes.js";
 import { useSelector } from "react-redux";
-import { Layout, Menu, Breadcrumb, Spin } from "antd";
+import { Button, Divider, Layout, Menu, Spin } from "antd";
+import { CloudUploadOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useToasts } from "react-toast-notifications";
 import { Switch, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
+import styled from "styled-components";
 import { projectApi } from "./../api/projectApi";
 
 // components
@@ -16,10 +19,30 @@ import allActions from "redux/actions";
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
+const StyledSidebar = styled(Sider)`
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    .box--sync {
+      margin-top: auto;
+      padding: 16px;
+      button {
+        width: 100%;
+        border-radius: 0.5rem;
+        background: #f0f2f5;
+      }
+    }
+  }
+`;
+
 export default function Admin(props) {
   const history = useHistory();
   const location = useLocation();
-
+  const { addToast } = useToasts();
   const dispatch = useDispatch();
 
   // const user = useSelector(state => state.authReducer.user);
@@ -29,6 +52,7 @@ export default function Admin(props) {
   const [sidebarMenu, setSidebarMenu] = useState([]);
   const [defaultSelectedMenuKey, setDefaultSelectedMenuKey] = useState();
   const [defaultOpenMenu, setDefaultOpenMenu] = useState();
+  const [isSyncLoading, setIsSyncLoading] = useState(false);
   // const [pages, setPages] = useState([]);
 
   const getRoutes = (routes) => {
@@ -217,6 +241,25 @@ export default function Admin(props) {
     });
   }, [history]);
 
+  const syncCloud = async () => {
+    const { projectId } = history.location.state;
+    setIsSyncLoading(true);
+    try {
+      await projectApi.syncCloud(projectId);
+      setIsSyncLoading(false);
+      addToast("Project is synced to cloud!", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } catch (e) {
+      setIsSyncLoading(false);
+      addToast(e.message || "Failed. Internal server error.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+  };
+
   return (
     <>
       {noSidebarLayout ? (
@@ -243,16 +286,7 @@ export default function Admin(props) {
         </Layout>
       ) : sidebarMenu.length > 0 ? (
         <Layout>
-          <Sider
-            style={{
-              overflow: "auto",
-              height: "100vh",
-              position: "fixed",
-              left: 0,
-            }}
-            width={250}
-            className="site-layout-background"
-          >
+          <StyledSidebar width={250} className="site-layout-background">
             <div className="logo">
               <img alt="seismos logo" src={require("assets/img/seismos/seismos_logo_animated.gif").default}></img>
             </div>
@@ -265,7 +299,18 @@ export default function Admin(props) {
             >
               {sidebarMenu}
             </Menu>
-          </Sider>
+            <div className="box--sync">
+              <Divider style={{ borderTop: "2px solid rgba(0, 0, 0, 0.06)" }} />
+              <Button
+                icon={<CloudUploadOutlined style={{ fontSize: "24px" }} />}
+                loading={isSyncLoading}
+                onClick={syncCloud}
+                size="large"
+              >
+                Cloud sync
+              </Button>
+            </div>
+          </StyledSidebar>
           <Layout className="site-layout with-sedebar" style={{ marginLeft: 250 }}>
             <AdminNavbar withLogo={false} />
             <Content style={{ margin: "88px 16px 0", overflow: "initial" }}>

@@ -3,17 +3,16 @@ import { ReloadOutlined } from "@ant-design/icons";
 import { Card, Space, Table, Button, Row, Col } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { CSVLink, CSVDownload } from "react-csv";
-import { useToasts } from "react-toast-notifications";
+import { CSVLink } from "react-csv";
+
 import FAKE_DATA from "constants/fakeData";
 import _ from "lodash";
 import { projectApi } from "./../../api/projectApi";
 
 export default function OcReport() {
   const history = useHistory();
-  const { addToast } = useToasts();
   const [data, setData] = useState(FAKE_DATA.STAGE_REPORT);
-  const [isSyncLoading, setIsSyncLoading] = useState(false);
+
   const csvData = [
     [
       "C0",
@@ -137,26 +136,7 @@ export default function OcReport() {
 
   useEffect(() => {
     fetchQcReport();
-  }, [fetchQcReport, history]);
-
-  const syncCloud = async () => {
-    const { projectId, wellId } = history.location.state;
-    setIsSyncLoading(true);
-    try {
-      await projectApi.syncCloud(projectId, wellId);
-      setIsSyncLoading(false);
-      addToast("Project is synced to cloud!", {
-        appearance: "success",
-        autoDismiss: true,
-      });
-    } catch (e) {
-      setIsSyncLoading(false);
-      addToast(e.message || "Failed. Internal server error.", {
-        appearance: "error",
-        autoDismiss: true,
-      });
-    }
-  };
+  }, [fetchQcReport, history]);  
 
   return (
     <>
@@ -194,18 +174,6 @@ export default function OcReport() {
               <Button type="primary" className="ml-3">
                 <CSVLink data={csvData}>Save Report</CSVLink>
               </Button>
-            </Col>
-            <Col span={3}>
-              <div>
-                <Button
-                  type="primary"
-                  loading={isSyncLoading}
-                  // disabled={data.filter((d) => d.approved).length < 1}
-                  onClick={syncCloud}
-                >
-                  Sync to cloud
-                </Button>
-              </div>
             </Col>
           </Row>
         </div>
