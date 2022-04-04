@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useToasts } from "react-toast-notifications";
 import { Switch, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
+import moment from "moment";
 import styled from "styled-components";
 import { projectApi } from "./../api/projectApi";
 
@@ -53,6 +54,7 @@ export default function Admin(props) {
   const [defaultSelectedMenuKey, setDefaultSelectedMenuKey] = useState();
   const [defaultOpenMenu, setDefaultOpenMenu] = useState();
   const [isSyncLoading, setIsSyncLoading] = useState(false);
+  const [lastSyncDate, setLastSyncDate] = useState(0);
   // const [pages, setPages] = useState([]);
 
   const getRoutes = (routes) => {
@@ -90,6 +92,7 @@ export default function Admin(props) {
         const { data } = await projectApi.getProjectById(projectId);
         if (data) {
           setNoSidebarLayout(false);
+          setLastSyncDate(data.last_sync_date);
           const project = data.project;
           dispatch(allActions.authActions.setCurrentProject(project));
           const wellInfo = _.sortBy(project.wells, function (w) {
@@ -301,6 +304,7 @@ export default function Admin(props) {
             </Menu>
             <div className="box--sync">
               <Divider style={{ borderTop: "2px solid rgba(0, 0, 0, 0.06)" }} />
+              <p className="font-bold">Last cloud sync: {moment.unix(lastSyncDate).format("MM/DD/YYYY")}</p>
               <Button
                 icon={<CloudUploadOutlined style={{ fontSize: "24px" }} />}
                 loading={isSyncLoading}
