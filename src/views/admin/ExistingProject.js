@@ -89,7 +89,7 @@ export default function ExistingProject() {
                 Next
               </Button>,
             ]}
-          ></PageHeader>
+          />
           <Card>
             <Table
               rowSelection={{
