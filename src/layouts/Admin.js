@@ -256,7 +256,7 @@ export default function Admin(props) {
       });
     } catch (e) {
       setIsSyncLoading(false);
-      addToast(e.message || "Failed. Internal server error.", {
+      addToast(e.response.data.msg || e.message || "Failed. Internal server error.", {
         appearance: "error",
         autoDismiss: true,
       });
