@@ -38,6 +38,7 @@ const API_ROUTES = {
   TRACKING_SHEET_UPDATE: "/api/tracking-sheet",
   QC_REPORT: "/api/qc-report",
   SYNC_CLOUD: "/api/sync-cloud",
+  DOWNLOAD_PROJECT: "/api/project/download",
   NEW_USER: "/api/user",
 };
 
