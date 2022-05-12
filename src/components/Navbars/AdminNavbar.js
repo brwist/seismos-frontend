@@ -32,7 +32,14 @@ export default function Navbar(props) {
     } else if (e.key === "project") {
       history.push("/admin/project");
     } else if (e.key === "account_settings") {
-      history.push("/admin/account");
+      if (history.location?.state?.projectId) {
+        history.push({
+          pathname: "/admin/account",
+          state: { projectId: history.location?.state?.projectId },
+        });
+      } else {
+        history.push("/admin/account");
+      }
     }
   };
 
@@ -55,10 +62,10 @@ export default function Navbar(props) {
         ) : (
           ""
         )}
-        <Menu theme="dark" mode="horizontal" className="justify-end" onClick={(e) => handleMenuClick(e)}>
-          <Menu.Item key={"project"}>{`Projects`}</Menu.Item>
-          <Menu.Item key={"account_settings"}>{`Account Settings`}</Menu.Item>
-          <Menu.Item key={"logout"}>{`Log out`}</Menu.Item>
+        <Menu theme="dark" mode="horizontal" className="justify-end" onClick={handleMenuClick}>
+          <Menu.Item key="project">Projects</Menu.Item>
+          <Menu.Item key="account_settings">Account Settings</Menu.Item>
+          <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
       </Header>
       {/* End Navbar */}
