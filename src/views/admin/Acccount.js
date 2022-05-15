@@ -3,14 +3,22 @@ import { dataHandlingApi } from "api/dataHandlingApi";
 import React, { useEffect, useState } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import CustomButton from "../../components/Buttons/CustomButton";
 import "./Acccount.css";
+import Popup from "./Popup";
 import UploadFile from "./UploadFile";
 
 // components
 export default function Account() {
   const user = useSelector((state) => state.authReducer.user);
   const [percentage, setPercentage] = useState(0);
+  const [authModal, setAuthModal] = useState(false);
+  const [uploadModal, setUploadModal] = useState(false);
+  const history = useHistory();
+  const [start, setStart] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
 
   const handleDownloadClick = async () => {
     const response = await dataHandlingApi.download();
@@ -19,6 +27,20 @@ export default function Account() {
   const handleUploadClick = async () => {
     const response = await dataHandlingApi.upload();
   };
+
+  useEffect(() => {
+    if (start) {
+      if (percentage > 100) {
+        setComplete(true);
+        return;
+      }
+      const interval = setInterval(() => {
+        setPercentage((percentage) => percentage + Math.floor(Math.random() * (20 - 10 + 1) + 10));
+        console.log("asdasd");
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [percentage, start]);
 
   const handleFileChange = async (e) => {
     try {
@@ -34,7 +56,36 @@ export default function Account() {
     }
   };
 
-  console.log(percentage);
+  const handleOpenFirstModal = () => {
+    const isUserLoggedIn = localStorage.getItem("JWT");
+    if (isUserLoggedIn) {
+      setUploadModal(true);
+    } else if (!isUserLoggedIn) {
+      setAuthModal(true);
+    }
+  };
+
+  const handleOkayClick = () => {
+    localStorage.clear();
+    history.push("/auth/login");
+  };
+
+  const handleCompleteFalse = () => {
+    setComplete(false);
+    setShowProgress(false);
+  };
+
+  const handleClickUpdate = () => {
+    setStart(true);
+    setUploadModal(false);
+    setShowProgress(true);
+  };
+
+  const handleClickCreate = () => {
+    setStart(true);
+    setUploadModal(false);
+    setShowProgress(true);
+  };
 
   return (
     <>
@@ -54,7 +105,11 @@ export default function Account() {
                 action={"Download"}
                 // handleClick={handleDownloadClick}
               >
-                <a href=" https://storage.googleapis.com/ebay-donation-service/-Wfd3c-tRM1ToH9a_charity.jpg" download>
+                <a
+                  style={{ color: "white" }}
+                  href=" https://storage.googleapis.com/ebay-donation-service/-Wfd3c-tRM1ToH9a_charity.jpg"
+                  download
+                >
                   Download
                 </a>
               </CustomButton>
@@ -64,14 +119,57 @@ export default function Account() {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div>Upload databases file(.sql) to cloud: </div>
               <div className="upload-btn-wrapper">
-                <button className="btns">Upload</button>
-                <input type="file" name="myfile" onChange={handleFileChange} />
+                <button className="btns" onClick={handleOpenFirstModal}>
+                  Upload
+                </button>
               </div>
             </div>
-            {percentage > 1 && <ProgressBar now={percentage} />}
+            {showProgress && (
+              <ProgressBar now={percentage} style={{ margin: 20 }} label={percentage > 100 ? "Uploaded" : percentage} />
+            )}
           </Card>
         </div>
       </div>
+      {authModal && (
+        <Popup
+          show={authModal}
+          handleClose={() => {
+            setAuthModal(false);
+          }}
+          bodyText="No user right to write Please contact admin"
+          okayButton="OK"
+          okayButtonClick={handleOkayClick}
+        />
+      )}
+      {uploadModal && (
+        <Popup
+          show={uploadModal}
+          handleClose={() => {
+            setUploadModal(false);
+          }}
+          bodyText="Please Confirm"
+          firstButton="Update Project"
+          secondButton="Create New Project"
+          thirdButton="Cancel"
+          handleClickFirst={handleClickUpdate}
+          handleClicksecond={handleClickCreate}
+          handleThirdClose={() => setUploadModal(false)}
+          okayButtonClick={handleOkayClick}
+          confirm
+        />
+      )}
+      {complete && (
+        <Popup
+          show={complete}
+          handleClose={() => {
+            setAuthModal(false);
+            setPercentage(true);
+          }}
+          bodyText="Operation has completed Successfully"
+          okayButton="OK"
+          okayButtonClick={handleCompleteFalse}
+        />
+      )}
     </>
   );
 }
