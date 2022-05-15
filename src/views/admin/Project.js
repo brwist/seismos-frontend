@@ -35,7 +35,7 @@ export default function Project() {
               onMouseEnter={(e) => setNewProjectFocus(true)}
               onMouseLeave={(e) => setNewProjectFocus(false)}
               onClick={(e) => handleNewProject()}
-              className={newProjectFocus ? "bg-primary text-white cursor-pointer" : ""}
+              className={newProjectFocus ? "card-bg-primary text-white cursor-pointer" : ""}
             >
               Create new project
             </Card.Grid>
@@ -44,7 +44,7 @@ export default function Project() {
               onMouseEnter={(e) => setExistingProjectFocus(true)}
               onMouseLeave={(e) => setExistingProjectFocus(false)}
               onClick={(e) => handleExistingProject()}
-              className={existingProjectFocus ? "bg-primary text-white cursor-pointer" : ""}
+              className={existingProjectFocus ? "card-bg-primary text-white cursor-pointer" : ""}
             >
               Select existing project
             </Card.Grid>
