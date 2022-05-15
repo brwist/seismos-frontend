@@ -1,0 +1,8 @@
+.customButtonComponent {
+    background-color: red;
+    padding: 10;
+    font-weight: "bold";
+    color: "white";
+    border-radius: 5;
+    width: 100;
+  }
