@@ -115,11 +115,17 @@ const FORM_FIELDS = {
   },
 };
 
+const DATA_HANDLING = {
+  DOWNLOAD: "/todo",
+  UPLOAD: "/upload  ",
+};
+
 const ENUMS = {
   ROUTES,
   API_ROUTES,
   AWS,
   FORM_FIELDS,
+  DATA_HANDLING,
 };
 
 export default ENUMS;
