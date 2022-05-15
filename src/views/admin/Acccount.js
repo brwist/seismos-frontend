@@ -147,7 +147,7 @@ export default function Account() {
           handleClose={() => {
             setUploadModal(false);
           }}
-          bodyText="Please Confirm"
+          bodyText="How do you want to proceed?"
           firstButton="Update Project"
           secondButton="Create New Project"
           thirdButton="Cancel"
