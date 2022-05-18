@@ -7,23 +7,15 @@ import { AppContext } from "util/ContextUtil";
 import React, { useState, useEffect } from "react";
 import NotFound from "components/NotFound/NotFound";
 import { useToasts } from "react-toast-notifications";
-import { BrowserRouter, Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { authApi } from "api/authApi";
 
 export default function Application() {
   const dispatch = useDispatch();
   const { addToast } = useToasts();
-  const history = useHistory();
 
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-
-  const logOutUser = () => {
-    userHasAuthenticated(false);
-    dispatch(allActions.authActions.userLoggedOut());
-    localStorage.removeItem("JWT");
-    history.push("/auth/login");
-  };
 
   /**
    * Method to save user data in redux store and set local storage with JWT
@@ -54,6 +46,7 @@ export default function Application() {
       }
     };
     onLoad();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addToast, dispatch]);
 
   return (
