@@ -181,8 +181,8 @@ export const projectApi = {
       ...HttpUtil.adminHttpHeaders(),
     });
   },
-  downloadProject: async (project_id) => {
-    return await axios.get(config.API_URL + ENUMS.API_ROUTES.DOWNLOAD_PROJECT + "/" + project_id, {
+  downloadProject: (project_id) => {
+    return axios.get(config.API_URL + ENUMS.API_ROUTES.DOWNLOAD_PROJECT + "/" + project_id, {
       ...HttpUtil.adminHttpHeaders(),
       responseType: "blob",
     });
