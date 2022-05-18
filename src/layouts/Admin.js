@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import routes from "routes/routes.js";
 import { useSelector } from "react-redux";
 import { Button, Divider, Layout, Menu, Spin } from "antd";
@@ -268,7 +269,7 @@ export default function Admin(props) {
       {noSidebarLayout ? (
         <Layout className="layout">
           <AdminNavbar withLogo={true} />
-          <Content style={{ padding: "0 50px" }}>
+          <Content>
             {/* <Breadcrumb style={{ margin: '16px 0' }}>
                             {
                                 pages.map((page, index) => {
@@ -279,7 +280,7 @@ export default function Admin(props) {
                         </Breadcrumb> */}
             {/* <Breadcrumb.Item>List</Breadcrumb.Item>
                             <Breadcrumb.Item>App</Breadcrumb.Item> */}
-            <div className="p-5 mb-12 bg-white site-layout-content">
+            <div className="bg-white site-layout-content" style={{ minHeight: "calc(100vh - 64px)" }}>
               <Switch>
                 {getRoutes(routes)}
                 <Redirect from="*" to="/admin/dashboard" />
