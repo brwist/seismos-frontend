@@ -1,4 +1,5 @@
 import { Button, Card, Divider, Space } from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -25,8 +26,8 @@ export default function Account() {
     setIsDownloading(true);
     try {
       const res = await projectApi.downloadProject(projectId);
-      console.log(res);
-      fileSaver(res.data, "seismos.zip");
+      const fileName = `seismos_proj_dump_${moment().format("YYYY_MM_DD_hh_mm")}.zip`;
+      fileSaver(res.data, fileName);
 
       setIsDownloading(false);
       addToast("Download is completed!", {
