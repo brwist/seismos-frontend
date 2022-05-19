@@ -238,7 +238,7 @@ const clientInfoFormTableData = {
 
 const crewInfoFormTableData = {
   columns: [
-    { key: "1", label: "Role", width: "38%", field: ENUMS.FORM_FIELDS.CREW_INFO.ROLE, required: true },
+    { key: "1", label: "Field Role", width: "38%", field: ENUMS.FORM_FIELDS.CREW_INFO.ROLE, required: true },
     { key: "2", label: "Name", width: "27%", field: ENUMS.FORM_FIELDS.CREW_INFO.NAME, required: true },
     { key: "3", label: "Shift", width: "27%", field: ENUMS.FORM_FIELDS.CREW_INFO.SHIFT, required: true },
     {
