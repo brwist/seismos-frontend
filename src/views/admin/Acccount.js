@@ -1,26 +1,26 @@
-import { Button, Card, Divider, Space } from "antd";
-import { dataHandlingApi } from "api/dataHandlingApi";
-import Popup from "components/Modal/Popup";
+import { Button, Card, Divider, Modal, Space } from "antd";
 import moment from "moment";
-import { Fragment, useEffect, useState } from "react";
-import { ProgressBar } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useToasts } from "react-toast-notifications";
+import { projectApi } from "../../api/projectApi";
 import fileSaver from "../../util/FileSaver";
+import Popup from "./Popup";
 
 // components
 export default function Account() {
-  const history = useHistory();
+  let history = useHistory();
   const user = useSelector((state) => state.authReducer.user);
-  const [percentage, setPercentage] = useState(0);
-  const [authModal, setAuthModal] = useState(false);
-  const [uploadModal, setUploadModal] = useState(false);
   const [projectId, setProjectId] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
-  const [complete, setComplete] = useState(false);
-  const [showProgress, setShowProgress] = useState(false);
+  const [authModal, setAuthModal] = useState(false);
+  const [projectPopup, setProjectPopup] = useState(false);
+  const [projectPopupType, setProjectPopupType] = useState("");
+  const [popupContent, setPopupContent] = useState("");
+  const [popup, setPopup] = useState(false);
   const { addToast } = useToasts();
+  const inputFile = useRef(null);
 
   useEffect(() => {
     if (history.location?.state?.projectId) {
@@ -32,7 +32,7 @@ export default function Account() {
   const download = async () => {
     setIsDownloading(true);
     try {
-      const res = await dataHandlingApi.downloadProject(projectId);
+      const res = await projectApi.downloadProject(projectId);
       const fileName = `seismos_proj_dump_${moment().format("YYYY_MM_DD_hh_mm")}.zip`;
       fileSaver(res.data, fileName);
 
@@ -50,121 +50,99 @@ export default function Account() {
     }
   };
 
-  const handleSelectModal = () => {
-    const isUserLoggedIn = localStorage.getItem("JWT");
-    if (isUserLoggedIn) {
-      setUploadModal(true);
-    } else if (!isUserLoggedIn) {
-      setAuthModal(true);
+  const handleUploadClick = () => {
+    setAuthModal(true);
+  };
+
+  const handleOkClick = () => {
+    setAuthModal(false);
+
+    inputFile.current.click();
+  };
+
+  const handleFileChange = ({ target }) => {
+    if (target.files[0]) {
+      setProjectPopupType(target.files[0].type);
+      if (popup == false) {
+        setPopup(true);
+      } else if (popup == true) {
+        setPopup(false);
+      }
+      if (popup) {
+        setPopupContent("A new project will be created");
+      } else {
+        setPopupContent("The project already exists, data will be replaced");
+      }
+      target.value = "";
+      setProjectPopup(true);
     }
   };
 
-  const handleOkayClick = () => {
-    localStorage.clear();
-    history.push("/auth/login");
-  };
-
-  const handleCompleteFalse = () => {
-    setComplete(false);
-    setShowProgress(false);
-  };
-
-  const handleClickUpdate = async (e) => {
-    const data = new FormData();
-    data.append("file", e.target.files[0]);
-    try {
-      await dataHandlingApi.uploadProject(data);
-
-      addToast("Upload is completed!", {
-        appearance: "success",
-        autoDismiss: true,
-      });
-    } catch (e) {
-      addToast(e.response.data.msg || e.message || "Failed. Internal server error.", {
-        appearance: "error",
-        autoDismiss: true,
-      });
+  const handleProceed = () => {
+    if (popup) {
+      //Proceed with create project
+      setProjectPopup(false);
+      console.log("create");
+    } else {
+      console.log("update");
+      setProjectPopup(false);
     }
-    setUploadModal(false);
-  };
-
-  const handleClickCreate = () => {
-    setUploadModal(false);
   };
 
   return (
-    <>
-      <div style={{ minHeight: "80vh" }} className="flex items-center justify-center bg-white">
-        <Space direction="vertical" size="large">
-          <Card title="User Account">
-            <div>Name: {user.username}</div>
-            <div>Email: {user.email}</div>
-          </Card>
-
-          <Card title="Manual Data Handling">
-            {projectId && (
-              <Fragment>
-                <div className="flex items-center justify-between w-full">
-                  <p className="mb-0 mr-4">Database file(.sql):</p>
-                  <Button type="primary" onClick={download} loading={isDownloading} size="large" className="rounded-lg">
-                    Download
-                  </Button>
-                </div>
-                <Divider />
-              </Fragment>
-            )}
+    <div style={{ minHeight: "80vh" }} className="flex items-center justify-center bg-white">
+      <Space direction="vertical" size="large">
+        <Card title="User Account">
+          <div>Name: {user.username}</div>
+          <div>Email: {user.email}</div>
+        </Card>
+        {projectId && (
+          <Card title="Manual data handling">
             <div className="flex items-center justify-between w-full">
-              <p className="mb-0 mr-4">Upload databases file(.sql) to cloud: </p>
-              <Button type="primary" onClick={handleSelectModal} size="large" className="rounded-lg">
+              <p className="mb-0 mr-4">Database file(.sql)</p>
+              <Button type="primary" onClick={download} loading={isDownloading} size="large" className="rounded-lg">
+                Download
+              </Button>
+            </div>
+            <Divider />
+            <div className="flex items-center justify-between w-full">
+              <p className="mb-0 mr-4">Upload database file(.sql) to cloud</p>
+              <Button type="primary" size="large" className="rounded-lg" onClick={handleUploadClick}>
                 Upload
               </Button>
             </div>
-            {showProgress && (
-              <ProgressBar now={percentage} style={{ margin: 20 }} label={percentage > 100 ? "Uploaded" : percentage} />
-            )}
           </Card>
-        </Space>
-      </div>
+        )}
+      </Space>
+      <input type="file" ref={inputFile} onChange={handleFileChange} className="hidden" accept=".zip,.rar,.7zip" />
       {authModal && (
-        <Popup
-          show={authModal}
-          handleClose={() => {
+        <Modal
+          visible={authModal}
+          onCancel={() => {
             setAuthModal(false);
           }}
-          bodyText="No user right to write Please contact admin"
-          okayButton="OK"
-          okayButtonClick={handleOkayClick}
-        />
+          closable={false}
+          footer={[
+            <div className="w-full flex justify-center">
+              <Button type="primary" onClick={handleOkClick}>
+                OK
+              </Button>
+            </div>,
+          ]}
+        >
+          <h5 className="text-lg text-center">
+            No user right to write. <br /> Contact Admin
+          </h5>
+        </Modal>
       )}
-      {uploadModal && (
+      {projectPopup && (
         <Popup
-          show={uploadModal}
-          handleClose={() => {
-            setUploadModal(false);
-          }}
-          bodyText="How do you want to proceed?"
-          firstButton="Update Project"
-          secondButton="Create New Project"
-          thirdButton="Cancel"
-          handleClickFirst={handleClickUpdate}
-          handleClicksecond={handleClickCreate}
-          handleThirdClose={() => setUploadModal(false)}
-          okayButtonClick={handleOkayClick}
-          confirm
+          visible={projectPopup}
+          setVisible={setProjectPopup}
+          popupContent={popupContent}
+          handleOkClick={handleProceed}
         />
       )}
-      {complete && (
-        <Popup
-          show={complete}
-          handleClose={() => {
-            setAuthModal(false);
-            setPercentage(true);
-          }}
-          bodyText="Operation has completed Successfully"
-          okayButton="OK"
-          okayButtonClick={handleCompleteFalse}
-        />
-      )}
-    </>
+    </div>
   );
 }
