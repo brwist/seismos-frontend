@@ -39,6 +39,7 @@ const API_ROUTES = {
   QC_REPORT: "/api/qc-report",
   SYNC_CLOUD: "/api/sync-cloud",
   DOWNLOAD_PROJECT: "/api/project/download",
+  UPLOAD_PROJECT: "/api/project/upload",
   NEW_USER: "/api/user",
 };
 
