@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Card, Input, DatePicker, TimePicker, Table } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import "./DailyLog.css";
 import { useToasts } from "react-toast-notifications";
 import ENUMS from "constants/appEnums";
 import { useHistory, useLocation } from "react-router";
