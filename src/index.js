@@ -8,7 +8,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
 import "assets/styles/style.css";
 import "../node_modules/antd/dist/antd.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   return (
