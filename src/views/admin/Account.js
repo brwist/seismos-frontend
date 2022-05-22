@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Modal, Space } from "antd";
+import { Button, Card, Divider, Modal, Space, Tooltip } from "antd";
 import { dataHandlingApi } from "api/dataHandlingApi";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
@@ -103,14 +103,16 @@ export default function Account() {
           <Card title="Manual data handling">
             <div className="flex items-center justify-between w-full">
               <p className="mb-0 mr-4">Database file(.sql)</p>
-              <Button type="primary" onClick={download} loading={isDownloading} size="large" className="rounded-lg" shape="round" style={{width: 150}} >
+              <Button type="primary" onClick={download} loading={isDownloading} size="large" className="rounded-lg" 
+                      shape="round" style={{width: 150}}>
                 Download
               </Button>
             </div>
             <Divider />
             <div className="flex items-center justify-between w-full">
               <p className="mb-0 mr-4">Upload database file(.sql) to cloud</p>
-              <Button type="primary" size="large" className="rounded-lg" onClick={handleUploadClick} loading={isUploading} shape="round" style={{width: 150}} >
+              <Button type="primary" size="large" className="rounded-lg" onClick={handleUploadClick} 
+                      loading={isUploading} shape="round" style={{width: 150}} disabled={user.role === "user"}>
                 Upload
               </Button>
             </div>
