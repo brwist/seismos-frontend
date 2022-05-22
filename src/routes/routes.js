@@ -1,6 +1,6 @@
 import NotFound from "components/NotFound/NotFound";
 import ENUMS from "constants/appEnums";
-import Account from "views/admin/Acccount";
+import Account from "views/admin/Account";
 import DailyLog from "views/admin/DailyLog";
 import Dashboard from "views/admin/Dashboard";
 import DataInput from "views/admin/DataInput";

@@ -39,8 +39,9 @@ class SelectEditor extends PureComponent {
         onChange={this.handleChange}
         onInputKeyDown={this.handleKeyDown}
         options={[
-          { label: "Engineering Manager", value: "engineering_manager" },
-          { label: "Field engineer", value: "field_engineer" },
+          { label: "Engineering Admin", value: "admin"},
+          { label: "Engineering Manager", value: "manager" },
+          { label: "Field engineer", value: "engineer" },
         ]}
         classNamePrefix="grid-react-select"
       />

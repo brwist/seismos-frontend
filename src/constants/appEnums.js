@@ -101,7 +101,7 @@ const FORM_FIELDS = {
     ACTION: "action",
   },
   CREW_INFO: {
-    ROLE: "role",
+    FIELD_ROLE: "fieldrole",
     NAME: "name",
     SHIFT: "shift",
     ACTION: "action",

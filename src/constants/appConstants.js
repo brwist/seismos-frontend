@@ -71,10 +71,10 @@ const DATA_INPUT_CARDS = [
   },
 ];
 
-const ROLE_OPTIONS = [
-  { label: "Admin", value: "admin" },
+const FIELD_ROLE_OPTIONS = [
+  { label: "Engineering Admin", value: "admin" },
   { label: "Engineering Manager", value: "manager" },
-  { label: "Field engineer", value: "engineer" },
+  { label: "Field Engineer", value: "engineer" },
 ];
 
 const SHIFT_OPTIONS = [
@@ -86,7 +86,7 @@ const APP_CONSTANTS = {
   LOGIN_TO_APP_ROUTES,
   ROUTES_WITHOUT_SIDEBAR,
   DATA_INPUT_CARDS,
-  ROLE_OPTIONS,
+  FIELD_ROLE_OPTIONS,
   SHIFT_OPTIONS,
 };
 

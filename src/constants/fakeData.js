@@ -319,22 +319,22 @@ const projectData = {
   ],
   crewInfoValues: [
     {
-      role: "Engineering manager",
+      fieldrole: "Engineering manager",
       name: "h",
       contact: "j",
     },
     {
-      role: "Field engineer",
+      fieldrole: "Field engineer",
       name: "h",
       contact: "j",
     },
     {
-      role: "Field engineer",
+      fieldrole: "Field engineer",
       name: "j",
       contact: "j",
     },
     {
-      role: "Field engineer",
+      fieldrole: "Field engineer",
       name: "j",
       contact: "j",
     },
