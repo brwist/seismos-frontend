@@ -52,7 +52,7 @@ export default function CrewInfo(props) {
 
   const FillViewer = (props) => {
     const { value } = props;
-    const foundOption = APP_CONSTANTS.ROLE_OPTIONS.find((op) => op.value === value);
+    const foundOption = APP_CONSTANTS.FIELD_ROLE_OPTIONS.find((op) => op.value === value);
     return <div className="cell-text-view">{foundOption ? foundOption.label : ""}</div>;
   };
 
@@ -67,7 +67,7 @@ export default function CrewInfo(props) {
       const columns = [];
       TableHeadersUtil.crewInfoFormTableData.columns.map((column) => {
         let col = {};
-        if (column.field === "role") {
+        if (column.field === "fieldrole") {
           col = {
             value: row.label,
             field: column.field,
@@ -123,7 +123,7 @@ export default function CrewInfo(props) {
     const columns = [];
     TableHeadersUtil.crewInfoFormTableData.columns.map((column) => {
       let col = {};
-      if (column.field === "role") {
+      if (column.field === "fieldrole") {
         col = {
           value: "",
           field: column.field,
