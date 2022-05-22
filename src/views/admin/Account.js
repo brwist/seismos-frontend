@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Modal, Space, Tooltip } from "antd";
+import { Button, Card, Divider, Modal, Space } from "antd";
 import { dataHandlingApi } from "api/dataHandlingApi";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
@@ -15,9 +15,6 @@ export default function Account() {
   const [projectId, setProjectId] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [authModal, setAuthModal] = useState(false);
-  const [projectPopup, setProjectPopup] = useState(false);
-  const [popup, setPopup] = useState(false);
   const { addToast } = useToasts();
   const inputFile = useRef(null);
 
@@ -53,12 +50,6 @@ export default function Account() {
     inputFile.current.click();
   };
 
-  const handleOkClick = () => {
-    setAuthModal(false);
-
-    inputFile.current.click();
-  };
-
   const handleFileChange = async ({ target }) => {
     if (target.files[0]) {
       const data = new FormData();
@@ -78,17 +69,6 @@ export default function Account() {
           autoDismiss: true,
         });
       }
-    }
-  };
-
-  const handleProceed = () => {
-    if (popup) {
-      //Proceed with create project
-      setProjectPopup(false);
-      console.log("create");
-    } else {
-      console.log("update");
-      setProjectPopup(false);
     }
   };
 
@@ -112,7 +92,7 @@ export default function Account() {
             <div className="flex items-center justify-between w-full">
               <p className="mb-0 mr-4">Upload database file(.sql) to cloud</p>
               <Button type="primary" size="large" className="rounded-lg" onClick={handleUploadClick} 
-                      loading={isUploading} shape="round" style={{width: 150}} disabled={user.role === "user"}>
+                      loading={isUploading} shape="round" style={{width: 150}} disabled={user.role === "engineer"}>
                 Upload
               </Button>
             </div>
@@ -120,33 +100,6 @@ export default function Account() {
         )}
       </Space>
       <input type="file" ref={inputFile} onChange={handleFileChange} className="hidden" accept=".zip,.rar,.7zip" />
-      {authModal && (
-        <Modal
-          visible={authModal}
-          onCancel={() => {
-            setAuthModal(false);
-          }}
-          closable={false}
-          footer={[
-            <div className="w-full flex justify-center">
-              <Button type="primary" onClick={handleOkClick}>
-                OK
-              </Button>
-            </div>,
-          ]}
-        >
-          <h5 className="text-lg text-center">
-            No user right to write. <br /> Contact Admin
-          </h5>
-        </Modal>
-      )}
-      {projectPopup && (
-        <Popup
-          visible={projectPopup}
-          setVisible={setProjectPopup}
-          handleOkClick={handleProceed}
-        />
-      )}
     </div>
   );
 }
